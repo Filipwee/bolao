@@ -46,10 +46,11 @@ const server = http.createServer(async (req, res) => {
     return handler(req, res);
   }
 
-  // Estáticos (impede path traversal)
+  // Estáticos servidos de public/ (mesmo layout do Vercel). Impede path traversal.
+  const PUB = path.join(ROOT, 'public');
   let file = url === '/' ? '/index.html' : decodeURIComponent(url);
-  const full = path.join(ROOT, file);
-  if (!full.startsWith(ROOT)) { res.statusCode = 403; return res.end('forbidden'); }
+  const full = path.join(PUB, file);
+  if (!full.startsWith(PUB)) { res.statusCode = 403; return res.end('forbidden'); }
   fs.readFile(full, (err, buf) => {
     if (err) { res.statusCode = 404; return res.end('not found'); }
     res.setHeader('Content-Type', MIME[path.extname(full)] || 'application/octet-stream');

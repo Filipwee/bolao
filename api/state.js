@@ -12,7 +12,7 @@
  */
 'use strict';
 
-const SEED = require('../bolao.seed.json');
+const SEED = require('../public/bolao.seed.json');
 const KEY = 'bolao:state';
 
 // ---- Armazenamento -------------------------------------------------------

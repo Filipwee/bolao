@@ -32,12 +32,15 @@ live — no redeploy needed.
 worldcup.json + worldcup.groups.json   (openfootball source)
         │  build.js  (translate → BRT → number 1–104)
         ▼
-bolao.seed.json   (initial BOLAO state, committed)
+public/bolao.seed.json   (initial BOLAO state, committed)
         │  seeded into the store on first read
         ▼
-Upstash Redis  ◄── POST /api/state (admin, x-admin-password) ── admin.html
+Upstash Redis  ◄── POST /api/state (admin, x-admin-password) ── public/admin.html
         │
-        └── GET /api/state (public) ──► index.html  (renders, auto-refreshes every 60s)
+        └── GET /api/state (public) ──► public/index.html  (renders, auto-refreshes every 60s)
+
+Vercel layout (set in vercel.json): static assets in public/ (served at /), serverless
+functions in api/, build = `node build.js`, output directory = public.
 ```
 
 - **`api/state.js`** — the only backend. `GET` is public and returns the current state (or
@@ -86,20 +89,22 @@ sorts by points desc → exact scores desc → name asc; tiebreak = most exact s
 
 ```bash
 npm install                 # gets @upstash/redis (also what Vercel runs)
-node build.js               # regenerate bolao.seed.json + index.html from the JSONs
+node build.js               # regenerate public/bolao.seed.json + public/index.html from the JSONs
 node test/points.test.js    # 10 scoring cases (prompt §3/§7)
 node test/api.local.js      # API handler: GET/POST/auth/validation (in-memory mode)
 node dev-server.js          # full local app at http://localhost:3000 (ADMIN_PASSWORD env, default "admin")
 ```
 
-There is **no build step on Vercel** — `index.html` and `bolao.seed.json` are committed.
-Vercel only runs `npm install` (for the function) and serves static root + `/api`.
+On Vercel, `vercel.json` runs `node build.js` and serves `public/`. The generated
+`public/index.html` and `public/bolao.seed.json` are **also committed** so the function's
+`require('../public/bolao.seed.json')` resolves even before the build runs.
 
 ## Deploy (Vercel)
 
-Import as **Other** framework. Then: **Storage → Create Database → Upstash (Redis)** linked
-to the project (injects `KV_REST_API_*`), and **Settings → Env Vars → `ADMIN_PASSWORD`**.
-Redeploy. Public site at `/`, admin at `/admin.html`. Full steps in `README.md`.
+Import the repo (`vercel.json` sets framework/build/output — no dashboard tweaks needed).
+Then: **Storage → Create Database → Upstash (Redis)** linked to the project (injects
+`KV_REST_API_*`), and **Settings → Env Vars → `ADMIN_PASSWORD`**. Redeploy. Public site at
+`/`, admin at `/admin.html`. Full steps in `README.md`.
 
 ## Gotchas
 
@@ -107,5 +112,7 @@ Redeploy. Public site at `/`, admin at `/admin.html`. Full steps in `README.md`.
   tag as `<\/script>` so the HTML parser doesn't end the block early (same string in JS).
 - `build.js` is the **only** place team translations, flags, and BRT conversion live — edit
   there, then re-run it and commit the regenerated `bolao.seed.json` + `index.html`.
-- `src/index.template.html` is the source for `index.html` (build.js copies it). Edit the
-  template, not `index.html` directly. `admin.html` is hand-written (no template).
+- `src/index.template.html` is the source for `public/index.html` (build.js copies it). Edit
+  the template, not the generated file. `public/admin.html` is hand-written (no template).
+- Static files live in `public/`; functions in `api/`. Don't put HTML at the repo root —
+  Vercel serves `public/` (per `vercel.json`).

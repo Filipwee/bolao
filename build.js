@@ -10,8 +10,9 @@
  *   src/index.template.html     template do site público (marcador /*__DATA__*\/)
  *   src/admin.template.html     template do painel (marcadores __TPL__ e __INIT__)
  *
- * Saídas:
- *   index.html   admin.html
+ * Saídas (em public/, layout padrão do Vercel):
+ *   public/index.html        public/bolao.seed.json
+ * (public/admin.html é estático, escrito à mão — não é gerado aqui.)
  */
 'use strict';
 const fs = require('fs');
@@ -196,15 +197,19 @@ function main() {
   assert(BOLAO.groups.length === 12, `esperado 12 grupos, obtido ${BOLAO.groups.length}`);
   assert(BOLAO.participants.length === 9, `esperado 9 participantes, obtido ${BOLAO.participants.length}`);
 
+  // Os artefatos estáticos vão para public/ (layout padrão do Vercel).
+  const PUB = path.join(ROOT, 'public');
+  fs.mkdirSync(PUB, { recursive: true });
+
   // bolao.seed.json — dados iniciais (committado; a função usa quando o banco está vazio).
-  fs.writeFileSync(path.join(ROOT, 'bolao.seed.json'), JSON.stringify(BOLAO, null, 2));
+  fs.writeFileSync(path.join(PUB, 'bolao.seed.json'), JSON.stringify(BOLAO, null, 2));
 
   // index.html — copia do template (que já busca os dados em /api/state).
   const indexTpl = fs.readFileSync(path.join(ROOT, 'src', 'index.template.html'), 'utf8');
-  fs.writeFileSync(path.join(ROOT, 'index.html'), indexTpl);
+  fs.writeFileSync(path.join(PUB, 'index.html'), indexTpl);
 
   const comResultado = BOLAO.fixtures.filter(f => f.placar.casa != null).length;
-  console.log('OK  bolao.seed.json e index.html gerados.');
+  console.log('OK  public/bolao.seed.json e public/index.html gerados.');
   console.log(`    ${BOLAO.fixtures.length} jogos, ${BOLAO.groups.length} grupos, ${BOLAO.participants.length} participantes.`);
   console.log(`    ${comResultado} jogos com resultado no seed.`);
 }

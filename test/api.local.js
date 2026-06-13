@@ -9,7 +9,7 @@ delete process.env.KV_REST_API_URL; delete process.env.KV_REST_API_TOKEN;
 delete process.env.UPSTASH_REDIS_REST_URL; delete process.env.UPSTASH_REDIS_REST_TOKEN;
 
 const handler = require('../api/state.js');
-const seed = require('../bolao.seed.json');
+const seed = require('../public/bolao.seed.json');
 
 function mockRes(){
   return { _code:0, _json:null, _h:{},
