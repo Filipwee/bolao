@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>⚙️ Admin — Bolão da Copa 2026</title>
+<style>
+  :root{
+    --bg:#0b132b; --card:#16204a; --card2:#1c2a5e; --line:#26356e; --txt:#eaf0ff;
+    --muted:#9fb0d8; --accent:#ffd166; --green:#06d6a0; --red:#ef476f;
+    --p25:#06d6a0; --p18:#3da5ff; --p15:#7c6cff; --p12:#b07cff; --p10:#ffb703; --p5:#9fb0d8; --p0:#5b6790;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(160deg,var(--bg),#070d1f 70%);color:var(--txt);min-height:100vh}
+  header{padding:14px 16px;text-align:center}
+  header h1{margin:0;font-size:1.25rem}
+  header .sub{color:var(--muted);font-size:.82rem;margin-top:4px}
+  #status{font-size:.8rem;margin-top:6px;min-height:1.1em}
+  #status .ok{color:var(--green)} #status .err{color:var(--red)} #status .saving{color:var(--accent)}
+  .tabs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:10px;position:sticky;top:0;
+    background:rgba(7,13,31,.92);backdrop-filter:blur(6px);z-index:10;border-bottom:1px solid var(--line)}
+  .tabs button{background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:999px;
+    padding:8px 14px;font-size:.9rem;cursor:pointer}
+  .tabs button.active{background:var(--accent);color:#10142a;border-color:var(--accent);font-weight:700}
+  main{max-width:820px;margin:0 auto;padding:14px 12px 60px}
+  .panel{display:none}.panel.active{display:block}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+  .muted{color:var(--muted)}.center{text-align:center}
+  .flag{font-size:1.1rem}
+  button.btn{background:var(--accent);color:#10142a;border:none;border-radius:10px;padding:10px 14px;
+    font-size:.92rem;font-weight:700;cursor:pointer;margin:4px 4px 4px 0}
+  button.btn.sec{background:var(--card2);color:var(--txt);border:1px solid var(--line)}
+  button.btn.danger{background:var(--red);color:#fff}
+  input,select,textarea{background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:8px;
+    padding:7px 9px;font-size:.92rem;font-family:inherit}
+  input[type=number]{width:52px;text-align:center;-moz-appearance:textfield}
+  input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  select{width:100%;padding:9px 12px;margin-bottom:8px}
+  textarea{width:100%;min-height:120px;resize:vertical}
+  .filtros{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .filtros button{background:var(--card);border:1px solid var(--line);color:var(--muted);border-radius:999px;
+    padding:5px 11px;font-size:.8rem;cursor:pointer}
+  .filtros button.active{background:var(--card2);color:var(--txt);border-color:var(--accent)}
+  .grow{display:flex;align-items:center;gap:8px;padding:8px 2px;border-top:1px solid var(--line);font-size:.86rem}
+  .grow:first-child{border-top:none}
+  .grow .n{width:30px;color:var(--muted);font-size:.76rem;flex:none;text-align:center}
+  .grow .conf{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .grow .inputs{flex:none;display:flex;align-items:center;gap:4px}
+  .grow .extra{flex:none;width:120px;text-align:right;color:var(--muted);font-size:.78rem}
+  .grow .x{cursor:pointer;color:var(--muted);padding:4px 6px;flex:none}
+  .pill{display:inline-block;padding:2px 7px;border-radius:999px;font-size:.72rem;font-weight:700}
+  .stat{display:flex;gap:10px;flex-wrap:wrap}
+  .stat .box{flex:1;min-width:110px;background:var(--card2);border-radius:12px;padding:12px;text-align:center}
+  .stat .box b{display:block;font-size:1.6rem;color:var(--accent)}
+  .stat .box span{font-size:.74rem;color:var(--muted)}
+  .row-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  /* Login */
+  #login{position:fixed;inset:0;background:linear-gradient(160deg,var(--bg),#070d1f 70%);display:flex;
+    align-items:center;justify-content:center;z-index:100;padding:20px}
+  #login .box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;max-width:360px;width:100%;text-align:center}
+  #login h2{margin:0 0 6px}#login p{color:var(--muted);font-size:.85rem;margin:0 0 16px}
+  #login input{width:100%;text-align:center;font-size:1.1rem;padding:11px;margin-bottom:12px}
+  #login button{width:100%}
+  #login .erro{color:var(--red);font-size:.82rem;margin-top:10px;min-height:1em}
+  #app{display:none}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <div class="box">
+    <h2>⚙️ Admin do Bolão</h2>
+    <p>Digite a senha de administrador para lançar resultados e palpites.</p>
+    <input type="password" id="senha" placeholder="senha" autocomplete="current-password">
+    <button class="btn" id="btnEntrar">Entrar</button>
+    <div class="erro" id="loginErro"></div>
+  </div>
+</div>
+
+<div id="app">
+  <header>
+    <h1>⚙️ Admin — Bolão da Copa 2026</h1>
+    <div class="sub">As alterações vão ao ar na hora para todos.</div>
+    <div id="status"></div>
+  </header>
+
+  <nav class="tabs">
+    <button data-tab="resultados" class="active">⚽ Resultados</button>
+    <button data-tab="palpites">📝 Palpites</button>
+    <button data-tab="colar">📥 Colar do grupo</button>
+    <button data-tab="ferramentas">🛠️ Ferramentas</button>
+  </nav>
+
+  <main>
+    <section id="resultados" class="panel active"></section>
+    <section id="palpites" class="panel"></section>
+    <section id="colar" class="panel"></section>
+    <section id="ferramentas" class="panel"></section>
+  </main>
+</div>
+
+<script>
+/* ===================== AUTENTICAÇÃO / REDE ===================== */
+let SENHA = sessionStorage.getItem('bolao_admin_pw') || '';
+let state = null;
+let saveTimer = null;
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+async function apiGet(){
+  const r = await fetch('/api/state', { cache:'no-store' });
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  return r.json();
+}
+async function apiPost(st){
+  const r = await fetch('/api/state', {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json', 'x-admin-password': SENHA },
+    body: JSON.stringify(st),
+  });
+  if(r.status===401) throw new Error('401');
+  if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e.error||('HTTP '+r.status)); }
+  return r.json();
+}
+
+function setStatus(html){ $('#status').innerHTML = html; }
+
+// Salva (com debounce) o estado inteiro na API.
+function agendarSave(){
+  setStatus('<span class="saving">salvando…</span>');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async () => {
+    try{
+      await apiPost(state);
+      const h = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      setStatus(`<span class="ok">✓ salvo às ${h}</span>`);
+    }catch(e){
+      if(e.message==='401'){ deslogar('Senha incorreta. Entre novamente.'); return; }
+      setStatus(`<span class="err">erro ao salvar: ${esc(e.message)} — tentando de novo…</span>`);
+      setTimeout(agendarSave, 4000);
+    }
+  }, 700);
+}
+
+function deslogar(msg){
+  SENHA=''; sessionStorage.removeItem('bolao_admin_pw');
+  $('#app').style.display='none'; $('#login').style.display='flex';
+  $('#loginErro').textContent = msg||'';
+  $('#senha').value='';
+}
+
+async function entrar(){
+  const pw = $('#senha').value;
+  if(!pw){ $('#loginErro').textContent='Digite a senha.'; return; }
+  SENHA = pw;
+  $('#loginErro').textContent='Carregando…';
+  try{
+    state = await apiGet();
+    // valida a senha com um POST do próprio estado carregado (não altera nada).
+    await apiPost(state);
+    sessionStorage.setItem('bolao_admin_pw', pw);
+    $('#login').style.display='none'; $('#app').style.display='block';
+    setStatus('<span class="ok">✓ conectado</span>');
+    renderResultados(); renderPalpites();
+  }catch(e){
+    SENHA='';
+    $('#loginErro').textContent = (e.message==='401') ? 'Senha incorreta.' : ('Erro: '+e.message);
+  }
+}
+
+/* ===================== PONTUAÇÃO ===================== */
+function points(RC, RF, PC, PF){
+  if (RC==null || RF==null || PC==null || PF==null) return null;
+  if (PC===RC && PF===RF) return 25;
+  if (RC===RF) return (PC===PF) ? 5 : 0;
+  const venceuCerto = (RC>RF && PC>PF) || (RC<RF && PC<PF);
+  if (!venceuCerto) return 0;
+  let p = 10;
+  if (Math.max(RC,RF) === Math.max(PC,PF)) p = Math.max(p,18);
+  if (Math.min(RC,RF) === Math.min(PC,PF)) p = Math.max(p,15);
+  if ((RC-RF) === (PC-PF))                 p = Math.max(p,12);
+  return p;
+}
+const corPts = v => v===25?'var(--p25)':v===18?'var(--p18)':v===15?'var(--p15)':v===12?'var(--p12)':v===10?'var(--p10)':v===5?'var(--p5)':'var(--p0)';
+function contaResultados(){ return state.fixtures.filter(f => f.placar.casa != null && f.placar.fora != null).length; }
+function totalPalpites(){ return state.participants.reduce((a,p)=>a+Object.keys(p.palpites).length,0); }
+function fases(){ const s=[]; state.fixtures.forEach(f=>{ if(!s.includes(f.fase)) s.push(f.fase); }); return s; }
+
+/* ===================== ABA RESULTADOS ===================== */
+let resFiltro = 'Todas';
+function renderResultados(){
+  const feitos = contaResultados();
+  let h = `<div class="card"><b>${feitos}</b> de ${state.fixtures.length} jogos com resultado</div>`;
+  h += `<div class="filtros"><button data-f="Todas" class="${resFiltro==='Todas'?'active':''}">Todas</button>`;
+  fases().forEach(f => h += `<button data-f="${esc(f)}" class="${resFiltro===f?'active':''}">${esc(f)}</button>`);
+  h += `</div><div class="card">`;
+  state.fixtures.filter(f => resFiltro==='Todas'||f.fase===resFiltro).forEach(f => {
+    const r = f.placar;
+    h += `<div class="grow"><span class="n">#${f.n}</span>
+      <span class="conf">${f.casa.flag} ${esc(f.casa.nome)} × ${esc(f.fora.nome)} ${f.fora.flag}</span>
+      <span class="inputs">
+        <input type="number" min="0" data-res="${f.n}" data-side="casa" value="${r.casa!=null?r.casa:''}">
+        <span class="muted">×</span>
+        <input type="number" min="0" data-res="${f.n}" data-side="fora" value="${r.fora!=null?r.fora:''}">
+      </span>
+      <span class="x" data-clear="${f.n}" title="limpar">✕</span></div>`;
+  });
+  h += `</div>`;
+  $('#resultados').innerHTML = h;
+}
+function setResultado(n, side, val){
+  const f = state.fixtures.find(x => x.n===n);
+  f.placar[side] = (val===''||val==null) ? null : Math.max(0, parseInt(val,10)||0);
+  agendarSave();
+}
+
+/* ===================== ABA PALPITES ===================== */
+let palSel = 0;
+function renderPalpites(){
+  const part = state.participants[palSel];
+  let h = `<div class="row-actions"><select id="selPart">`;
+  state.participants.forEach((p,i)=> h += `<option value="${i}" ${i===palSel?'selected':''}>${esc(p.nome)} (${Object.keys(p.palpites).length})</option>`);
+  h += `</select></div>
+    <div class="row-actions">
+      <input id="renomear" value="${esc(part.nome)}" style="flex:1;min-width:140px">
+      <button class="btn sec" id="btnRenomear">Renomear</button>
+      <button class="btn sec" id="btnAddPart">+ participante</button>
+      <button class="btn danger" id="btnLimparPalp">Limpar palpites</button>
+    </div>
+    <div class="card"><b>📋 Colar em massa</b>
+      <p class="muted" style="margin:4px 0 8px;font-size:.82rem">Cole as linhas do participante. Aceita
+        <code>1: 2x0</code>, <code>Jogo 1 2 x 0</code>, <code>1 - 2x0</code>, <code>1 2:0</code>.</p>
+      <textarea id="bulk" placeholder="1: 2x0&#10;2 1x1&#10;Jogo 3 0 x 2"></textarea>
+      <button class="btn" id="btnAplicar" style="margin-top:8px">Aplicar</button></div>
+    <div class="card">`;
+  state.fixtures.forEach(f => {
+    const p = part.palpites[String(f.n)], r = f.placar, jogou = r.casa != null;
+    let pt = '';
+    if (p && jogou){ const v = points(r.casa,r.fora,p.casa,p.fora); pt = `<span class="pill" style="background:${corPts(v)};color:${v===0?'#fff':'#0b132b'}">${v} pts</span>`; }
+    const rl = jogou ? `real ${r.casa}×${r.fora}` : '<span class="muted">—</span>';
+    h += `<div class="grow"><span class="n">#${f.n}</span>
+      <span class="conf">${f.casa.flag} ${esc(f.casa.nome)} × ${esc(f.fora.nome)} ${f.fora.flag}</span>
+      <span class="inputs">
+        <input type="number" min="0" data-pal="${f.n}" data-side="casa" value="${p?p.casa:''}">
+        <span class="muted">×</span>
+        <input type="number" min="0" data-pal="${f.n}" data-side="fora" value="${p?p.fora:''}">
+      </span>
+      <span class="extra">${rl} ${pt}</span></div>`;
+  });
+  h += `</div>`;
+  $('#palpites').innerHTML = h;
+}
+function setPalpite(n, side, val){
+  const part = state.participants[palSel], key = String(n);
+  const p = part.palpites[key] || {};
+  if (val===''||val==null) delete p[side]; else p[side] = Math.max(0, parseInt(val,10)||0);
+  if (p.casa==null && p.fora==null) delete part.palpites[key];
+  else part.palpites[key] = { casa: p.casa!=null?p.casa:0, fora: p.fora!=null?p.fora:0 };
+  agendarSave();
+}
+function aplicarBulk(texto){
+  const part = state.participants[palSel];
+  let aplicados = 0;
+  texto.split(/\n+/).forEach(linha => {
+    const m = linha.match(/(?:jogo\s*)?(\d{1,3})\D+(\d{1,2})\s*[x:\-]\s*(\d{1,2})/i);
+    if (!m) return;
+    const n = parseInt(m[1],10);
+    if (n<1 || n>state.fixtures.length) return;
+    part.palpites[String(n)] = { casa: parseInt(m[2],10), fora: parseInt(m[3],10) };
+    aplicados++;
+  });
+  agendarSave();
+  return aplicados;
+}
+
+/* ===================== ABA COLAR DO GRUPO ===================== */
+// Cola a mensagem do grupo (palpites por NOME de um jogo) e aplica todos de uma vez.
+let colarParsed = null, colarJogo = null;
+
+const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,'');
+
+function matchParticipant(raw){
+  const n = norm(raw);
+  if(!n) return { idx:-1 };
+  let i = state.participants.findIndex(x => norm(x.nome)===n);
+  if(i>=0) return { idx:i, how:'exato' };
+  i = state.participants.findIndex(x => { const xn=norm(x.nome); return xn.startsWith(n) || n.startsWith(xn); });
+  if(i>=0) return { idx:i, how:'prefixo' };
+  i = state.participants.findIndex(x => n.length>=3 && norm(x.nome).slice(0,4)===n.slice(0,4));
+  if(i>=0) return { idx:i, how:'aprox' };
+  return { idx:-1 };
+}
+
+function parseGroupMessage(text){
+  const tnorm = norm(text);
+  // Jogo candidato: os dois times (normalizados) aparecem na mensagem.
+  const candidates = state.fixtures.filter(f => {
+    const a = norm(f.casa.nome), b = norm(f.fora.nome);
+    return a && b && tnorm.includes(a) && tnorm.includes(b);
+  }).map(f => f.n);
+  // Linhas de palpite: <nome> <golsCasa> <x|:|-> <golsFora> [resto ignorado]
+  const lines = [];
+  text.split(/\n+/).forEach(linha => {
+    const m = linha.match(/^\s*([A-Za-zÀ-ÿ0-9.\-'’ ]+?)\s+(\d{1,2})\s*[x×:\-]\s*(\d{1,2})\b/i);
+    if(!m) return;
+    const raw = m[1].trim();
+    const mt = matchParticipant(raw);
+    lines.push({ raw, casa: parseInt(m[2],10), fora: parseInt(m[3],10), matchIdx: mt.idx, how: mt.how });
+  });
+  return { candidates, lines };
+}
+
+function renderColar(){
+  $('#colar').innerHTML = `
+    <div class="card"><b>📥 Colar a mensagem do grupo</b>
+      <p class="muted" style="font-size:.84rem;margin:4px 0 8px">Cole a mensagem com os palpites por nome de
+        <b>um jogo</b>. Eu detecto o jogo pelos times e caso os nomes com os participantes — você confere antes de aplicar.</p>
+      <textarea id="msg" placeholder="BOLÃO&#10;&#10;CATAR X SUÍÇA&#10;&#10;Isaac 2 x 0 Suíça&#10;Rapha 2 x 2&#10;Filipe 4x0 Suíça"></textarea>
+      <button class="btn" id="btnLer" style="margin-top:8px">Ler mensagem</button>
+    </div>
+    <div id="previa"></div>`;
+}
+
+function renderPrevia(){
+  const p = colarParsed;
+  let h = `<div class="card"><b>Jogo</b>
+    <select id="selJogo">`;
+  state.fixtures.forEach(f => h += `<option value="${f.n}" ${f.n===colarJogo?'selected':''}>#${f.n} — ${esc(f.casa.nome)} × ${esc(f.fora.nome)} (${esc(f.fase)})</option>`);
+  h += `</select>`;
+  h += p.candidates.length
+    ? `<p class="muted" style="font-size:.82rem">Detectado na mensagem: ${p.candidates.map(n=>'#'+n).join(', ')}.</p>`
+    : `<p class="muted" style="font-size:.82rem">Não consegui detectar o jogo pela mensagem — escolha acima.</p>`;
+  h += `</div>`;
+
+  if(!p.lines.length){
+    h += `<div class="card muted">Nenhuma linha de palpite reconhecida. Confira o formato (ex.: <code>Isaac 2 x 0</code>).</div>`;
+    $('#previa').innerHTML = h; return;
+  }
+
+  h += `<div class="card"><b>${p.lines.length} linha(s) reconhecida(s)</b>
+    <p class="muted" style="font-size:.8rem;margin:4px 0 8px">Confira o participante de cada linha. Sugestões aproximadas vêm marcadas.</p>`;
+  p.lines.forEach((ln,i) => {
+    h += `<div class="grow">
+      <span class="conf">${esc(ln.raw)} <span class="muted">→ ${ln.casa}×${ln.fora}</span></span>
+      <select data-row="${i}" style="flex:none;width:150px;margin:0">
+        <option value="">— ignorar —</option>`;
+    state.participants.forEach((pt,idx) => h += `<option value="${idx}" ${idx===ln.matchIdx?'selected':''}>${esc(pt.nome)}</option>`);
+    h += `<option value="new">+ criar "${esc(ln.raw)}"</option></select>`;
+    h += ln.matchIdx<0
+      ? ` <span class="pill" style="background:var(--red);color:#fff">novo?</span>`
+      : (ln.how!=='exato' ? ` <span class="pill" style="background:var(--p10)">${ln.how}</span>` : '');
+    h += `</div>`;
+  });
+  h += `<button class="btn" id="btnAplicarMsg" style="margin-top:12px">Aplicar ao jogo selecionado</button></div>`;
+  $('#previa').innerHTML = h;
+}
+
+function aplicarMsg(){
+  const n = colarJogo;
+  let aplicados = 0, criados = 0;
+  colarParsed.lines.forEach((ln,i) => {
+    const sel = document.querySelector(`select[data-row="${i}"]`).value;
+    if(sel==='') return;
+    let idx;
+    if(sel==='new'){ state.participants.push({ nome: ln.raw, palpites:{} }); idx = state.participants.length-1; criados++; }
+    else idx = +sel;
+    state.participants[idx].palpites[String(n)] = { casa: ln.casa, fora: ln.fora };
+    aplicados++;
+  });
+  agendarSave();
+  renderColar();
+  renderPalpites();
+  alert(`${aplicados} palpite(s) aplicado(s) ao jogo #${n}` + (criados ? ` (${criados} participante(s) novo(s)).` : '.'));
+}
+
+/* ===================== ABA FERRAMENTAS ===================== */
+function renderFerramentas(){
+  $('#ferramentas').innerHTML = `
+    <div class="card stat">
+      <div class="box"><b>${contaResultados()}</b><span>jogos com resultado</span></div>
+      <div class="box"><b>${state.participants.length}</b><span>participantes</span></div>
+      <div class="box"><b>${totalPalpites()}</b><span>palpites no total</span></div>
+    </div>
+    <div class="card"><b>Backup</b>
+      <p class="muted" style="font-size:.84rem">Baixe ou restaure tudo (resultados + palpites) num arquivo <code>.json</code>.</p>
+      <button class="btn sec" id="btnBackup">💾 Baixar backup (.json)</button>
+      <button class="btn sec" id="btnImport">📂 Importar backup (.json)</button>
+      <input type="file" id="fileImport" accept="application/json,.json" style="display:none">
+    </div>
+    <div class="card"><b>Recomeçar</b>
+      <p class="muted" style="font-size:.84rem">Volta aos dados originais da Copa (apaga resultados e palpites lançados).</p>
+      <button class="btn danger" id="btnReset">♻️ Resetar para os dados originais</button>
+    </div>
+    <div class="card"><button class="btn sec" id="btnSair">Sair</button></div>`;
+}
+function baixar(nome, conteudo, tipo){
+  const blob = new Blob([conteudo],{type:tipo}), url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=nome;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+/* ===================== EVENTOS ===================== */
+$('#btnEntrar').addEventListener('click', entrar);
+$('#senha').addEventListener('keydown', e => { if(e.key==='Enter') entrar(); });
+
+document.querySelector('.tabs').addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('active', x===b));
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id===b.dataset.tab));
+  if (b.dataset.tab==='ferramentas') renderFerramentas();
+  if (b.dataset.tab==='colar' && !$('#colar').innerHTML.trim()) renderColar();
+});
+
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (t.dataset.res) setResultado(+t.dataset.res, t.dataset.side, t.value);
+  else if (t.dataset.pal) setPalpite(+t.dataset.pal, t.dataset.side, t.value);
+});
+
+document.addEventListener('click', async e => {
+  const t = e.target;
+  if (t.dataset.clear){ const n=+t.dataset.clear, f=state.fixtures.find(x=>x.n===n); f.placar={casa:null,fora:null}; agendarSave(); renderResultados(); return; }
+  const ff = t.closest('.filtros button');
+  if (ff && t.closest('#resultados')){ resFiltro=ff.dataset.f; renderResultados(); return; }
+  if (t.id==='btnRenomear'){ const v=$('#renomear').value.trim(); if(v){ state.participants[palSel].nome=v; agendarSave(); renderPalpites(); } return; }
+  if (t.id==='btnAddPart'){ state.participants.push({nome:'Novo '+(state.participants.length+1),palpites:{}}); palSel=state.participants.length-1; agendarSave(); renderPalpites(); return; }
+  if (t.id==='btnLimparPalp'){ if(confirm('Apagar todos os palpites de '+state.participants[palSel].nome+'?')){ state.participants[palSel].palpites={}; agendarSave(); renderPalpites(); } return; }
+  if (t.id==='btnAplicar'){ const q=aplicarBulk($('#bulk').value); renderPalpites(); alert(q+' palpite(s) aplicado(s).'); return; }
+  if (t.id==='btnLer'){
+    colarParsed = parseGroupMessage($('#msg').value);
+    colarJogo = colarParsed.candidates[0] || (state.fixtures[0] && state.fixtures[0].n);
+    renderPrevia();
+    return;
+  }
+  if (t.id==='btnAplicarMsg'){ aplicarMsg(); return; }
+  if (t.id==='btnBackup'){ baixar('bolao-backup.json', JSON.stringify(state,null,2), 'application/json'); return; }
+  if (t.id==='btnImport'){ $('#fileImport').click(); return; }
+  if (t.id==='btnReset'){
+    if(!confirm('Resetar tudo para os dados originais? Isso apaga resultados e palpites de todos.')) return;
+    try{ const seed = await (await fetch('/bolao.seed.json',{cache:'no-store'})).json();
+      state = seed; agendarSave(); renderResultados(); renderPalpites(); renderFerramentas(); }
+    catch(err){ alert('Não foi possível carregar os dados originais: '+err.message); }
+    return;
+  }
+  if (t.id==='btnSair'){ deslogar(''); return; }
+});
+
+document.addEventListener('change', e => {
+  if (e.target.id==='selPart'){ palSel=+e.target.value; renderPalpites(); }
+  if (e.target.id==='selJogo'){ colarJogo=+e.target.value; }
+  if (e.target.id==='fileImport'){
+    const f=e.target.files[0]; if(!f) return;
+    const rd=new FileReader();
+    rd.onload=()=>{ try{ const o=JSON.parse(rd.result); if(!o.fixtures||!o.participants) throw 0; state=o; agendarSave(); renderResultados(); renderPalpites(); renderFerramentas(); }catch(err){ alert('Arquivo inválido.'); } };
+    rd.readAsText(f);
+  }
+});
+
+/* ===================== INIT ===================== */
+if (SENHA){ $('#senha').value = SENHA; entrar(); }  // auto-login se já houver senha na sessão
+</script>
+</body>
+</html>

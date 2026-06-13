@@ -1,0 +1,2272 @@
+{
+  "groups": [
+    {
+      "nome": "Grupo A",
+      "times": [
+        {
+          "nome": "México",
+          "flag": "🇲🇽"
+        },
+        {
+          "nome": "África do Sul",
+          "flag": "🇿🇦"
+        },
+        {
+          "nome": "Coreia do Sul",
+          "flag": "🇰🇷"
+        },
+        {
+          "nome": "Rep. Tcheca",
+          "flag": "🇨🇿"
+        }
+      ]
+    },
+    {
+      "nome": "Grupo B",
+      "times": [
+        {
+          "nome": "Canadá",
+          "flag": "🇨🇦"
+        },
+        {
+          "nome": "Bósnia e Herzegovina",
+          "flag": "🇧🇦"
+        },
+        {
+          "nome": "Catar",
+          "flag": "🇶🇦"
+        },
+        {
+          "nome": "Suíça",
+          "flag": "🇨🇭"
+        }
+      ]
+    },
+    {
+      "nome": "Grupo C",
+      "times": [
+        {
+          "nome": "Brasil",
+          "flag": "🇧🇷"
+        },
+        {
+          "nome": "Marrocos",
+          "flag": "🇲🇦"
+        },
+        {
+          "nome": "Haiti",
+          "flag": "🇭🇹"
+        },
+        {
+          "nome": "Escócia",
+          "flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿"
+        }
+      ]
+    },
+    {
+      "nome": "Grupo D",
+      "times": [
+        {
+          "nome": "Estados Unidos",
+          "flag": "🇺🇸"
+        },
+        {
+          "nome": "Paraguai",
+          "flag": "🇵🇾"
+        },
+        {
+          "nome": "Austrália",
+          "flag": "🇦🇺"
+        },
+        {
+          "nome": "Turquia",
+          "flag": "🇹🇷"
+        }
+      ]
+    },
+    {
+      "nome": "Grupo E",
+      "times": [
+        {
+          "nome": "Alemanha",
+          "flag": "🇩🇪"
+        },
+        {
+          "nome": "Curaçao",
+          "flag": "🇨🇼"
+        },
+        {
+          "nome": "Costa do Marfim",
+          "flag": "🇨🇮"
+        },
+        {
+          "nome": "Equador",
+          "flag": "🇪🇨"
+        }
+      ]
+    },
+    {
+      "nome": "Grupo F",
+      "times": [
+        {
+          "nome": "Holanda",
+          "flag": "🇳🇱"
+        },
+        {
+          "nome": "Japão",
+          "flag": "🇯🇵"
+        },
+        {
+          "nome": "Suécia",
+          "flag": "🇸🇪"
+        },
+        {
+          "nome": "Tunísia",
+          "flag": "🇹🇳"
+        }
+      ]
+    },
+    {
+      "nome": "Grupo G",
+      "times": [
+        {
+          "nome": "Bélgica",
+          "flag": "🇧🇪"
+        },
+        {
+          "nome": "Egito",
+          "flag": "🇪🇬"
+        },
+        {
+          "nome": "Irã",
+          "flag": "🇮🇷"
+        },
+        {
+          "nome": "Nova Zelândia",
+          "flag": "🇳🇿"
+        }
+      ]
+    },
+    {
+      "nome": "Grupo H",
+      "times": [
+        {
+          "nome": "Espanha",
+          "flag": "🇪🇸"
+        },
+        {
+          "nome": "Cabo Verde",
+          "flag": "🇨🇻"
+        },
+        {
+          "nome": "Arábia Saudita",
+          "flag": "🇸🇦"
+        },
+        {
+          "nome": "Uruguai",
+          "flag": "🇺🇾"
+        }
+      ]
+    },
+    {
+      "nome": "Grupo I",
+      "times": [
+        {
+          "nome": "França",
+          "flag": "🇫🇷"
+        },
+        {
+          "nome": "Senegal",
+          "flag": "🇸🇳"
+        },
+        {
+          "nome": "Iraque",
+          "flag": "🇮🇶"
+        },
+        {
+          "nome": "Noruega",
+          "flag": "🇳🇴"
+        }
+      ]
+    },
+    {
+      "nome": "Grupo J",
+      "times": [
+        {
+          "nome": "Argentina",
+          "flag": "🇦🇷"
+        },
+        {
+          "nome": "Argélia",
+          "flag": "🇩🇿"
+        },
+        {
+          "nome": "Áustria",
+          "flag": "🇦🇹"
+        },
+        {
+          "nome": "Jordânia",
+          "flag": "🇯🇴"
+        }
+      ]
+    },
+    {
+      "nome": "Grupo K",
+      "times": [
+        {
+          "nome": "Portugal",
+          "flag": "🇵🇹"
+        },
+        {
+          "nome": "R.D. Congo",
+          "flag": "🇨🇩"
+        },
+        {
+          "nome": "Uzbequistão",
+          "flag": "🇺🇿"
+        },
+        {
+          "nome": "Colômbia",
+          "flag": "🇨🇴"
+        }
+      ]
+    },
+    {
+      "nome": "Grupo L",
+      "times": [
+        {
+          "nome": "Inglaterra",
+          "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿"
+        },
+        {
+          "nome": "Croácia",
+          "flag": "🇭🇷"
+        },
+        {
+          "nome": "Gana",
+          "flag": "🇬🇭"
+        },
+        {
+          "nome": "Panamá",
+          "flag": "🇵🇦"
+        }
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "n": 1,
+      "fase": "Grupo A",
+      "grupo": "Grupo A",
+      "data": "qui 11/06",
+      "hora": "16:00",
+      "casa": {
+        "nome": "México",
+        "flag": "🇲🇽"
+      },
+      "fora": {
+        "nome": "África do Sul",
+        "flag": "🇿🇦"
+      },
+      "placar": {
+        "casa": 2,
+        "fora": 0
+      }
+    },
+    {
+      "n": 2,
+      "fase": "Grupo A",
+      "grupo": "Grupo A",
+      "data": "qui 11/06",
+      "hora": "23:00",
+      "casa": {
+        "nome": "Coreia do Sul",
+        "flag": "🇰🇷"
+      },
+      "fora": {
+        "nome": "Rep. Tcheca",
+        "flag": "🇨🇿"
+      },
+      "placar": {
+        "casa": 2,
+        "fora": 1
+      }
+    },
+    {
+      "n": 3,
+      "fase": "Grupo B",
+      "grupo": "Grupo B",
+      "data": "sex 12/06",
+      "hora": "16:00",
+      "casa": {
+        "nome": "Canadá",
+        "flag": "🇨🇦"
+      },
+      "fora": {
+        "nome": "Bósnia e Herzegovina",
+        "flag": "🇧🇦"
+      },
+      "placar": {
+        "casa": 1,
+        "fora": 1
+      }
+    },
+    {
+      "n": 4,
+      "fase": "Grupo D",
+      "grupo": "Grupo D",
+      "data": "sex 12/06",
+      "hora": "22:00",
+      "casa": {
+        "nome": "Estados Unidos",
+        "flag": "🇺🇸"
+      },
+      "fora": {
+        "nome": "Paraguai",
+        "flag": "🇵🇾"
+      },
+      "placar": {
+        "casa": 4,
+        "fora": 1
+      }
+    },
+    {
+      "n": 5,
+      "fase": "Grupo B",
+      "grupo": "Grupo B",
+      "data": "sáb 13/06",
+      "hora": "16:00",
+      "casa": {
+        "nome": "Catar",
+        "flag": "🇶🇦"
+      },
+      "fora": {
+        "nome": "Suíça",
+        "flag": "🇨🇭"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 6,
+      "fase": "Grupo C",
+      "grupo": "Grupo C",
+      "data": "sáb 13/06",
+      "hora": "19:00",
+      "casa": {
+        "nome": "Brasil",
+        "flag": "🇧🇷"
+      },
+      "fora": {
+        "nome": "Marrocos",
+        "flag": "🇲🇦"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 7,
+      "fase": "Grupo C",
+      "grupo": "Grupo C",
+      "data": "sáb 13/06",
+      "hora": "22:00",
+      "casa": {
+        "nome": "Haiti",
+        "flag": "🇭🇹"
+      },
+      "fora": {
+        "nome": "Escócia",
+        "flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 8,
+      "fase": "Grupo D",
+      "grupo": "Grupo D",
+      "data": "dom 14/06",
+      "hora": "01:00",
+      "casa": {
+        "nome": "Austrália",
+        "flag": "🇦🇺"
+      },
+      "fora": {
+        "nome": "Turquia",
+        "flag": "🇹🇷"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 9,
+      "fase": "Grupo E",
+      "grupo": "Grupo E",
+      "data": "dom 14/06",
+      "hora": "14:00",
+      "casa": {
+        "nome": "Alemanha",
+        "flag": "🇩🇪"
+      },
+      "fora": {
+        "nome": "Curaçao",
+        "flag": "🇨🇼"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 10,
+      "fase": "Grupo F",
+      "grupo": "Grupo F",
+      "data": "dom 14/06",
+      "hora": "17:00",
+      "casa": {
+        "nome": "Holanda",
+        "flag": "🇳🇱"
+      },
+      "fora": {
+        "nome": "Japão",
+        "flag": "🇯🇵"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 11,
+      "fase": "Grupo E",
+      "grupo": "Grupo E",
+      "data": "dom 14/06",
+      "hora": "20:00",
+      "casa": {
+        "nome": "Costa do Marfim",
+        "flag": "🇨🇮"
+      },
+      "fora": {
+        "nome": "Equador",
+        "flag": "🇪🇨"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 12,
+      "fase": "Grupo F",
+      "grupo": "Grupo F",
+      "data": "dom 14/06",
+      "hora": "23:00",
+      "casa": {
+        "nome": "Suécia",
+        "flag": "🇸🇪"
+      },
+      "fora": {
+        "nome": "Tunísia",
+        "flag": "🇹🇳"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 13,
+      "fase": "Grupo H",
+      "grupo": "Grupo H",
+      "data": "seg 15/06",
+      "hora": "13:00",
+      "casa": {
+        "nome": "Espanha",
+        "flag": "🇪🇸"
+      },
+      "fora": {
+        "nome": "Cabo Verde",
+        "flag": "🇨🇻"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 14,
+      "fase": "Grupo G",
+      "grupo": "Grupo G",
+      "data": "seg 15/06",
+      "hora": "16:00",
+      "casa": {
+        "nome": "Bélgica",
+        "flag": "🇧🇪"
+      },
+      "fora": {
+        "nome": "Egito",
+        "flag": "🇪🇬"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 15,
+      "fase": "Grupo H",
+      "grupo": "Grupo H",
+      "data": "seg 15/06",
+      "hora": "19:00",
+      "casa": {
+        "nome": "Arábia Saudita",
+        "flag": "🇸🇦"
+      },
+      "fora": {
+        "nome": "Uruguai",
+        "flag": "🇺🇾"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 16,
+      "fase": "Grupo G",
+      "grupo": "Grupo G",
+      "data": "seg 15/06",
+      "hora": "22:00",
+      "casa": {
+        "nome": "Irã",
+        "flag": "🇮🇷"
+      },
+      "fora": {
+        "nome": "Nova Zelândia",
+        "flag": "🇳🇿"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 17,
+      "fase": "Grupo I",
+      "grupo": "Grupo I",
+      "data": "ter 16/06",
+      "hora": "16:00",
+      "casa": {
+        "nome": "França",
+        "flag": "🇫🇷"
+      },
+      "fora": {
+        "nome": "Senegal",
+        "flag": "🇸🇳"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 18,
+      "fase": "Grupo I",
+      "grupo": "Grupo I",
+      "data": "ter 16/06",
+      "hora": "19:00",
+      "casa": {
+        "nome": "Iraque",
+        "flag": "🇮🇶"
+      },
+      "fora": {
+        "nome": "Noruega",
+        "flag": "🇳🇴"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 19,
+      "fase": "Grupo J",
+      "grupo": "Grupo J",
+      "data": "ter 16/06",
+      "hora": "22:00",
+      "casa": {
+        "nome": "Argentina",
+        "flag": "🇦🇷"
+      },
+      "fora": {
+        "nome": "Argélia",
+        "flag": "🇩🇿"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 20,
+      "fase": "Grupo J",
+      "grupo": "Grupo J",
+      "data": "qua 17/06",
+      "hora": "01:00",
+      "casa": {
+        "nome": "Áustria",
+        "flag": "🇦🇹"
+      },
+      "fora": {
+        "nome": "Jordânia",
+        "flag": "🇯🇴"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 21,
+      "fase": "Grupo K",
+      "grupo": "Grupo K",
+      "data": "qua 17/06",
+      "hora": "14:00",
+      "casa": {
+        "nome": "Portugal",
+        "flag": "🇵🇹"
+      },
+      "fora": {
+        "nome": "R.D. Congo",
+        "flag": "🇨🇩"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 22,
+      "fase": "Grupo L",
+      "grupo": "Grupo L",
+      "data": "qua 17/06",
+      "hora": "17:00",
+      "casa": {
+        "nome": "Inglaterra",
+        "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿"
+      },
+      "fora": {
+        "nome": "Croácia",
+        "flag": "🇭🇷"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 23,
+      "fase": "Grupo L",
+      "grupo": "Grupo L",
+      "data": "qua 17/06",
+      "hora": "20:00",
+      "casa": {
+        "nome": "Gana",
+        "flag": "🇬🇭"
+      },
+      "fora": {
+        "nome": "Panamá",
+        "flag": "🇵🇦"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 24,
+      "fase": "Grupo K",
+      "grupo": "Grupo K",
+      "data": "qua 17/06",
+      "hora": "23:00",
+      "casa": {
+        "nome": "Uzbequistão",
+        "flag": "🇺🇿"
+      },
+      "fora": {
+        "nome": "Colômbia",
+        "flag": "🇨🇴"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 25,
+      "fase": "Grupo A",
+      "grupo": "Grupo A",
+      "data": "qui 18/06",
+      "hora": "13:00",
+      "casa": {
+        "nome": "Rep. Tcheca",
+        "flag": "🇨🇿"
+      },
+      "fora": {
+        "nome": "África do Sul",
+        "flag": "🇿🇦"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 26,
+      "fase": "Grupo B",
+      "grupo": "Grupo B",
+      "data": "qui 18/06",
+      "hora": "16:00",
+      "casa": {
+        "nome": "Suíça",
+        "flag": "🇨🇭"
+      },
+      "fora": {
+        "nome": "Bósnia e Herzegovina",
+        "flag": "🇧🇦"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 27,
+      "fase": "Grupo B",
+      "grupo": "Grupo B",
+      "data": "qui 18/06",
+      "hora": "19:00",
+      "casa": {
+        "nome": "Canadá",
+        "flag": "🇨🇦"
+      },
+      "fora": {
+        "nome": "Catar",
+        "flag": "🇶🇦"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 28,
+      "fase": "Grupo A",
+      "grupo": "Grupo A",
+      "data": "qui 18/06",
+      "hora": "22:00",
+      "casa": {
+        "nome": "México",
+        "flag": "🇲🇽"
+      },
+      "fora": {
+        "nome": "Coreia do Sul",
+        "flag": "🇰🇷"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 29,
+      "fase": "Grupo D",
+      "grupo": "Grupo D",
+      "data": "sex 19/06",
+      "hora": "16:00",
+      "casa": {
+        "nome": "Estados Unidos",
+        "flag": "🇺🇸"
+      },
+      "fora": {
+        "nome": "Austrália",
+        "flag": "🇦🇺"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 30,
+      "fase": "Grupo C",
+      "grupo": "Grupo C",
+      "data": "sex 19/06",
+      "hora": "19:00",
+      "casa": {
+        "nome": "Escócia",
+        "flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿"
+      },
+      "fora": {
+        "nome": "Marrocos",
+        "flag": "🇲🇦"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 31,
+      "fase": "Grupo C",
+      "grupo": "Grupo C",
+      "data": "sex 19/06",
+      "hora": "21:30",
+      "casa": {
+        "nome": "Brasil",
+        "flag": "🇧🇷"
+      },
+      "fora": {
+        "nome": "Haiti",
+        "flag": "🇭🇹"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 32,
+      "fase": "Grupo D",
+      "grupo": "Grupo D",
+      "data": "sáb 20/06",
+      "hora": "00:00",
+      "casa": {
+        "nome": "Turquia",
+        "flag": "🇹🇷"
+      },
+      "fora": {
+        "nome": "Paraguai",
+        "flag": "🇵🇾"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 33,
+      "fase": "Grupo F",
+      "grupo": "Grupo F",
+      "data": "sáb 20/06",
+      "hora": "14:00",
+      "casa": {
+        "nome": "Holanda",
+        "flag": "🇳🇱"
+      },
+      "fora": {
+        "nome": "Suécia",
+        "flag": "🇸🇪"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 34,
+      "fase": "Grupo E",
+      "grupo": "Grupo E",
+      "data": "sáb 20/06",
+      "hora": "17:00",
+      "casa": {
+        "nome": "Alemanha",
+        "flag": "🇩🇪"
+      },
+      "fora": {
+        "nome": "Costa do Marfim",
+        "flag": "🇨🇮"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 35,
+      "fase": "Grupo E",
+      "grupo": "Grupo E",
+      "data": "sáb 20/06",
+      "hora": "21:00",
+      "casa": {
+        "nome": "Equador",
+        "flag": "🇪🇨"
+      },
+      "fora": {
+        "nome": "Curaçao",
+        "flag": "🇨🇼"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 36,
+      "fase": "Grupo F",
+      "grupo": "Grupo F",
+      "data": "dom 21/06",
+      "hora": "01:00",
+      "casa": {
+        "nome": "Tunísia",
+        "flag": "🇹🇳"
+      },
+      "fora": {
+        "nome": "Japão",
+        "flag": "🇯🇵"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 37,
+      "fase": "Grupo H",
+      "grupo": "Grupo H",
+      "data": "dom 21/06",
+      "hora": "13:00",
+      "casa": {
+        "nome": "Espanha",
+        "flag": "🇪🇸"
+      },
+      "fora": {
+        "nome": "Arábia Saudita",
+        "flag": "🇸🇦"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 38,
+      "fase": "Grupo G",
+      "grupo": "Grupo G",
+      "data": "dom 21/06",
+      "hora": "16:00",
+      "casa": {
+        "nome": "Bélgica",
+        "flag": "🇧🇪"
+      },
+      "fora": {
+        "nome": "Irã",
+        "flag": "🇮🇷"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 39,
+      "fase": "Grupo H",
+      "grupo": "Grupo H",
+      "data": "dom 21/06",
+      "hora": "19:00",
+      "casa": {
+        "nome": "Uruguai",
+        "flag": "🇺🇾"
+      },
+      "fora": {
+        "nome": "Cabo Verde",
+        "flag": "🇨🇻"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 40,
+      "fase": "Grupo G",
+      "grupo": "Grupo G",
+      "data": "dom 21/06",
+      "hora": "22:00",
+      "casa": {
+        "nome": "Nova Zelândia",
+        "flag": "🇳🇿"
+      },
+      "fora": {
+        "nome": "Egito",
+        "flag": "🇪🇬"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 41,
+      "fase": "Grupo J",
+      "grupo": "Grupo J",
+      "data": "seg 22/06",
+      "hora": "14:00",
+      "casa": {
+        "nome": "Argentina",
+        "flag": "🇦🇷"
+      },
+      "fora": {
+        "nome": "Áustria",
+        "flag": "🇦🇹"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 42,
+      "fase": "Grupo I",
+      "grupo": "Grupo I",
+      "data": "seg 22/06",
+      "hora": "18:00",
+      "casa": {
+        "nome": "França",
+        "flag": "🇫🇷"
+      },
+      "fora": {
+        "nome": "Iraque",
+        "flag": "🇮🇶"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 43,
+      "fase": "Grupo I",
+      "grupo": "Grupo I",
+      "data": "seg 22/06",
+      "hora": "21:00",
+      "casa": {
+        "nome": "Noruega",
+        "flag": "🇳🇴"
+      },
+      "fora": {
+        "nome": "Senegal",
+        "flag": "🇸🇳"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 44,
+      "fase": "Grupo J",
+      "grupo": "Grupo J",
+      "data": "ter 23/06",
+      "hora": "00:00",
+      "casa": {
+        "nome": "Jordânia",
+        "flag": "🇯🇴"
+      },
+      "fora": {
+        "nome": "Argélia",
+        "flag": "🇩🇿"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 45,
+      "fase": "Grupo K",
+      "grupo": "Grupo K",
+      "data": "ter 23/06",
+      "hora": "14:00",
+      "casa": {
+        "nome": "Portugal",
+        "flag": "🇵🇹"
+      },
+      "fora": {
+        "nome": "Uzbequistão",
+        "flag": "🇺🇿"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 46,
+      "fase": "Grupo L",
+      "grupo": "Grupo L",
+      "data": "ter 23/06",
+      "hora": "17:00",
+      "casa": {
+        "nome": "Inglaterra",
+        "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿"
+      },
+      "fora": {
+        "nome": "Gana",
+        "flag": "🇬🇭"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 47,
+      "fase": "Grupo L",
+      "grupo": "Grupo L",
+      "data": "ter 23/06",
+      "hora": "20:00",
+      "casa": {
+        "nome": "Panamá",
+        "flag": "🇵🇦"
+      },
+      "fora": {
+        "nome": "Croácia",
+        "flag": "🇭🇷"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 48,
+      "fase": "Grupo K",
+      "grupo": "Grupo K",
+      "data": "ter 23/06",
+      "hora": "23:00",
+      "casa": {
+        "nome": "Colômbia",
+        "flag": "🇨🇴"
+      },
+      "fora": {
+        "nome": "R.D. Congo",
+        "flag": "🇨🇩"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 49,
+      "fase": "Grupo B",
+      "grupo": "Grupo B",
+      "data": "qua 24/06",
+      "hora": "16:00",
+      "casa": {
+        "nome": "Bósnia e Herzegovina",
+        "flag": "🇧🇦"
+      },
+      "fora": {
+        "nome": "Catar",
+        "flag": "🇶🇦"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 50,
+      "fase": "Grupo B",
+      "grupo": "Grupo B",
+      "data": "qua 24/06",
+      "hora": "16:00",
+      "casa": {
+        "nome": "Suíça",
+        "flag": "🇨🇭"
+      },
+      "fora": {
+        "nome": "Canadá",
+        "flag": "🇨🇦"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 51,
+      "fase": "Grupo C",
+      "grupo": "Grupo C",
+      "data": "qua 24/06",
+      "hora": "19:00",
+      "casa": {
+        "nome": "Marrocos",
+        "flag": "🇲🇦"
+      },
+      "fora": {
+        "nome": "Haiti",
+        "flag": "🇭🇹"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 52,
+      "fase": "Grupo C",
+      "grupo": "Grupo C",
+      "data": "qua 24/06",
+      "hora": "19:00",
+      "casa": {
+        "nome": "Escócia",
+        "flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿"
+      },
+      "fora": {
+        "nome": "Brasil",
+        "flag": "🇧🇷"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 53,
+      "fase": "Grupo A",
+      "grupo": "Grupo A",
+      "data": "qua 24/06",
+      "hora": "22:00",
+      "casa": {
+        "nome": "Rep. Tcheca",
+        "flag": "🇨🇿"
+      },
+      "fora": {
+        "nome": "México",
+        "flag": "🇲🇽"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 54,
+      "fase": "Grupo A",
+      "grupo": "Grupo A",
+      "data": "qua 24/06",
+      "hora": "22:00",
+      "casa": {
+        "nome": "África do Sul",
+        "flag": "🇿🇦"
+      },
+      "fora": {
+        "nome": "Coreia do Sul",
+        "flag": "🇰🇷"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 55,
+      "fase": "Grupo E",
+      "grupo": "Grupo E",
+      "data": "qui 25/06",
+      "hora": "17:00",
+      "casa": {
+        "nome": "Curaçao",
+        "flag": "🇨🇼"
+      },
+      "fora": {
+        "nome": "Costa do Marfim",
+        "flag": "🇨🇮"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 56,
+      "fase": "Grupo E",
+      "grupo": "Grupo E",
+      "data": "qui 25/06",
+      "hora": "17:00",
+      "casa": {
+        "nome": "Equador",
+        "flag": "🇪🇨"
+      },
+      "fora": {
+        "nome": "Alemanha",
+        "flag": "🇩🇪"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 57,
+      "fase": "Grupo F",
+      "grupo": "Grupo F",
+      "data": "qui 25/06",
+      "hora": "20:00",
+      "casa": {
+        "nome": "Japão",
+        "flag": "🇯🇵"
+      },
+      "fora": {
+        "nome": "Suécia",
+        "flag": "🇸🇪"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 58,
+      "fase": "Grupo F",
+      "grupo": "Grupo F",
+      "data": "qui 25/06",
+      "hora": "20:00",
+      "casa": {
+        "nome": "Tunísia",
+        "flag": "🇹🇳"
+      },
+      "fora": {
+        "nome": "Holanda",
+        "flag": "🇳🇱"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 59,
+      "fase": "Grupo D",
+      "grupo": "Grupo D",
+      "data": "qui 25/06",
+      "hora": "23:00",
+      "casa": {
+        "nome": "Paraguai",
+        "flag": "🇵🇾"
+      },
+      "fora": {
+        "nome": "Austrália",
+        "flag": "🇦🇺"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 60,
+      "fase": "Grupo D",
+      "grupo": "Grupo D",
+      "data": "qui 25/06",
+      "hora": "23:00",
+      "casa": {
+        "nome": "Turquia",
+        "flag": "🇹🇷"
+      },
+      "fora": {
+        "nome": "Estados Unidos",
+        "flag": "🇺🇸"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 61,
+      "fase": "Grupo I",
+      "grupo": "Grupo I",
+      "data": "sex 26/06",
+      "hora": "16:00",
+      "casa": {
+        "nome": "Noruega",
+        "flag": "🇳🇴"
+      },
+      "fora": {
+        "nome": "França",
+        "flag": "🇫🇷"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 62,
+      "fase": "Grupo I",
+      "grupo": "Grupo I",
+      "data": "sex 26/06",
+      "hora": "16:00",
+      "casa": {
+        "nome": "Senegal",
+        "flag": "🇸🇳"
+      },
+      "fora": {
+        "nome": "Iraque",
+        "flag": "🇮🇶"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 63,
+      "fase": "Grupo H",
+      "grupo": "Grupo H",
+      "data": "sex 26/06",
+      "hora": "21:00",
+      "casa": {
+        "nome": "Cabo Verde",
+        "flag": "🇨🇻"
+      },
+      "fora": {
+        "nome": "Arábia Saudita",
+        "flag": "🇸🇦"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 64,
+      "fase": "Grupo H",
+      "grupo": "Grupo H",
+      "data": "sex 26/06",
+      "hora": "21:00",
+      "casa": {
+        "nome": "Uruguai",
+        "flag": "🇺🇾"
+      },
+      "fora": {
+        "nome": "Espanha",
+        "flag": "🇪🇸"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 65,
+      "fase": "Grupo G",
+      "grupo": "Grupo G",
+      "data": "sáb 27/06",
+      "hora": "00:00",
+      "casa": {
+        "nome": "Egito",
+        "flag": "🇪🇬"
+      },
+      "fora": {
+        "nome": "Irã",
+        "flag": "🇮🇷"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 66,
+      "fase": "Grupo G",
+      "grupo": "Grupo G",
+      "data": "sáb 27/06",
+      "hora": "00:00",
+      "casa": {
+        "nome": "Nova Zelândia",
+        "flag": "🇳🇿"
+      },
+      "fora": {
+        "nome": "Bélgica",
+        "flag": "🇧🇪"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 67,
+      "fase": "Grupo L",
+      "grupo": "Grupo L",
+      "data": "sáb 27/06",
+      "hora": "18:00",
+      "casa": {
+        "nome": "Croácia",
+        "flag": "🇭🇷"
+      },
+      "fora": {
+        "nome": "Gana",
+        "flag": "🇬🇭"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 68,
+      "fase": "Grupo L",
+      "grupo": "Grupo L",
+      "data": "sáb 27/06",
+      "hora": "18:00",
+      "casa": {
+        "nome": "Panamá",
+        "flag": "🇵🇦"
+      },
+      "fora": {
+        "nome": "Inglaterra",
+        "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 69,
+      "fase": "Grupo K",
+      "grupo": "Grupo K",
+      "data": "sáb 27/06",
+      "hora": "20:30",
+      "casa": {
+        "nome": "Colômbia",
+        "flag": "🇨🇴"
+      },
+      "fora": {
+        "nome": "Portugal",
+        "flag": "🇵🇹"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 70,
+      "fase": "Grupo K",
+      "grupo": "Grupo K",
+      "data": "sáb 27/06",
+      "hora": "20:30",
+      "casa": {
+        "nome": "R.D. Congo",
+        "flag": "🇨🇩"
+      },
+      "fora": {
+        "nome": "Uzbequistão",
+        "flag": "🇺🇿"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 71,
+      "fase": "Grupo J",
+      "grupo": "Grupo J",
+      "data": "sáb 27/06",
+      "hora": "23:00",
+      "casa": {
+        "nome": "Argélia",
+        "flag": "🇩🇿"
+      },
+      "fora": {
+        "nome": "Áustria",
+        "flag": "🇦🇹"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 72,
+      "fase": "Grupo J",
+      "grupo": "Grupo J",
+      "data": "sáb 27/06",
+      "hora": "23:00",
+      "casa": {
+        "nome": "Jordânia",
+        "flag": "🇯🇴"
+      },
+      "fora": {
+        "nome": "Argentina",
+        "flag": "🇦🇷"
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 73,
+      "fase": "16-avos",
+      "grupo": null,
+      "data": "dom 28/06",
+      "hora": "16:00",
+      "casa": {
+        "nome": "2º Grupo A",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "2º Grupo B",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 74,
+      "fase": "16-avos",
+      "grupo": null,
+      "data": "seg 29/06",
+      "hora": "17:30",
+      "casa": {
+        "nome": "1º Grupo E",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "3º (A/B/C/D/F)",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 75,
+      "fase": "16-avos",
+      "grupo": null,
+      "data": "seg 29/06",
+      "hora": "22:00",
+      "casa": {
+        "nome": "1º Grupo F",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "2º Grupo C",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 76,
+      "fase": "16-avos",
+      "grupo": null,
+      "data": "seg 29/06",
+      "hora": "14:00",
+      "casa": {
+        "nome": "1º Grupo C",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "2º Grupo F",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 77,
+      "fase": "16-avos",
+      "grupo": null,
+      "data": "ter 30/06",
+      "hora": "18:00",
+      "casa": {
+        "nome": "1º Grupo I",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "3º (C/D/F/G/H)",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 78,
+      "fase": "16-avos",
+      "grupo": null,
+      "data": "ter 30/06",
+      "hora": "14:00",
+      "casa": {
+        "nome": "2º Grupo E",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "2º Grupo I",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 79,
+      "fase": "16-avos",
+      "grupo": null,
+      "data": "ter 30/06",
+      "hora": "22:00",
+      "casa": {
+        "nome": "1º Grupo A",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "3º (C/E/F/H/I)",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 80,
+      "fase": "16-avos",
+      "grupo": null,
+      "data": "qua 01/07",
+      "hora": "13:00",
+      "casa": {
+        "nome": "1º Grupo L",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "3º (E/H/I/J/K)",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 81,
+      "fase": "16-avos",
+      "grupo": null,
+      "data": "qua 01/07",
+      "hora": "21:00",
+      "casa": {
+        "nome": "1º Grupo D",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "3º (B/E/F/I/J)",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 82,
+      "fase": "16-avos",
+      "grupo": null,
+      "data": "qua 01/07",
+      "hora": "17:00",
+      "casa": {
+        "nome": "1º Grupo G",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "3º (A/E/H/I/J)",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 83,
+      "fase": "16-avos",
+      "grupo": null,
+      "data": "qui 02/07",
+      "hora": "20:00",
+      "casa": {
+        "nome": "2º Grupo K",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "2º Grupo L",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 84,
+      "fase": "16-avos",
+      "grupo": null,
+      "data": "qui 02/07",
+      "hora": "16:00",
+      "casa": {
+        "nome": "1º Grupo H",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "2º Grupo J",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 85,
+      "fase": "16-avos",
+      "grupo": null,
+      "data": "sex 03/07",
+      "hora": "00:00",
+      "casa": {
+        "nome": "1º Grupo B",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "3º (E/F/G/I/J)",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 86,
+      "fase": "16-avos",
+      "grupo": null,
+      "data": "sex 03/07",
+      "hora": "19:00",
+      "casa": {
+        "nome": "1º Grupo J",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "2º Grupo H",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 87,
+      "fase": "16-avos",
+      "grupo": null,
+      "data": "sex 03/07",
+      "hora": "22:30",
+      "casa": {
+        "nome": "1º Grupo K",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "3º (D/E/I/J/L)",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 88,
+      "fase": "16-avos",
+      "grupo": null,
+      "data": "sex 03/07",
+      "hora": "15:00",
+      "casa": {
+        "nome": "2º Grupo D",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "2º Grupo G",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 89,
+      "fase": "Oitavas",
+      "grupo": null,
+      "data": "sáb 04/07",
+      "hora": "18:00",
+      "casa": {
+        "nome": "Vencedor J74",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "Vencedor J77",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 90,
+      "fase": "Oitavas",
+      "grupo": null,
+      "data": "sáb 04/07",
+      "hora": "14:00",
+      "casa": {
+        "nome": "Vencedor J73",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "Vencedor J75",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 91,
+      "fase": "Oitavas",
+      "grupo": null,
+      "data": "dom 05/07",
+      "hora": "17:00",
+      "casa": {
+        "nome": "Vencedor J76",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "Vencedor J78",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 92,
+      "fase": "Oitavas",
+      "grupo": null,
+      "data": "dom 05/07",
+      "hora": "21:00",
+      "casa": {
+        "nome": "Vencedor J79",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "Vencedor J80",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 93,
+      "fase": "Oitavas",
+      "grupo": null,
+      "data": "seg 06/07",
+      "hora": "16:00",
+      "casa": {
+        "nome": "Vencedor J83",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "Vencedor J84",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 94,
+      "fase": "Oitavas",
+      "grupo": null,
+      "data": "seg 06/07",
+      "hora": "21:00",
+      "casa": {
+        "nome": "Vencedor J81",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "Vencedor J82",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 95,
+      "fase": "Oitavas",
+      "grupo": null,
+      "data": "ter 07/07",
+      "hora": "13:00",
+      "casa": {
+        "nome": "Vencedor J86",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "Vencedor J88",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 96,
+      "fase": "Oitavas",
+      "grupo": null,
+      "data": "ter 07/07",
+      "hora": "17:00",
+      "casa": {
+        "nome": "Vencedor J85",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "Vencedor J87",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 97,
+      "fase": "Quartas",
+      "grupo": null,
+      "data": "qui 09/07",
+      "hora": "17:00",
+      "casa": {
+        "nome": "Vencedor J89",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "Vencedor J90",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 98,
+      "fase": "Quartas",
+      "grupo": null,
+      "data": "sex 10/07",
+      "hora": "16:00",
+      "casa": {
+        "nome": "Vencedor J93",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "Vencedor J94",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 99,
+      "fase": "Quartas",
+      "grupo": null,
+      "data": "sáb 11/07",
+      "hora": "18:00",
+      "casa": {
+        "nome": "Vencedor J91",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "Vencedor J92",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 100,
+      "fase": "Quartas",
+      "grupo": null,
+      "data": "sáb 11/07",
+      "hora": "22:00",
+      "casa": {
+        "nome": "Vencedor J95",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "Vencedor J96",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 101,
+      "fase": "Semifinal",
+      "grupo": null,
+      "data": "ter 14/07",
+      "hora": "16:00",
+      "casa": {
+        "nome": "Vencedor J97",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "Vencedor J98",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 102,
+      "fase": "Semifinal",
+      "grupo": null,
+      "data": "qua 15/07",
+      "hora": "16:00",
+      "casa": {
+        "nome": "Vencedor J99",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "Vencedor J100",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 103,
+      "fase": "Disputa 3º",
+      "grupo": null,
+      "data": "sáb 18/07",
+      "hora": "18:00",
+      "casa": {
+        "nome": "Perdedor J101",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "Perdedor J102",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    },
+    {
+      "n": 104,
+      "fase": "Final",
+      "grupo": null,
+      "data": "dom 19/07",
+      "hora": "16:00",
+      "casa": {
+        "nome": "Vencedor J101",
+        "flag": ""
+      },
+      "fora": {
+        "nome": "Vencedor J102",
+        "flag": ""
+      },
+      "placar": {
+        "casa": null,
+        "fora": null
+      }
+    }
+  ],
+  "participants": [
+    {
+      "nome": "Ryan",
+      "palpites": {}
+    },
+    {
+      "nome": "Filipe",
+      "palpites": {}
+    },
+    {
+      "nome": "Rapha",
+      "palpites": {}
+    },
+    {
+      "nome": "Rafa10",
+      "palpites": {}
+    },
+    {
+      "nome": "Isaac",
+      "palpites": {}
+    },
+    {
+      "nome": "Miguel",
+      "palpites": {}
+    },
+    {
+      "nome": "Rogério",
+      "palpites": {}
+    },
+    {
+      "nome": "Davi",
+      "palpites": {}
+    },
+    {
+      "nome": "Sérgio",
+      "palpites": {}
+    }
+  ]
+}

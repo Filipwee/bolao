@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🏆 Bolão da Copa 2026</title>
+<style>
+  :root{
+    --bg:#0b132b; --bg2:#121b3a; --card:#16204a; --card2:#1c2a5e;
+    --line:#26356e; --txt:#eaf0ff; --muted:#9fb0d8; --accent:#ffd166;
+    --green:#06d6a0; --gold:#ffd166; --silver:#cdd6e8; --bronze:#e0915a;
+    --p25:#06d6a0; --p18:#3da5ff; --p15:#7c6cff; --p12:#b07cff; --p10:#ffb703; --p5:#9fb0d8; --p0:#5b6790;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(160deg,var(--bg),#070d1f 70%);color:var(--txt);min-height:100vh;
+    -webkit-text-size-adjust:100%}
+  header{padding:18px 16px 8px;text-align:center}
+  header h1{margin:0;font-size:1.5rem;letter-spacing:.5px}
+  header .sub{color:var(--muted);font-size:.85rem;margin-top:4px}
+  .tabs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:12px 10px;position:sticky;top:0;
+    background:rgba(7,13,31,.92);backdrop-filter:blur(6px);z-index:10;border-bottom:1px solid var(--line)}
+  .tabs button{background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:999px;
+    padding:8px 14px;font-size:.9rem;cursor:pointer;transition:.15s}
+  .tabs button.active{background:var(--accent);color:#10142a;border-color:var(--accent);font-weight:700}
+  main{max-width:760px;margin:0 auto;padding:14px 12px 60px}
+  .panel{display:none}.panel.active{display:block}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+  .muted{color:var(--muted)}.center{text-align:center}
+  .pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.72rem;font-weight:700;color:#0b132b}
+  .flag{font-size:1.15rem;line-height:1}
+  /* Ranking */
+  .rk{display:flex;align-items:center;gap:12px}
+  .rk .pos{font-size:1.1rem;width:34px;text-align:center;font-weight:800}
+  .rk .nm{flex:1;font-weight:700;font-size:1.05rem}
+  .rk .pts{font-size:1.35rem;font-weight:800;color:var(--accent)}
+  .rk .det{color:var(--muted);font-size:.78rem}
+  .rk.r1{border-color:var(--gold)}.rk.r2{border-color:var(--silver)}.rk.r3{border-color:var(--bronze)}
+  /* Jogos */
+  .filtros{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .filtros button{background:var(--card);border:1px solid var(--line);color:var(--muted);border-radius:999px;
+    padding:5px 11px;font-size:.8rem;cursor:pointer}
+  .filtros button.active{background:var(--card2);color:var(--txt);border-color:var(--accent)}
+  .daygroup>h3{margin:14px 4px 6px;font-size:.85rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+  .match{display:flex;align-items:center;gap:8px;padding:8px 4px;border-top:1px solid var(--line)}
+  .match:first-child{border-top:none}
+  .match .num{width:30px;color:var(--muted);font-size:.78rem;text-align:center;flex:none}
+  .match .side{flex:1;display:flex;align-items:center;gap:6px;min-width:0}
+  .match .side.h{justify-content:flex-end;text-align:right}
+  .match .nme{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .match .res{flex:none;width:74px;text-align:center;font-weight:800}
+  .match .res .hora{font-weight:600;color:var(--muted);font-size:.82rem}
+  .match .res .sc{font-size:1.05rem}
+  .expander{font-size:.74rem;color:var(--accent);cursor:pointer;padding:2px 4px;user-select:none;flex:none;width:18px;text-align:center}
+  .palp{margin:2px 0 8px 38px;font-size:.82rem;border-left:2px solid var(--line);padding-left:10px}
+  .palp .row{display:flex;justify-content:space-between;gap:8px;padding:2px 0}
+  .palp .row .nm{color:var(--muted)}
+  /* Grupos */
+  table{width:100%;border-collapse:collapse;font-size:.82rem}
+  th,td{padding:5px 4px;text-align:center;border-bottom:1px solid var(--line)}
+  th:first-child,td:first-child{text-align:left}
+  thead th{color:var(--muted);font-weight:600;font-size:.72rem}
+  tr.classif td{background:rgba(6,214,160,.08)}
+  tr.classif td:first-child{box-shadow:inset 3px 0 0 var(--green)}
+  .grp-h{font-weight:800;margin:0 0 6px;font-size:1rem}
+  /* Palpites tab */
+  select{background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:10px;
+    padding:9px 12px;font-size:1rem;width:100%;margin-bottom:12px}
+  .pg-row{display:flex;align-items:center;gap:8px;padding:7px 2px;border-top:1px solid var(--line);font-size:.85rem}
+  .pg-row .n{width:28px;color:var(--muted);font-size:.76rem;flex:none}
+  .pg-row .conf{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pg-row .pl{flex:none;width:50px;text-align:center;font-weight:700}
+  .pg-row .rl{flex:none;width:60px;text-align:center;color:var(--muted)}
+  .pg-row .pt{flex:none;width:46px;text-align:center}
+  .totais{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .totais .box{flex:1;min-width:90px;background:var(--card2);border-radius:12px;padding:10px;text-align:center}
+  .totais .box b{display:block;font-size:1.5rem;color:var(--accent)}
+  .totais .box span{font-size:.74rem;color:var(--muted)}
+  footer{max-width:760px;margin:0 auto;padding:18px 14px 40px;color:var(--muted);font-size:.8rem}
+  .legenda{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .legenda .pill{color:#0b132b}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏆 Bolão da Copa do Mundo 2026</h1>
+  <div class="sub" id="sub">Carregando…</div>
+</header>
+
+<nav class="tabs">
+  <button data-tab="ranking" class="active">🏆 Ranking</button>
+  <button data-tab="jogos">📅 Jogos</button>
+  <button data-tab="grupos">🗂️ Grupos</button>
+  <button data-tab="palpites">📝 Palpites</button>
+</nav>
+
+<main>
+  <section id="ranking" class="panel active"></section>
+  <section id="jogos" class="panel"></section>
+  <section id="grupos" class="panel"></section>
+  <section id="palpites" class="panel"></section>
+</main>
+
+<footer>
+  <b>Como pontua cada jogo</b> (vale sempre a maior):
+  <div class="legenda">
+    <span class="pill" style="background:var(--p25)">25 placar exato</span>
+    <span class="pill" style="background:var(--p18)">18 vencedor + gols do vencedor</span>
+    <span class="pill" style="background:var(--p15)">15 vencedor + gols do perdedor</span>
+    <span class="pill" style="background:var(--p12)">12 vencedor + saldo</span>
+    <span class="pill" style="background:var(--p10)">10 só o vencedor</span>
+    <span class="pill" style="background:var(--p5)">5 empate (sem placar exato)</span>
+    <span class="pill" style="background:var(--p0);color:#fff">0 errou</span>
+  </div>
+  <p class="muted" style="margin-top:10px">Desempate no ranking: maior nº de placares exatos.</p>
+</footer>
+
+<script>
+/* ===================== LÓGICA DO BOLÃO ===================== */
+
+// Os dados são carregados ao vivo da API (/api/state). Veja loadAndRender() no fim.
+let BOLAO = null;
+
+
+// Pontuação de um jogo (vale sempre a MAIOR pontuação aplicável).
+function points(RC, RF, PC, PF){
+  if (RC==null || RF==null || PC==null || PF==null) return null;
+  if (PC===RC && PF===RF) return 25;
+  if (RC===RF) return (PC===PF) ? 5 : 0;          // resultado foi empate
+  const venceuCerto = (RC>RF && PC>PF) || (RC<RF && PC<PF);
+  if (!venceuCerto) return 0;
+  let p = 10;
+  if (Math.max(RC,RF) === Math.max(PC,PF)) p = Math.max(p,18); // gols do vencedor
+  if (Math.min(RC,RF) === Math.min(PC,PF)) p = Math.max(p,15); // gols do perdedor
+  if ((RC-RF) === (PC-PF))                 p = Math.max(p,12); // saldo
+  return p;
+}
+
+function contaResultados(){
+  return BOLAO.fixtures.filter(f => f.placar.casa != null && f.placar.fora != null).length;
+}
+
+// Soma de pontos e placares exatos de um participante.
+function pontuacao(part){
+  let pts = 0, exatos = 0, jogos = 0;
+  for (const f of BOLAO.fixtures){
+    const r = f.placar, p = part.palpites[String(f.n)];
+    if (!p || r.casa == null) continue;
+    const v = points(r.casa, r.fora, p.casa, p.fora);
+    if (v == null) continue;
+    jogos++; pts += v; if (v === 25) exatos++;
+  }
+  return { pts, exatos, jogos };
+}
+
+function ranking(){
+  return BOLAO.participants.map(p => ({ nome: p.nome, ...pontuacao(p) }))
+    .sort((a,b) => b.pts - a.pts || b.exatos - a.exatos || a.nome.localeCompare(b.nome));
+}
+
+// Classificação de um grupo a partir dos resultados lançados.
+function classificacao(grupo){
+  const tab = {};
+  grupo.times.forEach(t => tab[t.nome] = { time:t, J:0,V:0,E:0,D:0,gp:0,gc:0 });
+  for (const f of BOLAO.fixtures){
+    if (f.grupo !== grupo.nome || f.placar.casa == null) continue;
+    const c = tab[f.casa.nome], v = tab[f.fora.nome];
+    if (!c || !v) continue;
+    const gc = f.placar.casa, gf = f.placar.fora;
+    c.J++; v.J++; c.gp+=gc; c.gc+=gf; v.gp+=gf; v.gc+=gc;
+    if (gc>gf){ c.V++; v.D++; } else if (gc<gf){ v.V++; c.D++; } else { c.E++; v.E++; }
+  }
+  return Object.values(tab).map(r => ({ ...r, P:r.V*3+r.E, S:r.gp-r.gc }))
+    .sort((a,b) => b.P-a.P || b.S-a.S || b.gp-a.gp || a.time.nome.localeCompare(b.time.nome));
+}
+
+/* ===================== RENDER ===================== */
+const $ = sel => document.querySelector(sel);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const corPts = v => v===25?'var(--p25)':v===18?'var(--p18)':v===15?'var(--p15)':v===12?'var(--p12)':v===10?'var(--p10)':v===5?'var(--p5)':'var(--p0)';
+
+function renderRanking(){
+  const rk = ranking(), total = BOLAO.fixtures.length, feitos = contaResultados();
+  const medal = i => i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'º';
+  let h = `<p class="muted center" style="margin:2px 0 12px"><b>${feitos}</b> de ${total} jogos com resultado</p>`;
+  rk.forEach((r,i) => {
+    h += `<div class="card rk ${i<3?'r'+(i+1):''}">
+      <div class="pos">${medal(i)}</div>
+      <div class="nm">${esc(r.nome)}<div class="det">${r.exatos} placares exatos · ${r.jogos} jogos pontuados</div></div>
+      <div class="pts">${r.pts}<span class="det" style="display:block;text-align:right">pts</span></div>
+    </div>`;
+  });
+  $('#ranking').innerHTML = h;
+}
+
+let faseFiltro = 'Todas';
+function fases(){ const s=[]; BOLAO.fixtures.forEach(f=>{ if(!s.includes(f.fase)) s.push(f.fase); }); return s; }
+
+function renderJogos(){
+  const fs = fases();
+  let h = `<div class="filtros"><button data-f="Todas" class="${faseFiltro==='Todas'?'active':''}">Todas</button>`;
+  fs.forEach(f => h += `<button data-f="${esc(f)}" class="${faseFiltro===f?'active':''}">${esc(f)}</button>`);
+  h += `</div>`;
+
+  const lista = BOLAO.fixtures.filter(f => faseFiltro==='Todas' || f.fase===faseFiltro);
+  let lastKey = null;
+  lista.forEach(f => {
+    const key = f.fase + ' · ' + f.data;
+    if (key !== lastKey){ if(lastKey!==null) h+='</div>'; h += `<div class="daygroup"><h3>${esc(f.fase)} — ${esc(f.data)}</h3>`; lastKey = key; }
+    const jogou = f.placar.casa != null;
+    const res = jogou
+      ? `<div class="sc">${f.placar.casa} <span class="muted">×</span> ${f.placar.fora}</div>`
+      : `<div class="hora">${esc(f.hora)}</div>`;
+    h += `<div class="match" data-exp="${f.n}">
+      <div class="num">#${f.n}</div>
+      <div class="side h"><span class="nme">${esc(f.casa.nome)}</span> <span class="flag">${f.casa.flag}</span></div>
+      <div class="res">${res}</div>
+      <div class="side"><span class="flag">${f.fora.flag}</span> <span class="nme">${esc(f.fora.nome)}</span></div>
+      <div class="expander" title="ver palpites">▾</div>
+    </div><div class="palp" id="palp-${f.n}" style="display:none"></div>`;
+  });
+  if (lastKey!==null) h += '</div>';
+  $('#jogos').innerHTML = h;
+}
+
+function renderPalpitesDoJogo(n){
+  const f = BOLAO.fixtures.find(x => x.n===n);
+  const r = f.placar, jogou = r.casa != null;
+  let h = '';
+  BOLAO.participants.forEach(part => {
+    const p = part.palpites[String(n)];
+    if (!p){ h += `<div class="row"><span class="nm">${esc(part.nome)}</span><span class="muted">—</span></div>`; return; }
+    const v = jogou ? points(r.casa,r.fora,p.casa,p.fora) : null;
+    const tag = v!=null ? `<span class="pill" style="background:${corPts(v)};color:${v===0?'#fff':'#0b132b'}">${v}</span>` : '<span class="muted">aguardando</span>';
+    h += `<div class="row"><span class="nm">${esc(part.nome)}: <b>${p.casa}×${p.fora}</b></span>${tag}</div>`;
+  });
+  return h || '<div class="row muted">Ninguém palpitou neste jogo.</div>';
+}
+
+function renderGrupos(){
+  let h = '';
+  BOLAO.groups.forEach(g => {
+    const cl = classificacao(g);
+    h += `<div class="card"><div class="grp-h">${esc(g.nome)}</div>
+      <table><thead><tr><th>Time</th><th>J</th><th>V</th><th>E</th><th>D</th><th>SG</th><th>Pts</th></tr></thead><tbody>`;
+    cl.forEach((r,i) => {
+      h += `<tr class="${i<2?'classif':''}">
+        <td><span class="flag">${r.time.flag}</span> ${esc(r.time.nome)}</td>
+        <td>${r.J}</td><td>${r.V}</td><td>${r.E}</td><td>${r.D}</td>
+        <td>${r.S>0?'+':''}${r.S}</td><td><b>${r.P}</b></td></tr>`;
+    });
+    h += `</tbody></table></div>`;
+  });
+  $('#grupos').innerHTML = h;
+}
+
+let palpSel = 0;
+function renderPalpitesTab(){
+  let h = `<select id="selPart">`;
+  BOLAO.participants.forEach((p,i) => h += `<option value="${i}" ${i===palpSel?'selected':''}>${esc(p.nome)}</option>`);
+  h += `</select>`;
+
+  const part = BOLAO.participants[palpSel];
+  const tot = pontuacao(part);
+  const enviados = Object.keys(part.palpites).length;
+  h += `<div class="totais">
+    <div class="box"><b>${tot.pts}</b><span>pontos</span></div>
+    <div class="box"><b>${tot.exatos}</b><span>placares exatos</span></div>
+    <div class="box"><b>${enviados}</b><span>palpites enviados</span></div>
+  </div><div class="card">`;
+
+  BOLAO.fixtures.forEach(f => {
+    const p = part.palpites[String(f.n)], r = f.placar, jogou = r.casa != null;
+    const conf = `${f.casa.flag} ${esc(f.casa.nome)} × ${esc(f.fora.nome)} ${f.fora.flag}`;
+    const pl = p ? `${p.casa}×${p.fora}` : '—';
+    const rl = jogou ? `${r.casa}×${r.fora}` : f.hora;
+    let pt = '';
+    if (p && jogou){ const v = points(r.casa,r.fora,p.casa,p.fora); pt = `<span class="pill" style="background:${corPts(v)};color:${v===0?'#fff':'#0b132b'}">${v}</span>`; }
+    h += `<div class="pg-row"><span class="n">#${f.n}</span><span class="conf">${conf}</span>
+      <span class="pl">${pl}</span><span class="rl">${rl}</span><span class="pt">${pt}</span></div>`;
+  });
+  h += `</div>`;
+  $('#palpites').innerHTML = h;
+  $('#selPart').addEventListener('change', e => { palpSel = +e.target.value; renderPalpitesTab(); });
+}
+
+/* ===================== EVENTOS / INIT ===================== */
+function showTab(tab){
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab===tab));
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id===tab));
+}
+
+document.querySelector('.tabs').addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return; showTab(b.dataset.tab);
+});
+
+document.addEventListener('click', e => {
+  const m = e.target.closest('.match');
+  if (m && e.target.closest('#jogos')){
+    const n = +m.dataset.exp, box = document.getElementById('palp-'+n);
+    if (box.style.display==='none'){ box.innerHTML = renderPalpitesDoJogo(n); box.style.display='block'; }
+    else box.style.display='none';
+    return;
+  }
+  const fb = e.target.closest('.filtros button');
+  if (fb){ faseFiltro = fb.dataset.f; renderJogos(); }
+});
+
+function render(){
+  $('#sub').textContent = `48 seleções · 104 jogos · ${BOLAO.participants.length} participantes · horários de Brasília (BRT)`;
+  renderRanking(); renderJogos(); renderGrupos(); renderPalpitesTab();
+}
+
+async function loadAndRender(initial){
+  try{
+    const r = await fetch('/api/state', { cache: 'no-store' });
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    // Preserva a aba/seleção atual ao recarregar ao vivo.
+    BOLAO = data;
+    render();
+    $('#sub').insertAdjacentHTML('beforeend',
+      ` · <span style="color:var(--green)">atualizado ${new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}</span>`);
+  }catch(e){
+    if(initial) $('#sub').innerHTML = `<span style="color:#ef476f">Não foi possível carregar os dados (${esc(e.message)}). Recarregue a página.</span>`;
+  }
+}
+
+loadAndRender(true);
+// Atualiza ao vivo a cada 60s e quando a aba volta ao foco.
+setInterval(() => loadAndRender(false), 60000);
+document.addEventListener('visibilitychange', () => { if(!document.hidden) loadAndRender(false); });
+</script>
+</body>
+</html>

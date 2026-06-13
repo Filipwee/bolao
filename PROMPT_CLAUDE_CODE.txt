@@ -1,0 +1,242 @@
+==========================================================================
+PROMPT PARA CLAUDE CODE — CONSTRUIR UM "BOLÃO DA COPA DO MUNDO 2026"
+==========================================================================
+Cole tudo isto como instrução para o Claude Code. Ele deve construir um
+site estático (sem backend) + um painel de administração, prontos para
+deploy no Vercel. Leia as seções na ordem e implemente todos os requisitos
+e critérios de aceite. Ao final, rode os testes descritos.
+
+--------------------------------------------------------------------------
+0) CONTEXTO E OBJETIVO
+--------------------------------------------------------------------------
+Quero um bolão de palpites para a Copa do Mundo de 2026 (48 seleções,
+104 jogos). Eu (administrador) lanço os RESULTADOS reais dos jogos e os
+PALPITES de cada participante; o sistema calcula a pontuação e mostra um
+RANKING ao vivo. Não quero servidor nem banco de dados: tudo é estático e
+hospedado no Vercel. Os dados ficam embutidos no próprio HTML; para
+atualizar, eu gero um novo arquivo e faço deploy.
+
+Público-alvo: amigos (9 participantes cadastrados, com espaço para crescer).
+Idioma de toda a interface: PORTUGUÊS (Brasil). Fuso de todos os horários:
+BRASÍLIA (BRT, UTC-3, sem horário de verão).
+
+--------------------------------------------------------------------------
+1) FONTE DE DADOS
+--------------------------------------------------------------------------
+Há (ou haverá) na pasta dois arquivos JSON com os dados oficiais da Copa:
+  - worldcup.groups.json  -> os 12 grupos (A..L) com 4 seleções cada.
+  - worldcup.json         -> os 104 jogos, no formato openfootball, com:
+        { round, date (YYYY-MM-DD), time ("13:00 UTC-6"), team1, team2,
+          score:{ft:[x,y]} (só nos jogos já realizados), group, ground }
+    Jogos do mata-mata vêm com times "placeholder" (ex.: "2A", "1E",
+    "W74", "L101", "3C/D/F/G/H").
+
+REQUISITOS DE PROCESSAMENTO DESSES DADOS:
+  a) Converter TODOS os horários para o fuso de Brasília (UTC-3).
+     Ex.: "20:00 UTC-6" -> 23:00 BRT (somando/ajustando data se virar o dia).
+  b) Traduzir os nomes das seleções para português
+     (Mexico->México, South Korea->Coreia do Sul, Netherlands->Holanda,
+      Czech Republic->Rep. Tcheca, etc.). Inclua bandeira emoji por país.
+  c) Numerar os jogos de 1 a 104. Numere a FASE DE GRUPOS (72 jogos) em
+     ordem cronológica (data, hora), e depois o mata-mata na ordem do
+     chaveamento: 16-avos (16 jogos, 73–88), Oitavas (8, 89–96),
+     Quartas (4, 97–100), Semifinais (2, 101–102), Disputa de 3º (103),
+     Final (104).
+  d) Traduzir os placeholders do mata-mata para rótulos legíveis em PT:
+     "1A"->"1º Grupo A", "2B"->"2º Grupo B", "3C/D/F/G/H"->"3º (C/D/F/G/H)",
+     "W74"->"Vencedor J74", "L101"->"Perdedor J101".
+  e) Os 4 jogos com score já preenchido devem entrar com o placar lançado.
+
+Se os JSON não existirem, peça-os ou gere uma estrutura de exemplo com a
+mesma forma, mas mantenha todos os requisitos.
+
+--------------------------------------------------------------------------
+2) MODELO DE DADOS (objeto único, embutido no HTML)
+--------------------------------------------------------------------------
+Gere um objeto JS chamado BOLAO com ESTE formato exato:
+
+const BOLAO = {
+  groups: [
+    { nome: "Grupo A",
+      times: [ {nome:"México", flag:"🇲🇽"}, ... 4 times ... ] },
+    ... 12 grupos ...
+  ],
+  fixtures: [
+    { n: 1,
+      fase: "Grupo A",            // ou "16-avos","Oitavas","Quartas","Semifinal","Disputa 3º","Final"
+      grupo: "Grupo A",           // nome do grupo, ou null no mata-mata
+      data: "qui 11/06",          // dia da semana abreviado + dd/mm (BRT)
+      hora: "16:00",              // HH:MM em BRT
+      casa: {nome:"México", flag:"🇲🇽"},
+      fora: {nome:"África do Sul", flag:"🇿🇦"},
+      placar: {casa: 2, fora: 0}  // {casa:null, fora:null} se ainda não jogou
+    },
+    ... 104 jogos ...
+  ],
+  participants: [
+    { nome:"Ryan",   palpites:{} },   // chave do palpite = NÚMERO do jogo (string)
+    { nome:"Filipe", palpites:{ "1":{casa:2,fora:0}, "2":{casa:1,fora:1} } },
+    ... 9 participantes ...
+  ]
+};
+
+PARTICIPANTES INICIAIS (exatamente estes 9, palpites vazios):
+  Ryan, Filipe, Rapha, Rafa10, Isaac, Miguel, Rogério, Davi, Sérgio.
+
+--------------------------------------------------------------------------
+3) REGRA DE PONTUAÇÃO (CRÍTICO — implemente exatamente assim)
+--------------------------------------------------------------------------
+Dado o resultado real (RC x RF) e o palpite (PC x PF), por jogo, vale
+SEMPRE A MAIOR pontuação aplicável:
+
+  25 pts — Placar exato:  PC==RC E PF==RF.
+  18 pts — Acertou o vencedor E a quantidade de gols do VENCEDOR.
+  15 pts — Acertou o vencedor E a quantidade de gols do PERDEDOR.
+  12 pts — Acertou o vencedor E o SALDO de gols.
+  10 pts — Acertou apenas o vencedor.
+   5 pts — Acertou que seria EMPATE, sem acertar o placar exato.
+   0 pts — Errou o resultado (ou faltou resultado/palpite -> sem pontuação).
+
+PSEUDOCÓDIGO DE REFERÊNCIA (já validado, use igual):
+
+  function points(RC, RF, PC, PF):
+    if (qualquer um for null/vazio) return null   // jogo sem resultado ou sem palpite
+    if (PC==RC && PF==RF) return 25
+    if (RC==RF)                                    // resultado foi empate
+        return (PC==PF) ? 5 : 0
+    venceuCerto = (RC>RF && PC>PF) || (RC<RF && PC<PF)
+    if (!venceuCerto) return 0
+    p = 10
+    if (max(RC,RF) == max(PC,PF)) p = max(p,18)    // gols do vencedor
+    if (min(RC,RF) == min(PC,PF)) p = max(p,15)    // gols do perdedor
+    if ((RC-RF) == (PC-PF))       p = max(p,12)    // saldo
+    return p
+
+CASOS DE TESTE OBRIGATÓRIOS (devem passar):
+  points(2,0, 2,0) == 25     points(2,1, 1,0) == 12
+  points(1,1, 0,0) == 5      points(4,1, 2,1) == 15
+  points(2,0, 2,1) == 18     points(2,1, 0,2) == 0
+  points(4,1, 3,0) == 12     points(1,1, 2,2) == 5
+  points(2,0, 1,0) == 15     points(0,3, 1,3) == 18
+
+RANKING:
+  - Pontos do participante = soma de points() sobre todos os jogos onde há
+    resultado E palpite.
+  - "Placares exatos" = quantos jogos deram 25.
+  - Ordenar por: pontos (desc) -> placares exatos (desc) -> nome (asc).
+  - DESEMPATE OFICIAL: mais placares exatos.
+
+--------------------------------------------------------------------------
+4) SITE PÚBLICO  (arquivo: index.html — único, autossuficiente)
+--------------------------------------------------------------------------
+HTML único, responsivo (bom no celular), tema escuro estilo Copa, fontes do
+sistema, sem dependências externas/CDN. Os dados (objeto BOLAO) ficam
+embutidos no próprio arquivo, dentro de um bloco claramente demarcado:
+   <!-- ====== DADOS DO BOLÃO: edite daqui pra baixo ====== -->
+Todo o cálculo roda no navegador. 4 abas:
+
+  (A) 🏆 RANKING — lista ordenada: posição (🥇🥈🥉), nome, pontos em
+      destaque, nº de placares exatos, e quantos jogos já pontuaram.
+      Mostrar "X de 104 jogos com resultado".
+
+  (B) 📅 JOGOS — todos os jogos agrupados por fase/data, com filtro por
+      fase. Cada jogo: bandeiras + nomes, data/horário (BRT), e o placar
+      (se já jogou) ou o horário (se pendente). Cada jogo tem um expansor
+      "ver palpites" que lista o palpite de cada participante e os pontos
+      que ele fez naquele jogo (com etiqueta colorida por faixa de pontos).
+
+  (C) 🗂️ GRUPOS — os 12 grupos em cartões. Para cada grupo, montar a
+      CLASSIFICAÇÃO automaticamente a partir dos resultados já lançados:
+      colunas J, V, E, D, Saldo, Pontos (vitória=3, empate=1). Ordenar por
+      pontos -> saldo -> gols pró. Destacar os 2 primeiros (classificados).
+
+  (D) 📝 PALPITES — escolher um participante num seletor e ver todos os
+      palpites dele, o resultado real de cada jogo, os pontos por jogo e os
+      totais (pontos, placares exatos, palpites enviados).
+
+Rodapé com a legenda da pontuação.
+
+--------------------------------------------------------------------------
+5) PAINEL DE ADMIN  (arquivo: admin.html — só pra mim, roda local)
+--------------------------------------------------------------------------
+HTML único, mesmo tema. NÃO precisa ir pro Vercel; eu abro no meu PC.
+Mantém o estado de edição no localStorage do navegador (salva sozinho).
+3 abas:
+
+  (A) ⚽ RESULTADOS — lista os 104 jogos (com filtro por fase). Dois campos
+      numéricos (gols casa / gols fora) por jogo, que atualizam o placar e
+      salvam automaticamente. Botão "limpar" por jogo. Mostra "X de 104
+      com resultado".
+
+  (B) 📝 PALPITES — seletor de participante (mostrando quantos palpites já
+      tem), campo para renomear, botão "+ participante", botão "limpar
+      palpites". Para o participante selecionado, lista os 104 jogos com
+      dois campos (casa/fora) e mostra, ao lado, o resultado real e os
+      pontos que aquele palpite faz. INCLUIR um campo "COLAR EM MASSA":
+      uma textarea onde eu colo as linhas que o participante mandou e um
+      botão "Aplicar". O parser deve reconhecer formatos como:
+         "1: 2x0"  /  "Jogo 1 2 x 0"  /  "1 - 2x0"  /  "1 2:0"
+      (número do jogo, depois gols casa e fora). Informar quantos foram
+      aplicados.
+
+  (C) 🚀 PUBLICAR —
+      - Botão "Baixar index.html": GERA o site público já com os meus
+        resultados e palpites embutidos, pronto pra subir no Vercel.
+      - Botão "Pré-visualizar": abre o index gerado numa nova aba (blob).
+      - Botão "Baixar backup (.json)" e "Importar backup (.json)" do estado.
+      - Botão "Resetar para os dados originais".
+      - Um resumo: nº de jogos com resultado, nº de participantes, total de
+        palpites.
+
+COMO O ADMIN GERA O index.html (implementação sugerida e testada):
+  - Embuta DENTRO do admin.html, num <script type="text/template" id="tpl">,
+    uma cópia do site público (index.html) com o bloco de dados substituído
+    por um marcador /*__DATA__*/. Como o HTML não pode conter "</script>"
+    cru dentro de outro script, escreva os fechamentos internos como
+    "<\/script>" no template.
+  - Embuta o estado inicial num <script type="text/template" id="init"> em
+    JSON puro (JSON não contém "</script>").
+  - buildIndex():
+        tpl = document.getElementById('tpl').textContent
+        dataStr = "const BOLAO = " + JSON.stringify(state, null, 2) + ";"
+        return tpl.replace('/*__DATA__*/', () => dataStr)
+                  .replace(/<\\\/script>/g, '</script>')
+  - Baixar via Blob + URL.createObjectURL + <a download>.
+
+--------------------------------------------------------------------------
+6) DEPLOY (Vercel) E DOCUMENTAÇÃO
+--------------------------------------------------------------------------
+  - Gere também um README.md explicando: como subir no Vercel (arrastar a
+    pasta / "Add New Project" / Deploy), o fluxo "edito no admin -> Baixar
+    index.html -> deploy", como editar à mão (bloco DADOS) caso eu prefira,
+    a tabela de pontuação e a regra de desempate.
+  - admin.html deve funcionar abrindo direto do disco (file://): nada de
+    fetch externo; localStorage, blob e download têm que funcionar offline.
+
+--------------------------------------------------------------------------
+7) QUALIDADE / CRITÉRIOS DE ACEITE
+--------------------------------------------------------------------------
+  [ ] index.html e admin.html abrem sem nenhum erro no console.
+  [ ] Todos os 10 casos de teste de points() passam (escreva um pequeno
+      script de teste em Node e rode-o).
+  [ ] São exatamente 104 jogos, 12 grupos, 9 participantes; os 4 jogos já
+      realizados aparecem com placar; horários em BRT.
+  [ ] Ranking ordena por pontos e desempata por placares exatos.
+  [ ] A classificação dos grupos confere com os resultados lançados.
+  [ ] No admin: editar um resultado e um palpite e clicar "Baixar
+      index.html" gera um arquivo válido; ao abri-lo, o ranking reflete a
+      edição (teste: Ryan com 2 placares exatos = 50 pts).
+  [ ] Interface 100% em português, responsiva, tema escuro coeso.
+  [ ] Zero dependências externas (sem CDN, sem libs).
+
+--------------------------------------------------------------------------
+8) ENTREGÁVEIS
+--------------------------------------------------------------------------
+  - index.html      (site público, dados embutidos)
+  - admin.html      (painel local que gera o index.html)
+  - README.md       (deploy + uso)
+  - (opcional) script de build em Python/Node que processa os JSON e gera
+    o index.html — mas o resultado final tem que ser os arquivos acima.
+
+Implemente tudo, rode os testes da seção 7 e me mostre o resultado.
+==========================================================================
