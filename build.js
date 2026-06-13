@@ -84,7 +84,7 @@ const FASE = {
 };
 
 const SEMANA = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
-const PARTICIPANTES = ['Ryan', 'Filipe', 'Rapha', 'Rafa10', 'Isaac', 'Miguel', 'Rogério', 'Davi', 'Sérgio'];
+const PARTICIPANTES = ['Ryan', 'Filipe', 'Rapha', 'Rafael', 'Isaac', 'Miguel', 'Rogério', 'Davi', 'Sérgio'];
 
 // ---------------------------------------------------------------------------
 // Helpers de seleção e placeholders do mata-mata
