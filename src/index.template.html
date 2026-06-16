@@ -79,12 +79,15 @@
   footer{max-width:760px;margin:0 auto;padding:18px 14px 40px;color:var(--muted);font-size:.8rem}
   .legenda{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
   .legenda .pill{color:#0b132b}
+  a.cta{display:inline-block;background:var(--accent);color:#10142a;font-weight:700;text-decoration:none;
+    border-radius:999px;padding:8px 16px;font-size:.9rem}
 </style>
 </head>
 <body>
 <header>
   <h1>🏆 Bolão da Copa do Mundo 2026</h1>
   <div class="sub" id="sub">Carregando…</div>
+  <div style="margin-top:10px"><a href="/meu.html" class="cta">📝 Fazer meu bolão</a></div>
 </header>
 
 <nav class="tabs">
@@ -138,6 +141,11 @@ function points(RC, RF, PC, PF){
 
 function contaResultados(){
   return BOLAO.fixtures.filter(f => f.placar.casa != null && f.placar.fora != null).length;
+}
+
+// Jogo já começou? (palpites ficam ocultos até lá — ver sigilo no servidor.)
+function comecouJogo(f){
+  return f.kickoff ? Date.now() >= Date.parse(f.kickoff) : (f.placar.casa != null);
 }
 
 // Soma de pontos e placares exatos de um participante.
@@ -226,6 +234,7 @@ function renderJogos(){
 function renderPalpitesDoJogo(n){
   const f = BOLAO.fixtures.find(x => x.n===n);
   const r = f.placar, jogou = r.casa != null;
+  if (!comecouJogo(f)) return '<div class="row muted">🔒 Os palpites aparecem quando o jogo começar.</div>';
   let h = '';
   BOLAO.participants.forEach(part => {
     const p = part.palpites[String(n)];
@@ -272,7 +281,7 @@ function renderPalpitesTab(){
   BOLAO.fixtures.forEach(f => {
     const p = part.palpites[String(f.n)], r = f.placar, jogou = r.casa != null;
     const conf = `${f.casa.flag} ${esc(f.casa.nome)} × ${esc(f.fora.nome)} ${f.fora.flag}`;
-    const pl = p ? `${p.casa}×${p.fora}` : '—';
+    const pl = p ? `${p.casa}×${p.fora}` : (comecouJogo(f) ? '—' : '🔒');
     const rl = jogou ? `${r.casa}×${r.fora}` : f.hora;
     let pt = '';
     if (p && jogou){ const v = points(r.casa,r.fora,p.casa,p.fora); pt = `<span class="pill" style="background:${corPts(v)};color:${v===0?'#fff':'#0b132b'}">${v}</span>`; }

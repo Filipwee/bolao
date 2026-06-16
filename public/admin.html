@@ -88,6 +88,8 @@
   <nav class="tabs">
     <button data-tab="resultados" class="active">⚽ Resultados</button>
     <button data-tab="palpites">📝 Palpites</button>
+    <button data-tab="acessos">👥 Acessos</button>
+    <button data-tab="relatorio">📋 Relatório</button>
     <button data-tab="colar">📥 Colar do grupo</button>
     <button data-tab="ferramentas">🛠️ Ferramentas</button>
   </nav>
@@ -95,6 +97,8 @@
   <main>
     <section id="resultados" class="panel active"></section>
     <section id="palpites" class="panel"></section>
+    <section id="acessos" class="panel"></section>
+    <section id="relatorio" class="panel"></section>
     <section id="colar" class="panel"></section>
     <section id="ferramentas" class="panel"></section>
   </main>
@@ -104,13 +108,20 @@
 /* ===================== AUTENTICAÇÃO / REDE ===================== */
 let SENHA = sessionStorage.getItem('bolao_admin_pw') || '';
 let state = null;
+let acessos = [];          // lista de credenciais (vinda de /api/acessos)
 let saveTimer = null;
+let saveAuthoritative = false;
+// Edições de palpite feitas pelo admin NESTA sessão: "id|n" -> {casa,fora} | null(apagar).
+// Servem para o merge não desfazer o que os participantes salvarem em paralelo.
+let palpEdits = {};
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : 'id-'+Date.now()+'-'+Math.random().toString(16).slice(2));
 
+// GET com header de admin -> estado COMPLETO (sem ocultar palpites).
 async function apiGet(){
-  const r = await fetch('/api/state', { cache:'no-store' });
+  const r = await fetch('/api/state', { cache:'no-store', headers:{ 'x-admin-password': SENHA } });
   if(!r.ok) throw new Error('HTTP '+r.status);
   return r.json();
 }
@@ -124,24 +135,69 @@ async function apiPost(st){
   if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e.error||('HTTP '+r.status)); }
   return r.json();
 }
+async function apiAcessos(body){
+  const r = await fetch('/api/acessos', {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json', 'x-admin-password': SENHA },
+    body: JSON.stringify(body),
+  });
+  if(r.status===401) throw new Error('401');
+  if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e.error||('HTTP '+r.status)); }
+  return r.json();
+}
 
 function setStatus(html){ $('#status').innerHTML = html; }
 
-// Salva (com debounce) o estado inteiro na API.
-function agendarSave(){
+// Garante um id estável em cada participante (necessário para ligar credenciais).
+function ensureIds(){
+  let mudou = false;
+  state.participants.forEach(p => { if(!p.id){ p.id = uuid(); mudou = true; } });
+  return mudou;
+}
+
+// Registra uma edição de palpite do admin (para o merge).
+function recordPalp(id, n, val){ palpEdits[id+'|'+n] = val; }
+
+// Agenda o save (debounce). authoritative=true => grava o `state` como está
+// (usado em reset/import); senão faz merge para preservar edições paralelas.
+function agendarSave(authoritative){
+  if(authoritative) saveAuthoritative = true;
   setStatus('<span class="saving">salvando…</span>');
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(async () => {
-    try{
-      await apiPost(state);
-      const h = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-      setStatus(`<span class="ok">✓ salvo às ${h}</span>`);
-    }catch(e){
-      if(e.message==='401'){ deslogar('Senha incorreta. Entre novamente.'); return; }
-      setStatus(`<span class="err">erro ao salvar: ${esc(e.message)} — tentando de novo…</span>`);
-      setTimeout(agendarSave, 4000);
+  saveTimer = setTimeout(salvarAgora, 700);
+}
+
+async function salvarAgora(){
+  const auth = saveAuthoritative; saveAuthoritative = false;
+  const edits = palpEdits; palpEdits = {};
+  try{
+    if(!auth){
+      // Merge: parte do estado mais recente do servidor para não desfazer os
+      // palpites que os participantes salvaram enquanto o admin estava editando.
+      const fresh = await apiGet();
+      const freshById = {};
+      fresh.participants.forEach(p => { if(p.id) freshById[p.id] = p; });
+      state.participants.forEach(p => {
+        const base = (p.id && freshById[p.id]) ? {...freshById[p.id].palpites} : {...p.palpites};
+        Object.keys(edits).forEach(key => {
+          const [id, n] = key.split('|');
+          if(id !== p.id) return;
+          const v = edits[key];
+          if(v == null) delete base[n]; else base[n] = v;
+        });
+        p.palpites = base;
+      });
     }
-  }, 700);
+    await apiPost(state);
+    const h = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    setStatus(`<span class="ok">✓ salvo às ${h}</span>`);
+  }catch(e){
+    if(e.message==='401'){ deslogar('Senha incorreta. Entre novamente.'); return; }
+    // devolve as edições e tenta de novo
+    Object.assign(palpEdits, edits); if(auth) saveAuthoritative = true;
+    setStatus(`<span class="err">erro ao salvar: ${esc(e.message)} — tentando de novo…</span>`);
+    setTimeout(salvarAgora, 4000);
+  }
 }
 
 function deslogar(msg){
@@ -157,9 +213,11 @@ async function entrar(){
   SENHA = pw;
   $('#loginErro').textContent='Carregando…';
   try{
+    // valida a senha sem gravar nada (acessos exige admin e só lê).
+    const res = await apiAcessos({ action:'list' });
+    acessos = res.users || [];
     state = await apiGet();
-    // valida a senha com um POST do próprio estado carregado (não altera nada).
-    await apiPost(state);
+    if(ensureIds()) await apiPost(state);     // persiste os ids recém-criados
     sessionStorage.setItem('bolao_admin_pw', pw);
     $('#login').style.display='none'; $('#app').style.display='block';
     setStatus('<span class="ok">✓ conectado</span>');
@@ -258,6 +316,7 @@ function setPalpite(n, side, val){
   if (val===''||val==null) delete p[side]; else p[side] = Math.max(0, parseInt(val,10)||0);
   if (p.casa==null && p.fora==null) delete part.palpites[key];
   else part.palpites[key] = { casa: p.casa!=null?p.casa:0, fora: p.fora!=null?p.fora:0 };
+  recordPalp(part.id, key, part.palpites[key] || null);
   agendarSave();
 }
 function aplicarBulk(texto){
@@ -269,6 +328,7 @@ function aplicarBulk(texto){
     const n = parseInt(m[1],10);
     if (n<1 || n>state.fixtures.length) return;
     part.palpites[String(n)] = { casa: parseInt(m[2],10), fora: parseInt(m[3],10) };
+    recordPalp(part.id, String(n), part.palpites[String(n)]);
     aplicados++;
   });
   agendarSave();
@@ -364,9 +424,10 @@ function aplicarMsg(){
     const sel = document.querySelector(`select[data-row="${i}"]`).value;
     if(sel==='') return;
     let idx;
-    if(sel==='new'){ state.participants.push({ nome: ln.raw, palpites:{} }); idx = state.participants.length-1; criados++; }
+    if(sel==='new'){ state.participants.push({ id: uuid(), nome: ln.raw, palpites:{} }); idx = state.participants.length-1; criados++; }
     else idx = +sel;
     state.participants[idx].palpites[String(n)] = { casa: ln.casa, fora: ln.fora };
+    recordPalp(state.participants[idx].id, String(n), { casa: ln.casa, fora: ln.fora });
     aplicados++;
   });
   agendarSave();
@@ -402,6 +463,87 @@ function baixar(nome, conteudo, tipo){
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
+/* ===================== ABA ACESSOS ===================== */
+// Liga cada participante a um login+senha (guardados em bolao:auth, fora do GET público).
+function credDe(id){ return acessos.find(a => a.id === id) || null; }
+function sugereLogin(nome){
+  let base = norm(String(nome).split(/\s+/)[0]) || 'user';
+  let login = base, i = 2;
+  while (acessos.some(a => a.login === login)) login = base + i++;
+  return login;
+}
+function geraSenha(){
+  const chars = 'abcdefghjkmnpqrstuvwxyz23456789'; // sem caracteres ambíguos
+  let s = ''; for (let i=0;i<6;i++) s += chars[Math.floor(Math.random()*chars.length)];
+  return s;
+}
+function msgAcesso(login, senha, nome){
+  return `🏆 Bolão da Copa 2026 — seu acesso\n`+
+    `Olá, ${nome}! Faça seus palpites em:\n${location.origin}/meu.html\n\n`+
+    `Login: ${login}\nSenha: ${senha}\n\n`+
+    `Dica: cada jogo trava no horário do apito inicial.`;
+}
+async function copiar(txt, btn){
+  try{ await navigator.clipboard.writeText(txt); }
+  catch{ const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+  if(btn){ const o=btn.textContent; btn.textContent='✓ copiado'; setTimeout(()=>btn.textContent=o,1500); }
+}
+function renderAcessos(){
+  let h = `<div class="card"><b>👥 Acessos dos participantes</b>
+    <p class="muted" style="font-size:.84rem;margin:4px 0">Gere um login e senha para cada um entrar em <code>/meu.html</code> e
+      fazer o próprio bolão. As senhas ficam guardadas no servidor (não aparecem no site público) — você pode rever e reenviar aqui.</p>
+    <button class="btn sec" id="btnCopiarTodos">📋 Copiar todos os acessos</button></div>`;
+  state.participants.forEach((p,i) => {
+    const c = credDe(p.id);
+    const login = c ? c.login : sugereLogin(p.nome);
+    const senha = c ? c.senha : '';
+    h += `<div class="card" data-acc="${esc(p.id)}">
+      <div class="row-actions"><b style="flex:1">${esc(p.nome)}</b>
+        ${c ? '<span class="pill" style="background:var(--green);color:#0b132b">com acesso</span>' : '<span class="pill" style="background:var(--p0);color:#fff">sem acesso</span>'}</div>
+      <div class="row-actions">
+        <input data-acc-login value="${esc(login)}" placeholder="login" style="flex:1;min-width:120px">
+        <input data-acc-senha value="${esc(senha)}" placeholder="senha" style="flex:1;min-width:120px">
+        <button class="btn sec" data-acc-gerar>🎲</button>
+      </div>
+      <div class="row-actions">
+        <button class="btn" data-acc-salvar>Salvar acesso</button>
+        ${c ? '<button class="btn sec" data-acc-copiar>📤 Copiar mensagem</button>' : ''}
+        ${c ? '<button class="btn danger" data-acc-remover>Remover</button>' : ''}
+      </div></div>`;
+  });
+  $('#acessos').innerHTML = h;
+}
+
+/* ===================== ABA RELATÓRIO ===================== */
+let relFase = 'Todas';
+function textoRelatorio(){
+  let out = `🏆 BOLÃO DA COPA 2026 — PALPITES\n`;
+  const lista = state.fixtures.filter(f => relFase==='Todas' || f.fase===relFase);
+  lista.forEach(f => {
+    const linhas = [];
+    state.participants.forEach(p => {
+      const pal = p.palpites[String(f.n)];
+      if(!pal) return;
+      const r = f.placar, jogou = r.casa!=null;
+      const pt = jogou ? ` (${points(r.casa,r.fora,pal.casa,pal.fora)} pts)` : '';
+      linhas.push(`• ${p.nome}: ${pal.casa}×${pal.fora}${pt}`);
+    });
+    if(!linhas.length) return;
+    const r = f.placar, real = r.casa!=null ? `  [resultado ${r.casa}×${r.fora}]` : '';
+    out += `\n#${f.n} ${f.casa.nome} × ${f.fora.nome} (${f.data} ${f.hora})${real}\n` + linhas.join('\n') + '\n';
+  });
+  return out;
+}
+function renderRelatorio(){
+  let h = `<div class="card"><b>📋 Relatório de palpites</b>
+    <p class="muted" style="font-size:.84rem;margin:4px 0">Mensagem com os palpites de todos, por jogo e por participante (pronta pra copiar e mandar no grupo).</p>
+    <div class="filtros"><button data-relf="Todas" class="${relFase==='Todas'?'active':''}">Todas</button>`;
+  fases().forEach(f => h += `<button data-relf="${esc(f)}" class="${relFase===f?'active':''}">${esc(f)}</button>`);
+  h += `</div><button class="btn" id="btnCopiarRel">📋 Copiar mensagem</button></div>
+    <div class="card"><textarea id="relTexto" style="min-height:340px">${esc(textoRelatorio())}</textarea></div>`;
+  $('#relatorio').innerHTML = h;
+}
+
 /* ===================== EVENTOS ===================== */
 $('#btnEntrar').addEventListener('click', entrar);
 $('#senha').addEventListener('keydown', e => { if(e.key==='Enter') entrar(); });
@@ -411,6 +553,8 @@ document.querySelector('.tabs').addEventListener('click', e => {
   document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('active', x===b));
   document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id===b.dataset.tab));
   if (b.dataset.tab==='ferramentas') renderFerramentas();
+  if (b.dataset.tab==='acessos') renderAcessos();
+  if (b.dataset.tab==='relatorio') renderRelatorio();
   if (b.dataset.tab==='colar' && !$('#colar').innerHTML.trim()) renderColar();
 });
 
@@ -426,8 +570,8 @@ document.addEventListener('click', async e => {
   const ff = t.closest('.filtros button');
   if (ff && t.closest('#resultados')){ resFiltro=ff.dataset.f; renderResultados(); return; }
   if (t.id==='btnRenomear'){ const v=$('#renomear').value.trim(); if(v){ state.participants[palSel].nome=v; agendarSave(); renderPalpites(); } return; }
-  if (t.id==='btnAddPart'){ state.participants.push({nome:'Novo '+(state.participants.length+1),palpites:{}}); palSel=state.participants.length-1; agendarSave(); renderPalpites(); return; }
-  if (t.id==='btnLimparPalp'){ if(confirm('Apagar todos os palpites de '+state.participants[palSel].nome+'?')){ state.participants[palSel].palpites={}; agendarSave(); renderPalpites(); } return; }
+  if (t.id==='btnAddPart'){ state.participants.push({id:uuid(),nome:'Novo '+(state.participants.length+1),palpites:{}}); palSel=state.participants.length-1; agendarSave(); renderPalpites(); return; }
+  if (t.id==='btnLimparPalp'){ if(confirm('Apagar todos os palpites de '+state.participants[palSel].nome+'?')){ const part=state.participants[palSel]; Object.keys(part.palpites).forEach(k=>recordPalp(part.id,k,null)); part.palpites={}; agendarSave(); renderPalpites(); } return; }
   if (t.id==='btnAplicar'){ const q=aplicarBulk($('#bulk').value); renderPalpites(); alert(q+' palpite(s) aplicado(s).'); return; }
   if (t.id==='btnLer'){
     colarParsed = parseGroupMessage($('#msg').value);
@@ -441,11 +585,52 @@ document.addEventListener('click', async e => {
   if (t.id==='btnReset'){
     if(!confirm('Resetar tudo para os dados originais? Isso apaga resultados e palpites de todos.')) return;
     try{ const seed = await (await fetch('/bolao.seed.json',{cache:'no-store'})).json();
-      state = seed; agendarSave(); renderResultados(); renderPalpites(); renderFerramentas(); }
+      state = seed; ensureIds(); palpEdits={}; agendarSave(true); renderResultados(); renderPalpites(); renderFerramentas(); }
     catch(err){ alert('Não foi possível carregar os dados originais: '+err.message); }
     return;
   }
   if (t.id==='btnSair'){ deslogar(''); return; }
+
+  /* ----- Aba Relatório ----- */
+  const rf = t.closest('.filtros button');
+  if (rf && t.closest('#relatorio')){ relFase=rf.dataset.relf; renderRelatorio(); return; }
+  if (t.id==='btnCopiarRel'){ copiar($('#relTexto').value, t); return; }
+
+  /* ----- Aba Acessos ----- */
+  if (t.id==='btnCopiarTodos'){
+    const txt = acessos.map(a => msgAcesso(a.login, a.senha, a.nome)).join('\n\n— — —\n\n')
+      || 'Nenhum acesso criado ainda.';
+    copiar(txt, t); return;
+  }
+  const card = t.closest('[data-acc]');
+  if (card){
+    const id = card.getAttribute('data-acc');
+    const part = state.participants.find(p => p.id === id);
+    const loginEl = card.querySelector('[data-acc-login]');
+    const senhaEl = card.querySelector('[data-acc-senha]');
+    if (t.hasAttribute('data-acc-gerar')){ senhaEl.value = geraSenha(); return; }
+    if (t.hasAttribute('data-acc-salvar')){
+      const login = loginEl.value.trim().toLowerCase(), senha = senhaEl.value.trim();
+      if(!login||!senha){ alert('Preencha login e senha.'); return; }
+      t.disabled = true; t.textContent = 'Salvando…';
+      try{
+        await apiAcessos({ action:'set', login, senha, id, nome: part ? part.nome : '' });
+        acessos = (await apiAcessos({ action:'list' })).users || [];
+        renderAcessos();
+      }catch(err){ if(err.message==='401') return deslogar('Senha incorreta.'); alert('Erro: '+err.message); t.disabled=false; t.textContent='Salvar acesso'; }
+      return;
+    }
+    if (t.hasAttribute('data-acc-copiar')){
+      const c = credDe(id); if(c) copiar(msgAcesso(c.login, c.senha, c.nome || (part&&part.nome) || ''), t); return;
+    }
+    if (t.hasAttribute('data-acc-remover')){
+      const c = credDe(id); if(!c) return;
+      if(!confirm('Remover o acesso de '+(part?part.nome:c.login)+'? Ele não vai mais conseguir entrar.')) return;
+      try{ await apiAcessos({ action:'remove', login:c.login }); acessos = (await apiAcessos({ action:'list' })).users || []; renderAcessos(); }
+      catch(err){ if(err.message==='401') return deslogar('Senha incorreta.'); alert('Erro: '+err.message); }
+      return;
+    }
+  }
 });
 
 document.addEventListener('change', e => {
@@ -454,7 +639,7 @@ document.addEventListener('change', e => {
   if (e.target.id==='fileImport'){
     const f=e.target.files[0]; if(!f) return;
     const rd=new FileReader();
-    rd.onload=()=>{ try{ const o=JSON.parse(rd.result); if(!o.fixtures||!o.participants) throw 0; state=o; agendarSave(); renderResultados(); renderPalpites(); renderFerramentas(); }catch(err){ alert('Arquivo inválido.'); } };
+    rd.onload=()=>{ try{ const o=JSON.parse(rd.result); if(!o.fixtures||!o.participants) throw 0; state=o; ensureIds(); palpEdits={}; agendarSave(true); renderResultados(); renderPalpites(); renderFerramentas(); }catch(err){ alert('Arquivo inválido.'); } };
     rd.readAsText(f);
   }
 });

@@ -260,6 +260,7 @@
       "grupo": "Grupo A",
       "data": "qui 11/06",
       "hora": "16:00",
+      "kickoff": "2026-06-11T19:00:00.000Z",
       "casa": {
         "nome": "México",
         "flag": "🇲🇽"
@@ -279,6 +280,7 @@
       "grupo": "Grupo A",
       "data": "qui 11/06",
       "hora": "23:00",
+      "kickoff": "2026-06-12T02:00:00.000Z",
       "casa": {
         "nome": "Coreia do Sul",
         "flag": "🇰🇷"
@@ -298,6 +300,7 @@
       "grupo": "Grupo B",
       "data": "sex 12/06",
       "hora": "16:00",
+      "kickoff": "2026-06-12T19:00:00.000Z",
       "casa": {
         "nome": "Canadá",
         "flag": "🇨🇦"
@@ -317,6 +320,7 @@
       "grupo": "Grupo D",
       "data": "sex 12/06",
       "hora": "22:00",
+      "kickoff": "2026-06-13T01:00:00.000Z",
       "casa": {
         "nome": "Estados Unidos",
         "flag": "🇺🇸"
@@ -336,6 +340,7 @@
       "grupo": "Grupo B",
       "data": "sáb 13/06",
       "hora": "16:00",
+      "kickoff": "2026-06-13T19:00:00.000Z",
       "casa": {
         "nome": "Catar",
         "flag": "🇶🇦"
@@ -355,6 +360,7 @@
       "grupo": "Grupo C",
       "data": "sáb 13/06",
       "hora": "19:00",
+      "kickoff": "2026-06-13T22:00:00.000Z",
       "casa": {
         "nome": "Brasil",
         "flag": "🇧🇷"
@@ -374,6 +380,7 @@
       "grupo": "Grupo C",
       "data": "sáb 13/06",
       "hora": "22:00",
+      "kickoff": "2026-06-14T01:00:00.000Z",
       "casa": {
         "nome": "Haiti",
         "flag": "🇭🇹"
@@ -393,6 +400,7 @@
       "grupo": "Grupo D",
       "data": "dom 14/06",
       "hora": "01:00",
+      "kickoff": "2026-06-14T04:00:00.000Z",
       "casa": {
         "nome": "Austrália",
         "flag": "🇦🇺"
@@ -412,6 +420,7 @@
       "grupo": "Grupo E",
       "data": "dom 14/06",
       "hora": "14:00",
+      "kickoff": "2026-06-14T17:00:00.000Z",
       "casa": {
         "nome": "Alemanha",
         "flag": "🇩🇪"
@@ -431,6 +440,7 @@
       "grupo": "Grupo F",
       "data": "dom 14/06",
       "hora": "17:00",
+      "kickoff": "2026-06-14T20:00:00.000Z",
       "casa": {
         "nome": "Holanda",
         "flag": "🇳🇱"
@@ -450,6 +460,7 @@
       "grupo": "Grupo E",
       "data": "dom 14/06",
       "hora": "20:00",
+      "kickoff": "2026-06-14T23:00:00.000Z",
       "casa": {
         "nome": "Costa do Marfim",
         "flag": "🇨🇮"
@@ -469,6 +480,7 @@
       "grupo": "Grupo F",
       "data": "dom 14/06",
       "hora": "23:00",
+      "kickoff": "2026-06-15T02:00:00.000Z",
       "casa": {
         "nome": "Suécia",
         "flag": "🇸🇪"
@@ -488,6 +500,7 @@
       "grupo": "Grupo H",
       "data": "seg 15/06",
       "hora": "13:00",
+      "kickoff": "2026-06-15T16:00:00.000Z",
       "casa": {
         "nome": "Espanha",
         "flag": "🇪🇸"
@@ -507,6 +520,7 @@
       "grupo": "Grupo G",
       "data": "seg 15/06",
       "hora": "16:00",
+      "kickoff": "2026-06-15T19:00:00.000Z",
       "casa": {
         "nome": "Bélgica",
         "flag": "🇧🇪"
@@ -526,6 +540,7 @@
       "grupo": "Grupo H",
       "data": "seg 15/06",
       "hora": "19:00",
+      "kickoff": "2026-06-15T22:00:00.000Z",
       "casa": {
         "nome": "Arábia Saudita",
         "flag": "🇸🇦"
@@ -545,6 +560,7 @@
       "grupo": "Grupo G",
       "data": "seg 15/06",
       "hora": "22:00",
+      "kickoff": "2026-06-16T01:00:00.000Z",
       "casa": {
         "nome": "Irã",
         "flag": "🇮🇷"
@@ -564,6 +580,7 @@
       "grupo": "Grupo I",
       "data": "ter 16/06",
       "hora": "16:00",
+      "kickoff": "2026-06-16T19:00:00.000Z",
       "casa": {
         "nome": "França",
         "flag": "🇫🇷"
@@ -583,6 +600,7 @@
       "grupo": "Grupo I",
       "data": "ter 16/06",
       "hora": "19:00",
+      "kickoff": "2026-06-16T22:00:00.000Z",
       "casa": {
         "nome": "Iraque",
         "flag": "🇮🇶"
@@ -602,6 +620,7 @@
       "grupo": "Grupo J",
       "data": "ter 16/06",
       "hora": "22:00",
+      "kickoff": "2026-06-17T01:00:00.000Z",
       "casa": {
         "nome": "Argentina",
         "flag": "🇦🇷"
@@ -621,6 +640,7 @@
       "grupo": "Grupo J",
       "data": "qua 17/06",
       "hora": "01:00",
+      "kickoff": "2026-06-17T04:00:00.000Z",
       "casa": {
         "nome": "Áustria",
         "flag": "🇦🇹"
@@ -640,6 +660,7 @@
       "grupo": "Grupo K",
       "data": "qua 17/06",
       "hora": "14:00",
+      "kickoff": "2026-06-17T17:00:00.000Z",
       "casa": {
         "nome": "Portugal",
         "flag": "🇵🇹"
@@ -659,6 +680,7 @@
       "grupo": "Grupo L",
       "data": "qua 17/06",
       "hora": "17:00",
+      "kickoff": "2026-06-17T20:00:00.000Z",
       "casa": {
         "nome": "Inglaterra",
         "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿"
@@ -678,6 +700,7 @@
       "grupo": "Grupo L",
       "data": "qua 17/06",
       "hora": "20:00",
+      "kickoff": "2026-06-17T23:00:00.000Z",
       "casa": {
         "nome": "Gana",
         "flag": "🇬🇭"
@@ -697,6 +720,7 @@
       "grupo": "Grupo K",
       "data": "qua 17/06",
       "hora": "23:00",
+      "kickoff": "2026-06-18T02:00:00.000Z",
       "casa": {
         "nome": "Uzbequistão",
         "flag": "🇺🇿"
@@ -716,6 +740,7 @@
       "grupo": "Grupo A",
       "data": "qui 18/06",
       "hora": "13:00",
+      "kickoff": "2026-06-18T16:00:00.000Z",
       "casa": {
         "nome": "Rep. Tcheca",
         "flag": "🇨🇿"
@@ -735,6 +760,7 @@
       "grupo": "Grupo B",
       "data": "qui 18/06",
       "hora": "16:00",
+      "kickoff": "2026-06-18T19:00:00.000Z",
       "casa": {
         "nome": "Suíça",
         "flag": "🇨🇭"
@@ -754,6 +780,7 @@
       "grupo": "Grupo B",
       "data": "qui 18/06",
       "hora": "19:00",
+      "kickoff": "2026-06-18T22:00:00.000Z",
       "casa": {
         "nome": "Canadá",
         "flag": "🇨🇦"
@@ -773,6 +800,7 @@
       "grupo": "Grupo A",
       "data": "qui 18/06",
       "hora": "22:00",
+      "kickoff": "2026-06-19T01:00:00.000Z",
       "casa": {
         "nome": "México",
         "flag": "🇲🇽"
@@ -792,6 +820,7 @@
       "grupo": "Grupo D",
       "data": "sex 19/06",
       "hora": "16:00",
+      "kickoff": "2026-06-19T19:00:00.000Z",
       "casa": {
         "nome": "Estados Unidos",
         "flag": "🇺🇸"
@@ -811,6 +840,7 @@
       "grupo": "Grupo C",
       "data": "sex 19/06",
       "hora": "19:00",
+      "kickoff": "2026-06-19T22:00:00.000Z",
       "casa": {
         "nome": "Escócia",
         "flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿"
@@ -830,6 +860,7 @@
       "grupo": "Grupo C",
       "data": "sex 19/06",
       "hora": "21:30",
+      "kickoff": "2026-06-20T00:30:00.000Z",
       "casa": {
         "nome": "Brasil",
         "flag": "🇧🇷"
@@ -849,6 +880,7 @@
       "grupo": "Grupo D",
       "data": "sáb 20/06",
       "hora": "00:00",
+      "kickoff": "2026-06-20T03:00:00.000Z",
       "casa": {
         "nome": "Turquia",
         "flag": "🇹🇷"
@@ -868,6 +900,7 @@
       "grupo": "Grupo F",
       "data": "sáb 20/06",
       "hora": "14:00",
+      "kickoff": "2026-06-20T17:00:00.000Z",
       "casa": {
         "nome": "Holanda",
         "flag": "🇳🇱"
@@ -887,6 +920,7 @@
       "grupo": "Grupo E",
       "data": "sáb 20/06",
       "hora": "17:00",
+      "kickoff": "2026-06-20T20:00:00.000Z",
       "casa": {
         "nome": "Alemanha",
         "flag": "🇩🇪"
@@ -906,6 +940,7 @@
       "grupo": "Grupo E",
       "data": "sáb 20/06",
       "hora": "21:00",
+      "kickoff": "2026-06-21T00:00:00.000Z",
       "casa": {
         "nome": "Equador",
         "flag": "🇪🇨"
@@ -925,6 +960,7 @@
       "grupo": "Grupo F",
       "data": "dom 21/06",
       "hora": "01:00",
+      "kickoff": "2026-06-21T04:00:00.000Z",
       "casa": {
         "nome": "Tunísia",
         "flag": "🇹🇳"
@@ -944,6 +980,7 @@
       "grupo": "Grupo H",
       "data": "dom 21/06",
       "hora": "13:00",
+      "kickoff": "2026-06-21T16:00:00.000Z",
       "casa": {
         "nome": "Espanha",
         "flag": "🇪🇸"
@@ -963,6 +1000,7 @@
       "grupo": "Grupo G",
       "data": "dom 21/06",
       "hora": "16:00",
+      "kickoff": "2026-06-21T19:00:00.000Z",
       "casa": {
         "nome": "Bélgica",
         "flag": "🇧🇪"
@@ -982,6 +1020,7 @@
       "grupo": "Grupo H",
       "data": "dom 21/06",
       "hora": "19:00",
+      "kickoff": "2026-06-21T22:00:00.000Z",
       "casa": {
         "nome": "Uruguai",
         "flag": "🇺🇾"
@@ -1001,6 +1040,7 @@
       "grupo": "Grupo G",
       "data": "dom 21/06",
       "hora": "22:00",
+      "kickoff": "2026-06-22T01:00:00.000Z",
       "casa": {
         "nome": "Nova Zelândia",
         "flag": "🇳🇿"
@@ -1020,6 +1060,7 @@
       "grupo": "Grupo J",
       "data": "seg 22/06",
       "hora": "14:00",
+      "kickoff": "2026-06-22T17:00:00.000Z",
       "casa": {
         "nome": "Argentina",
         "flag": "🇦🇷"
@@ -1039,6 +1080,7 @@
       "grupo": "Grupo I",
       "data": "seg 22/06",
       "hora": "18:00",
+      "kickoff": "2026-06-22T21:00:00.000Z",
       "casa": {
         "nome": "França",
         "flag": "🇫🇷"
@@ -1058,6 +1100,7 @@
       "grupo": "Grupo I",
       "data": "seg 22/06",
       "hora": "21:00",
+      "kickoff": "2026-06-23T00:00:00.000Z",
       "casa": {
         "nome": "Noruega",
         "flag": "🇳🇴"
@@ -1077,6 +1120,7 @@
       "grupo": "Grupo J",
       "data": "ter 23/06",
       "hora": "00:00",
+      "kickoff": "2026-06-23T03:00:00.000Z",
       "casa": {
         "nome": "Jordânia",
         "flag": "🇯🇴"
@@ -1096,6 +1140,7 @@
       "grupo": "Grupo K",
       "data": "ter 23/06",
       "hora": "14:00",
+      "kickoff": "2026-06-23T17:00:00.000Z",
       "casa": {
         "nome": "Portugal",
         "flag": "🇵🇹"
@@ -1115,6 +1160,7 @@
       "grupo": "Grupo L",
       "data": "ter 23/06",
       "hora": "17:00",
+      "kickoff": "2026-06-23T20:00:00.000Z",
       "casa": {
         "nome": "Inglaterra",
         "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿"
@@ -1134,6 +1180,7 @@
       "grupo": "Grupo L",
       "data": "ter 23/06",
       "hora": "20:00",
+      "kickoff": "2026-06-23T23:00:00.000Z",
       "casa": {
         "nome": "Panamá",
         "flag": "🇵🇦"
@@ -1153,6 +1200,7 @@
       "grupo": "Grupo K",
       "data": "ter 23/06",
       "hora": "23:00",
+      "kickoff": "2026-06-24T02:00:00.000Z",
       "casa": {
         "nome": "Colômbia",
         "flag": "🇨🇴"
@@ -1172,6 +1220,7 @@
       "grupo": "Grupo B",
       "data": "qua 24/06",
       "hora": "16:00",
+      "kickoff": "2026-06-24T19:00:00.000Z",
       "casa": {
         "nome": "Bósnia e Herzegovina",
         "flag": "🇧🇦"
@@ -1191,6 +1240,7 @@
       "grupo": "Grupo B",
       "data": "qua 24/06",
       "hora": "16:00",
+      "kickoff": "2026-06-24T19:00:00.000Z",
       "casa": {
         "nome": "Suíça",
         "flag": "🇨🇭"
@@ -1210,6 +1260,7 @@
       "grupo": "Grupo C",
       "data": "qua 24/06",
       "hora": "19:00",
+      "kickoff": "2026-06-24T22:00:00.000Z",
       "casa": {
         "nome": "Marrocos",
         "flag": "🇲🇦"
@@ -1229,6 +1280,7 @@
       "grupo": "Grupo C",
       "data": "qua 24/06",
       "hora": "19:00",
+      "kickoff": "2026-06-24T22:00:00.000Z",
       "casa": {
         "nome": "Escócia",
         "flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿"
@@ -1248,6 +1300,7 @@
       "grupo": "Grupo A",
       "data": "qua 24/06",
       "hora": "22:00",
+      "kickoff": "2026-06-25T01:00:00.000Z",
       "casa": {
         "nome": "Rep. Tcheca",
         "flag": "🇨🇿"
@@ -1267,6 +1320,7 @@
       "grupo": "Grupo A",
       "data": "qua 24/06",
       "hora": "22:00",
+      "kickoff": "2026-06-25T01:00:00.000Z",
       "casa": {
         "nome": "África do Sul",
         "flag": "🇿🇦"
@@ -1286,6 +1340,7 @@
       "grupo": "Grupo E",
       "data": "qui 25/06",
       "hora": "17:00",
+      "kickoff": "2026-06-25T20:00:00.000Z",
       "casa": {
         "nome": "Curaçao",
         "flag": "🇨🇼"
@@ -1305,6 +1360,7 @@
       "grupo": "Grupo E",
       "data": "qui 25/06",
       "hora": "17:00",
+      "kickoff": "2026-06-25T20:00:00.000Z",
       "casa": {
         "nome": "Equador",
         "flag": "🇪🇨"
@@ -1324,6 +1380,7 @@
       "grupo": "Grupo F",
       "data": "qui 25/06",
       "hora": "20:00",
+      "kickoff": "2026-06-25T23:00:00.000Z",
       "casa": {
         "nome": "Japão",
         "flag": "🇯🇵"
@@ -1343,6 +1400,7 @@
       "grupo": "Grupo F",
       "data": "qui 25/06",
       "hora": "20:00",
+      "kickoff": "2026-06-25T23:00:00.000Z",
       "casa": {
         "nome": "Tunísia",
         "flag": "🇹🇳"
@@ -1362,6 +1420,7 @@
       "grupo": "Grupo D",
       "data": "qui 25/06",
       "hora": "23:00",
+      "kickoff": "2026-06-26T02:00:00.000Z",
       "casa": {
         "nome": "Paraguai",
         "flag": "🇵🇾"
@@ -1381,6 +1440,7 @@
       "grupo": "Grupo D",
       "data": "qui 25/06",
       "hora": "23:00",
+      "kickoff": "2026-06-26T02:00:00.000Z",
       "casa": {
         "nome": "Turquia",
         "flag": "🇹🇷"
@@ -1400,6 +1460,7 @@
       "grupo": "Grupo I",
       "data": "sex 26/06",
       "hora": "16:00",
+      "kickoff": "2026-06-26T19:00:00.000Z",
       "casa": {
         "nome": "Noruega",
         "flag": "🇳🇴"
@@ -1419,6 +1480,7 @@
       "grupo": "Grupo I",
       "data": "sex 26/06",
       "hora": "16:00",
+      "kickoff": "2026-06-26T19:00:00.000Z",
       "casa": {
         "nome": "Senegal",
         "flag": "🇸🇳"
@@ -1438,6 +1500,7 @@
       "grupo": "Grupo H",
       "data": "sex 26/06",
       "hora": "21:00",
+      "kickoff": "2026-06-27T00:00:00.000Z",
       "casa": {
         "nome": "Cabo Verde",
         "flag": "🇨🇻"
@@ -1457,6 +1520,7 @@
       "grupo": "Grupo H",
       "data": "sex 26/06",
       "hora": "21:00",
+      "kickoff": "2026-06-27T00:00:00.000Z",
       "casa": {
         "nome": "Uruguai",
         "flag": "🇺🇾"
@@ -1476,6 +1540,7 @@
       "grupo": "Grupo G",
       "data": "sáb 27/06",
       "hora": "00:00",
+      "kickoff": "2026-06-27T03:00:00.000Z",
       "casa": {
         "nome": "Egito",
         "flag": "🇪🇬"
@@ -1495,6 +1560,7 @@
       "grupo": "Grupo G",
       "data": "sáb 27/06",
       "hora": "00:00",
+      "kickoff": "2026-06-27T03:00:00.000Z",
       "casa": {
         "nome": "Nova Zelândia",
         "flag": "🇳🇿"
@@ -1514,6 +1580,7 @@
       "grupo": "Grupo L",
       "data": "sáb 27/06",
       "hora": "18:00",
+      "kickoff": "2026-06-27T21:00:00.000Z",
       "casa": {
         "nome": "Croácia",
         "flag": "🇭🇷"
@@ -1533,6 +1600,7 @@
       "grupo": "Grupo L",
       "data": "sáb 27/06",
       "hora": "18:00",
+      "kickoff": "2026-06-27T21:00:00.000Z",
       "casa": {
         "nome": "Panamá",
         "flag": "🇵🇦"
@@ -1552,6 +1620,7 @@
       "grupo": "Grupo K",
       "data": "sáb 27/06",
       "hora": "20:30",
+      "kickoff": "2026-06-27T23:30:00.000Z",
       "casa": {
         "nome": "Colômbia",
         "flag": "🇨🇴"
@@ -1571,6 +1640,7 @@
       "grupo": "Grupo K",
       "data": "sáb 27/06",
       "hora": "20:30",
+      "kickoff": "2026-06-27T23:30:00.000Z",
       "casa": {
         "nome": "R.D. Congo",
         "flag": "🇨🇩"
@@ -1590,6 +1660,7 @@
       "grupo": "Grupo J",
       "data": "sáb 27/06",
       "hora": "23:00",
+      "kickoff": "2026-06-28T02:00:00.000Z",
       "casa": {
         "nome": "Argélia",
         "flag": "🇩🇿"
@@ -1609,6 +1680,7 @@
       "grupo": "Grupo J",
       "data": "sáb 27/06",
       "hora": "23:00",
+      "kickoff": "2026-06-28T02:00:00.000Z",
       "casa": {
         "nome": "Jordânia",
         "flag": "🇯🇴"
@@ -1628,6 +1700,7 @@
       "grupo": null,
       "data": "dom 28/06",
       "hora": "16:00",
+      "kickoff": "2026-06-28T19:00:00.000Z",
       "casa": {
         "nome": "2º Grupo A",
         "flag": ""
@@ -1647,6 +1720,7 @@
       "grupo": null,
       "data": "seg 29/06",
       "hora": "17:30",
+      "kickoff": "2026-06-29T20:30:00.000Z",
       "casa": {
         "nome": "1º Grupo E",
         "flag": ""
@@ -1666,6 +1740,7 @@
       "grupo": null,
       "data": "seg 29/06",
       "hora": "22:00",
+      "kickoff": "2026-06-30T01:00:00.000Z",
       "casa": {
         "nome": "1º Grupo F",
         "flag": ""
@@ -1685,6 +1760,7 @@
       "grupo": null,
       "data": "seg 29/06",
       "hora": "14:00",
+      "kickoff": "2026-06-29T17:00:00.000Z",
       "casa": {
         "nome": "1º Grupo C",
         "flag": ""
@@ -1704,6 +1780,7 @@
       "grupo": null,
       "data": "ter 30/06",
       "hora": "18:00",
+      "kickoff": "2026-06-30T21:00:00.000Z",
       "casa": {
         "nome": "1º Grupo I",
         "flag": ""
@@ -1723,6 +1800,7 @@
       "grupo": null,
       "data": "ter 30/06",
       "hora": "14:00",
+      "kickoff": "2026-06-30T17:00:00.000Z",
       "casa": {
         "nome": "2º Grupo E",
         "flag": ""
@@ -1742,6 +1820,7 @@
       "grupo": null,
       "data": "ter 30/06",
       "hora": "22:00",
+      "kickoff": "2026-07-01T01:00:00.000Z",
       "casa": {
         "nome": "1º Grupo A",
         "flag": ""
@@ -1761,6 +1840,7 @@
       "grupo": null,
       "data": "qua 01/07",
       "hora": "13:00",
+      "kickoff": "2026-07-01T16:00:00.000Z",
       "casa": {
         "nome": "1º Grupo L",
         "flag": ""
@@ -1780,6 +1860,7 @@
       "grupo": null,
       "data": "qua 01/07",
       "hora": "21:00",
+      "kickoff": "2026-07-02T00:00:00.000Z",
       "casa": {
         "nome": "1º Grupo D",
         "flag": ""
@@ -1799,6 +1880,7 @@
       "grupo": null,
       "data": "qua 01/07",
       "hora": "17:00",
+      "kickoff": "2026-07-01T20:00:00.000Z",
       "casa": {
         "nome": "1º Grupo G",
         "flag": ""
@@ -1818,6 +1900,7 @@
       "grupo": null,
       "data": "qui 02/07",
       "hora": "20:00",
+      "kickoff": "2026-07-02T23:00:00.000Z",
       "casa": {
         "nome": "2º Grupo K",
         "flag": ""
@@ -1837,6 +1920,7 @@
       "grupo": null,
       "data": "qui 02/07",
       "hora": "16:00",
+      "kickoff": "2026-07-02T19:00:00.000Z",
       "casa": {
         "nome": "1º Grupo H",
         "flag": ""
@@ -1856,6 +1940,7 @@
       "grupo": null,
       "data": "sex 03/07",
       "hora": "00:00",
+      "kickoff": "2026-07-03T03:00:00.000Z",
       "casa": {
         "nome": "1º Grupo B",
         "flag": ""
@@ -1875,6 +1960,7 @@
       "grupo": null,
       "data": "sex 03/07",
       "hora": "19:00",
+      "kickoff": "2026-07-03T22:00:00.000Z",
       "casa": {
         "nome": "1º Grupo J",
         "flag": ""
@@ -1894,6 +1980,7 @@
       "grupo": null,
       "data": "sex 03/07",
       "hora": "22:30",
+      "kickoff": "2026-07-04T01:30:00.000Z",
       "casa": {
         "nome": "1º Grupo K",
         "flag": ""
@@ -1913,6 +2000,7 @@
       "grupo": null,
       "data": "sex 03/07",
       "hora": "15:00",
+      "kickoff": "2026-07-03T18:00:00.000Z",
       "casa": {
         "nome": "2º Grupo D",
         "flag": ""
@@ -1932,6 +2020,7 @@
       "grupo": null,
       "data": "sáb 04/07",
       "hora": "18:00",
+      "kickoff": "2026-07-04T21:00:00.000Z",
       "casa": {
         "nome": "Vencedor J74",
         "flag": ""
@@ -1951,6 +2040,7 @@
       "grupo": null,
       "data": "sáb 04/07",
       "hora": "14:00",
+      "kickoff": "2026-07-04T17:00:00.000Z",
       "casa": {
         "nome": "Vencedor J73",
         "flag": ""
@@ -1970,6 +2060,7 @@
       "grupo": null,
       "data": "dom 05/07",
       "hora": "17:00",
+      "kickoff": "2026-07-05T20:00:00.000Z",
       "casa": {
         "nome": "Vencedor J76",
         "flag": ""
@@ -1989,6 +2080,7 @@
       "grupo": null,
       "data": "dom 05/07",
       "hora": "21:00",
+      "kickoff": "2026-07-06T00:00:00.000Z",
       "casa": {
         "nome": "Vencedor J79",
         "flag": ""
@@ -2008,6 +2100,7 @@
       "grupo": null,
       "data": "seg 06/07",
       "hora": "16:00",
+      "kickoff": "2026-07-06T19:00:00.000Z",
       "casa": {
         "nome": "Vencedor J83",
         "flag": ""
@@ -2027,6 +2120,7 @@
       "grupo": null,
       "data": "seg 06/07",
       "hora": "21:00",
+      "kickoff": "2026-07-07T00:00:00.000Z",
       "casa": {
         "nome": "Vencedor J81",
         "flag": ""
@@ -2046,6 +2140,7 @@
       "grupo": null,
       "data": "ter 07/07",
       "hora": "13:00",
+      "kickoff": "2026-07-07T16:00:00.000Z",
       "casa": {
         "nome": "Vencedor J86",
         "flag": ""
@@ -2065,6 +2160,7 @@
       "grupo": null,
       "data": "ter 07/07",
       "hora": "17:00",
+      "kickoff": "2026-07-07T20:00:00.000Z",
       "casa": {
         "nome": "Vencedor J85",
         "flag": ""
@@ -2084,6 +2180,7 @@
       "grupo": null,
       "data": "qui 09/07",
       "hora": "17:00",
+      "kickoff": "2026-07-09T20:00:00.000Z",
       "casa": {
         "nome": "Vencedor J89",
         "flag": ""
@@ -2103,6 +2200,7 @@
       "grupo": null,
       "data": "sex 10/07",
       "hora": "16:00",
+      "kickoff": "2026-07-10T19:00:00.000Z",
       "casa": {
         "nome": "Vencedor J93",
         "flag": ""
@@ -2122,6 +2220,7 @@
       "grupo": null,
       "data": "sáb 11/07",
       "hora": "18:00",
+      "kickoff": "2026-07-11T21:00:00.000Z",
       "casa": {
         "nome": "Vencedor J91",
         "flag": ""
@@ -2141,6 +2240,7 @@
       "grupo": null,
       "data": "sáb 11/07",
       "hora": "22:00",
+      "kickoff": "2026-07-12T01:00:00.000Z",
       "casa": {
         "nome": "Vencedor J95",
         "flag": ""
@@ -2160,6 +2260,7 @@
       "grupo": null,
       "data": "ter 14/07",
       "hora": "16:00",
+      "kickoff": "2026-07-14T19:00:00.000Z",
       "casa": {
         "nome": "Vencedor J97",
         "flag": ""
@@ -2179,6 +2280,7 @@
       "grupo": null,
       "data": "qua 15/07",
       "hora": "16:00",
+      "kickoff": "2026-07-15T19:00:00.000Z",
       "casa": {
         "nome": "Vencedor J99",
         "flag": ""
@@ -2198,6 +2300,7 @@
       "grupo": null,
       "data": "sáb 18/07",
       "hora": "18:00",
+      "kickoff": "2026-07-18T21:00:00.000Z",
       "casa": {
         "nome": "Perdedor J101",
         "flag": ""
@@ -2217,6 +2320,7 @@
       "grupo": null,
       "data": "dom 19/07",
       "hora": "16:00",
+      "kickoff": "2026-07-19T19:00:00.000Z",
       "casa": {
         "nome": "Vencedor J101",
         "flag": ""

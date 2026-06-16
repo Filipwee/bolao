@@ -16,7 +16,6 @@ const fs = require('fs');
 const path = require('path');
 
 if (!process.env.ADMIN_PASSWORD) process.env.ADMIN_PASSWORD = 'admin';
-const handler = require('./api/state.js');
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
 
@@ -34,8 +33,14 @@ function readBody(req){
 const server = http.createServer(async (req, res) => {
   const url = req.url.split('?')[0];
 
-  // API
-  if (url === '/api/state') {
+  // API — roteia /api/<nome> para ./api/<nome>.js (mesmo mapeamento do Vercel).
+  if (url.startsWith('/api/')) {
+    const name = url.slice('/api/'.length);
+    const file = path.join(ROOT, 'api', name + '.js');
+    if (!file.startsWith(path.join(ROOT, 'api')) || !fs.existsSync(file)) {
+      res.statusCode = 404; return res.end('not found');
+    }
+    const handler = require(file);
     // Polyfill dos helpers que o runtime do Vercel adiciona ao `res`.
     res.status = c => { res.statusCode = c; return res; };
     res.json = o => { res.setHeader('Content-Type', 'application/json; charset=utf-8'); res.end(JSON.stringify(o)); return res; };

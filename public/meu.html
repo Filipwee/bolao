@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>📝 Meu Bolão — Copa 2026</title>
+<style>
+  :root{
+    --bg:#0b132b; --card:#16204a; --card2:#1c2a5e; --line:#26356e; --txt:#eaf0ff;
+    --muted:#9fb0d8; --accent:#ffd166; --green:#06d6a0; --red:#ef476f;
+    --p25:#06d6a0; --p18:#3da5ff; --p15:#7c6cff; --p12:#b07cff; --p10:#ffb703; --p5:#9fb0d8; --p0:#5b6790;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(160deg,var(--bg),#070d1f 70%);color:var(--txt);min-height:100vh}
+  header{padding:14px 16px;text-align:center}
+  header h1{margin:0;font-size:1.3rem}
+  header .sub{color:var(--muted);font-size:.82rem;margin-top:4px}
+  #status{font-size:.8rem;margin-top:6px;min-height:1.1em}
+  #status .ok{color:var(--green)} #status .err{color:var(--red)} #status .saving{color:var(--accent)}
+  main{max-width:760px;margin:0 auto;padding:8px 12px 70px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+  .muted{color:var(--muted)}.center{text-align:center}
+  .flag{font-size:1.1rem}
+  button.btn{background:var(--accent);color:#10142a;border:none;border-radius:10px;padding:10px 14px;
+    font-size:.92rem;font-weight:700;cursor:pointer;margin:4px 4px 4px 0}
+  button.btn.sec{background:var(--card2);color:var(--txt);border:1px solid var(--line)}
+  input{background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:8px;
+    padding:7px 9px;font-size:.92rem;font-family:inherit}
+  input[type=number]{width:48px;text-align:center;-moz-appearance:textfield}
+  input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  input:disabled{opacity:.5}
+  .filtros{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .filtros button{background:var(--card);border:1px solid var(--line);color:var(--muted);border-radius:999px;
+    padding:5px 11px;font-size:.8rem;cursor:pointer}
+  .filtros button.active{background:var(--card2);color:var(--txt);border-color:var(--accent)}
+  .grow{display:flex;align-items:center;gap:8px;padding:9px 2px;border-top:1px solid var(--line);font-size:.86rem}
+  .grow:first-child{border-top:none}
+  .grow .n{width:30px;color:var(--muted);font-size:.76rem;flex:none;text-align:center}
+  .grow .conf{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .grow .inputs{flex:none;display:flex;align-items:center;gap:4px}
+  .grow .extra{flex:none;width:118px;text-align:right;color:var(--muted);font-size:.76rem}
+  .pill{display:inline-block;padding:2px 7px;border-radius:999px;font-size:.72rem;font-weight:700}
+  .lock{color:var(--muted);font-size:.74rem}
+  .totais{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .totais .box{flex:1;min-width:90px;background:var(--card2);border-radius:12px;padding:10px;text-align:center}
+  .totais .box b{display:block;font-size:1.5rem;color:var(--accent)}
+  .totais .box span{font-size:.72rem;color:var(--muted)}
+  /* Login */
+  #login{position:fixed;inset:0;background:linear-gradient(160deg,var(--bg),#070d1f 70%);display:flex;
+    align-items:center;justify-content:center;z-index:100;padding:20px}
+  #login .box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;max-width:360px;width:100%;text-align:center}
+  #login h2{margin:0 0 6px}#login p{color:var(--muted);font-size:.85rem;margin:0 0 16px}
+  #login input{width:100%;text-align:center;font-size:1.05rem;padding:11px;margin-bottom:10px}
+  #login button{width:100%}
+  #login .erro{color:var(--red);font-size:.82rem;margin-top:10px;min-height:1em}
+  #app{display:none}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  a.link{color:var(--accent);text-decoration:none;font-size:.84rem}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <div class="box">
+    <h2>📝 Meu Bolão</h2>
+    <p>Entre com o login e a senha que o organizador te enviou.</p>
+    <input id="login_user" placeholder="login" autocomplete="username">
+    <input type="password" id="login_pw" placeholder="senha" autocomplete="current-password">
+    <button class="btn" id="btnEntrar">Entrar</button>
+    <div class="erro" id="loginErro"></div>
+    <p style="margin-top:14px"><a class="link" href="/">← Ver o ranking e os jogos</a></p>
+  </div>
+</div>
+
+<div id="app">
+  <header>
+    <h1>📝 Meu Bolão</h1>
+    <div class="sub" id="ola"></div>
+    <div id="status"></div>
+  </header>
+  <main>
+    <div class="card">
+      <p class="muted" style="margin:0;font-size:.82rem">Cada jogo trava no horário do apito inicial (Brasília).
+        Depois disso não dá mais pra mudar. Salva sozinho enquanto você digita.</p>
+    </div>
+    <div class="totais" id="totais"></div>
+    <div class="filtros" id="filtros"></div>
+    <div class="card" id="lista"></div>
+    <div class="center"><button class="btn sec" id="btnSair">Sair</button>
+      &nbsp; <a class="link" href="/">Ver ranking →</a></div>
+  </main>
+</div>
+
+<script>
+let LOGIN = localStorage.getItem('bolao_meu_login') || '';
+let SENHA = localStorage.getItem('bolao_meu_pw') || '';
+let NOME = '', FIX = [], PALP = {}, dirty = {}, saveTimer = null;
+let faseFiltro = 'Todas';
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const corPts = v => v===25?'var(--p25)':v===18?'var(--p18)':v===15?'var(--p15)':v===12?'var(--p12)':v===10?'var(--p10)':v===5?'var(--p5)':'var(--p0)';
+
+function points(RC,RF,PC,PF){
+  if (RC==null||RF==null||PC==null||PF==null) return null;
+  if (PC===RC&&PF===RF) return 25;
+  if (RC===RF) return (PC===PF)?5:0;
+  const ok=(RC>RF&&PC>PF)||(RC<RF&&PC<PF); if(!ok) return 0;
+  let p=10;
+  if(Math.max(RC,RF)===Math.max(PC,PF)) p=Math.max(p,18);
+  if(Math.min(RC,RF)===Math.min(PC,PF)) p=Math.max(p,15);
+  if((RC-RF)===(PC-PF)) p=Math.max(p,12);
+  return p;
+}
+const comecou = f => f.kickoff ? Date.now() >= Date.parse(f.kickoff) : (f.placar && f.placar.casa!=null);
+
+function setStatus(html){ $('#status').innerHTML = html; }
+
+async function carregarFixtures(){
+  const r = await fetch('/api/state',{cache:'no-store'});
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  const d = await r.json();
+  FIX = d.fixtures;
+}
+async function loginReq(palpites){
+  const body = { login: LOGIN, senha: SENHA };
+  if (palpites) body.palpites = palpites;
+  const r = await fetch('/api/palpite',{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  if(r.status===401) throw new Error('401');
+  if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e.error||('HTTP '+r.status)); }
+  return r.json();
+}
+
+function deslogar(msg){
+  LOGIN=''; SENHA=''; localStorage.removeItem('bolao_meu_login'); localStorage.removeItem('bolao_meu_pw');
+  $('#app').style.display='none'; $('#login').style.display='flex';
+  $('#loginErro').textContent = msg||''; $('#login_pw').value='';
+}
+
+async function entrar(){
+  LOGIN = $('#login_user').value.trim().toLowerCase();
+  SENHA = $('#login_pw').value;
+  if(!LOGIN||!SENHA){ $('#loginErro').textContent='Preencha login e senha.'; return; }
+  $('#loginErro').textContent='Entrando…';
+  try{
+    await carregarFixtures();
+    const me = await loginReq(null);
+    NOME = me.nome; PALP = me.palpites || {};
+    localStorage.setItem('bolao_meu_login', LOGIN); localStorage.setItem('bolao_meu_pw', SENHA);
+    $('#login').style.display='none'; $('#app').style.display='block';
+    $('#ola').textContent = `Olá, ${NOME}!`;
+    setStatus('<span class="ok">✓ conectado</span>');
+    render();
+  }catch(e){
+    $('#loginErro').textContent = (e.message==='401') ? 'Login ou senha incorretos.' : ('Erro: '+e.message);
+  }
+}
+
+function agendarSave(){
+  setStatus('<span class="saving">salvando…</span>');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async () => {
+    const envio = dirty; dirty = {};
+    if(!Object.keys(envio).length){ return; }
+    try{
+      const res = await loginReq(envio);
+      PALP = res.palpites || PALP;
+      let extra = '';
+      if(res.travados && res.travados.length) extra = ` <span class="err">(jogo(s) ${res.travados.join(', ')} já começaram — não salvos)</span>`;
+      const h = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      setStatus(`<span class="ok">✓ salvo às ${h}</span>${extra}`);
+      if(extra) renderLista(); // reflete o que travou
+    }catch(e){
+      if(e.message==='401'){ deslogar('Sessão expirada. Entre de novo.'); return; }
+      Object.assign(dirty, envio); // devolve para tentar de novo
+      setStatus(`<span class="err">erro ao salvar: ${esc(e.message)} — tentando…</span>`);
+      setTimeout(agendarSave, 4000);
+    }
+  }, 700);
+}
+
+function fases(){ const s=[]; FIX.forEach(f=>{ if(!s.includes(f.fase)) s.push(f.fase); }); return s; }
+
+function render(){ renderTotais(); renderFiltros(); renderLista(); }
+
+function renderTotais(){
+  let pts=0, exatos=0, enviados=Object.keys(PALP).length;
+  FIX.forEach(f=>{ const p=PALP[String(f.n)], r=f.placar; if(p&&r&&r.casa!=null){ const v=points(r.casa,r.fora,p.casa,p.fora); if(v!=null){ pts+=v; if(v===25) exatos++; } } });
+  $('#totais').innerHTML = `
+    <div class="box"><b>${pts}</b><span>pontos</span></div>
+    <div class="box"><b>${exatos}</b><span>placares exatos</span></div>
+    <div class="box"><b>${enviados}</b><span>palpites dados</span></div>`;
+}
+
+function renderFiltros(){
+  let h = `<button data-f="Todas" class="${faseFiltro==='Todas'?'active':''}">Todas</button>`;
+  fases().forEach(f => h += `<button data-f="${esc(f)}" class="${faseFiltro===f?'active':''}">${esc(f)}</button>`);
+  $('#filtros').innerHTML = h;
+}
+
+function renderLista(){
+  let h = '';
+  FIX.filter(f => faseFiltro==='Todas'||f.fase===faseFiltro).forEach(f => {
+    const p = PALP[String(f.n)], r = f.placar, trava = comecou(f);
+    let extra;
+    if (trava){
+      const jogou = r && r.casa!=null;
+      let pt = '';
+      if (p && jogou){ const v=points(r.casa,r.fora,p.casa,p.fora); pt=` <span class="pill" style="background:${corPts(v)};color:${v===0?'#fff':'#0b132b'}">${v}</span>`; }
+      extra = `<span class="extra">${jogou?`real ${r.casa}×${r.fora}`:'🔒 começou'}${pt}</span>`;
+    } else {
+      extra = `<span class="extra lock">${esc(f.data)} ${esc(f.hora)}</span>`;
+    }
+    h += `<div class="grow"><span class="n">#${f.n}</span>
+      <span class="conf">${f.casa.flag} ${esc(f.casa.nome)} × ${esc(f.fora.nome)} ${f.fora.flag}</span>
+      <span class="inputs">
+        <input type="number" min="0" inputmode="numeric" data-pal="${f.n}" data-side="casa" value="${p?p.casa:''}" ${trava?'disabled':''}>
+        <span class="muted">×</span>
+        <input type="number" min="0" inputmode="numeric" data-pal="${f.n}" data-side="fora" value="${p?p.fora:''}" ${trava?'disabled':''}>
+      </span>${extra}</div>`;
+  });
+  $('#lista').innerHTML = h;
+}
+
+function setPal(n, side, val){
+  const key = String(n);
+  const p = PALP[key] ? {...PALP[key]} : {};
+  if (val===''||val==null) delete p[side]; else p[side] = Math.max(0, parseInt(val,10)||0);
+  if (p.casa==null && p.fora==null){ delete PALP[key]; dirty[key] = { casa:null, fora:null }; }
+  else {
+    PALP[key] = { casa: p.casa!=null?p.casa:0, fora: p.fora!=null?p.fora:0 };
+    // só envia quando os dois lados estão preenchidos (evita salvar pela metade)
+    if (p.casa!=null && p.fora!=null) dirty[key] = PALP[key];
+  }
+  agendarSave();
+}
+
+/* eventos */
+$('#btnEntrar').addEventListener('click', entrar);
+$('#login_pw').addEventListener('keydown', e => { if(e.key==='Enter') entrar(); });
+$('#btnSair').addEventListener('click', () => deslogar(''));
+document.addEventListener('input', e => { const t=e.target; if(t.dataset.pal) setPal(+t.dataset.pal, t.dataset.side, t.value); });
+document.addEventListener('click', e => { const b=e.target.closest('#filtros button'); if(b){ faseFiltro=b.dataset.f; renderFiltros(); renderLista(); } });
+
+/* init: auto-login se já tiver credencial salva */
+if (LOGIN && SENHA){ $('#login_user').value=LOGIN; $('#login_pw').value=SENHA; entrar(); }
+</script>
+</body>
+</html>

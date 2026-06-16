@@ -130,6 +130,7 @@ function toBRT(dateStr, timeStr) {
     data: SEMANA[brt.getUTCDay()] + ' ' + dd + '/' + mm,
     hora: hh + ':' + mi,
     _sort: brt.getTime(),
+    kickoff: new Date(utc).toISOString(), // instante REAL de início (UTC) — usado para travar/ocultar palpites
   };
 }
 
@@ -171,6 +172,7 @@ function buildBolao() {
       grupo: grupoNome,
       data: o.t.data,
       hora: o.t.hora,
+      kickoff: o.t.kickoff,
       casa: team(m.team1),
       fora: team(m.team2),
       placar: ft ? { casa: ft[0], fora: ft[1] } : { casa: null, fora: null },
