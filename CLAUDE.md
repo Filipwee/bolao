@@ -23,8 +23,19 @@ live — no redeploy needed.
 
 - **All UI text in Brazilian Portuguese.** Team names translated to PT with flag emoji (map in `build.js`).
 - **All times in Brasília time (BRT, UTC-3, no DST).** Source `"20:00 UTC-6"` → converted in `build.js`.
-- **No frontend framework, no CDN, no libraries.** Dark theme, mobile-responsive. The only
-  npm dependency is `@upstash/redis` (used by the serverless function).
+- **No frontend framework, no libraries, no runtime JS deps.** The only npm dependency is
+  `@upstash/redis` (used by the serverless function). **One allowed CDN exception:** Google
+  Fonts (`<link>` to fonts.googleapis.com) for the two display/body faces. Lucide icons are
+  **inlined as SVG** (no library/CDN) — each page has its own small `ICONS` map + `ic(name,size)`
+  helper with only the icons it uses; keep them consistent if you add icons.
+- **Visual design — "Estádio" theme** (mobile-first, redesign applied to `index`/`meu`/`admin`).
+  Dark premium palette with gold accent `#E3B765`; surfaces `#151A22` on bg `#0B0E13`; success
+  `#38D69A`, alert `#E58A6B`. Fonts: **Space Grotesk** (numbers/titles/data) + **Hanken Grotesk**
+  (body/labels), both via the Google Fonts link. Layout is a centered `max-width:480px` column;
+  the public site uses a fixed bottom nav (Ranking/Jogos/Grupos/Palpites) + header shield → admin.
+  Design tokens live in each page's `:root`; the full handoff is `Redesign Carandiru mobile.zip`
+  (`design_handoff_bolao_estadio/README.md`). Team flags are emoji (render as country codes on
+  Windows desktop — a platform quirk, fine on mobile).
 
 ## Architecture
 

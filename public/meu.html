@@ -3,96 +3,128 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>📝 Meu Bolão — Copa 2026</title>
+<title>Meus palpites — Copa 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0b132b; --card:#16204a; --card2:#1c2a5e; --line:#26356e; --txt:#eaf0ff;
-    --muted:#9fb0d8; --accent:#ffd166; --green:#06d6a0; --red:#ef476f;
-    --p25:#06d6a0; --p18:#3da5ff; --p15:#7c6cff; --p12:#b07cff; --p10:#ffb703; --p5:#9fb0d8; --p0:#5b6790;
+    --bg:#0B0E13; --panel:#0E1219; --surface:#151A22; --elev1:#1B212B; --elev2:#141922; --input:#0E1219;
+    --bd:#232A34; --bd2:#2A323E; --div:#1A202A; --div2:#1F2630; --bdin:#2E3742;
+    --t1:#EEF1F5; --t2:#9AA3B0; --t3:#828B98; --t4:#6B7482; --t5:#5E6775;
+    --accent:#E3B765; --ok:#38D69A; --warn:#E58A6B;
+    --p25:#38D69A; --p18:#5AA9E6; --p15:#9B8CFF; --p12:#C58AE5; --p10:#E3B765; --p5:#6B7482; --p0:#44505E;
   }
   *{box-sizing:border-box}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:linear-gradient(160deg,var(--bg),#070d1f 70%);color:var(--txt);min-height:100vh}
-  header{padding:14px 16px;text-align:center}
-  header h1{margin:0;font-size:1.3rem}
-  header .sub{color:var(--muted);font-size:.82rem;margin-top:4px}
-  #status{font-size:.8rem;margin-top:6px;min-height:1.1em}
-  #status .ok{color:var(--green)} #status .err{color:var(--red)} #status .saving{color:var(--accent)}
-  main{max-width:760px;margin:0 auto;padding:8px 12px 70px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
-  .muted{color:var(--muted)}.center{text-align:center}
-  .flag{font-size:1.1rem}
-  button.btn{background:var(--accent);color:#10142a;border:none;border-radius:10px;padding:10px 14px;
-    font-size:.92rem;font-weight:700;cursor:pointer;margin:4px 4px 4px 0}
-  button.btn.sec{background:var(--card2);color:var(--txt);border:1px solid var(--line)}
-  input{background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:8px;
-    padding:7px 9px;font-size:.92rem;font-family:inherit}
-  input[type=number]{width:48px;text-align:center;-moz-appearance:textfield}
-  input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-  input:disabled{opacity:.5}
-  .filtros{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-  .filtros button{background:var(--card);border:1px solid var(--line);color:var(--muted);border-radius:999px;
-    padding:5px 11px;font-size:.8rem;cursor:pointer}
-  .filtros button.active{background:var(--card2);color:var(--txt);border-color:var(--accent)}
-  .grow{display:flex;align-items:center;gap:8px;padding:9px 2px;border-top:1px solid var(--line);font-size:.86rem}
-  .grow:first-child{border-top:none}
-  .grow .n{width:30px;color:var(--muted);font-size:.76rem;flex:none;text-align:center}
-  .grow .conf{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .grow .inputs{flex:none;display:flex;align-items:center;gap:4px}
-  .grow .extra{flex:none;width:118px;text-align:right;color:var(--muted);font-size:.76rem}
-  .pill{display:inline-block;padding:2px 7px;border-radius:999px;font-size:.72rem;font-weight:700}
-  .lock{color:var(--muted);font-size:.74rem}
-  .totais{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
-  .totais .box{flex:1;min-width:90px;background:var(--card2);border-radius:12px;padding:10px;text-align:center}
-  .totais .box b{display:block;font-size:1.5rem;color:var(--accent)}
-  .totais .box span{font-size:.72rem;color:var(--muted)}
-  /* Login */
-  #login{position:fixed;inset:0;background:linear-gradient(160deg,var(--bg),#070d1f 70%);display:flex;
-    align-items:center;justify-content:center;z-index:100;padding:20px}
-  #login .box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;max-width:360px;width:100%;text-align:center}
-  #login h2{margin:0 0 6px}#login p{color:var(--muted);font-size:.85rem;margin:0 0 16px}
-  #login input{width:100%;text-align:center;font-size:1.05rem;padding:11px;margin-bottom:10px}
-  #login button{width:100%}
-  #login .erro{color:var(--red);font-size:.82rem;margin-top:10px;min-height:1em}
+  html,body{margin:0}
+  body{background:radial-gradient(1200px 700px at 50% -10%,#16202C,#070A0E 60%);min-height:100vh;color:var(--t1);
+    font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-text-size-adjust:100%}
+  svg{display:block}
+  .app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);display:flex;flex-direction:column}
+  @media(min-width:481px){.app{box-shadow:0 0 0 1px #1C222C,0 30px 80px rgba(0,0,0,.5)}}
+  .app-h{padding:14px 22px 8px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex:none}
+  .eyebrow{font:500 11px 'Space Grotesk';letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+  .h-title{font:700 24px 'Space Grotesk';letter-spacing:-.02em;color:var(--t1);margin-top:3px}
+  .chip-btn{display:flex;align-items:center;gap:6px;color:var(--t3);font:600 12px 'Hanken Grotesk';cursor:pointer;
+    background:var(--surface);border:none;border-radius:999px;padding:7px 12px}
+  .scroll{flex:1;overflow-y:auto;padding:6px 22px 40px}
+  .muted{color:var(--t3)}
+  #ola{font:500 13px 'Hanken Grotesk';color:var(--t3);margin:0 22px}
+  #status{font:600 12px 'Hanken Grotesk';margin:4px 22px 0;min-height:1.1em}
+  #status .ok{color:var(--ok)} #status .err{color:var(--warn)} #status .saving{color:var(--accent)}
+  .notice{display:flex;align-items:center;gap:8px;background:var(--elev1);border:1px solid var(--bd2);border-radius:12px;
+    padding:10px 12px;margin:10px 0 14px;font:600 12px 'Hanken Grotesk';color:#C9CFD8}
+  .notice .ico{color:var(--accent);display:flex;flex:none}
+  /* stats + chips */
+  .stats{display:flex;gap:10px;margin-bottom:12px}
+  .stats .b{flex:1;background:var(--surface);border:1px solid var(--bd);border-radius:14px;padding:12px;text-align:center}
+  .stats .b b{display:block;font:700 22px 'Space Grotesk';color:var(--accent)}
+  .stats .b span{font:500 11px 'Hanken Grotesk';color:var(--t3)}
+  .chips{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;-ms-overflow-style:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{white-space:nowrap;font:600 12px 'Hanken Grotesk';color:var(--t2);background:var(--surface);
+    border:1px solid var(--bd);padding:7px 14px;border-radius:999px;cursor:pointer}
+  .chip.active{background:var(--accent);color:#0B0E13;border-color:var(--accent)}
+  /* palpite card */
+  .pcard{background:var(--surface);border:1px solid var(--bd);border-radius:18px;padding:14px;margin-bottom:12px}
+  .pcard.locked{opacity:.82}
+  .pcard-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .pcard-top .gp{font:600 11px 'Hanken Grotesk';color:var(--accent)}
+  .pcard-top .when{font:500 11px 'Hanken Grotesk';color:var(--t4)}
+  .pcard-row{display:flex;align-items:center;justify-content:center;gap:10px}
+  .pcard-row .nm{flex:1;font:700 14px 'Hanken Grotesk';color:var(--t1);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pcard-row .nm.h{text-align:right}
+  .pcard-row .nm.a{text-align:left}
+  .sbox{width:48px;height:48px;border:1.5px solid var(--bdin);border-radius:12px;text-align:center;
+    font:700 19px 'Space Grotesk';color:var(--t1);background:var(--input);outline:none;flex:none;-moz-appearance:textfield}
+  .sbox::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .sbox:focus{border-color:var(--accent)}
+  .sbox:disabled{opacity:.45}
+  .pcard-row .x{color:var(--t5);font:600 14px 'Hanken Grotesk';flex:none}
+  .pcard-foot{margin-top:10px;padding-top:10px;border-top:1px solid var(--div2);display:flex;justify-content:flex-end;
+    align-items:center;gap:8px;font:600 12px 'Hanken Grotesk';color:var(--t4)}
+  .pill{display:inline-block;padding:2px 8px;border-radius:999px;font:700 12px 'Space Grotesk';color:#0B0E13}
+  .foot-links{text-align:center;padding:8px 0 20px}
+  .link{color:var(--accent);text-decoration:none;font:600 13px 'Hanken Grotesk'}
+  /* login */
+  #login{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;z-index:100;
+    background:radial-gradient(1200px 700px at 50% -10%,#16202C,#070A0E 60%)}
+  .loginbox{width:100%;max-width:360px;text-align:center}
+  .login-ic{width:64px;height:64px;border-radius:18px;background:var(--accent);display:flex;align-items:center;
+    justify-content:center;color:#0B0E13;margin:0 auto}
+  .login-h{font:700 25px 'Space Grotesk';letter-spacing:-.02em;margin-top:22px}
+  .login-p{font:500 14px 'Hanken Grotesk';color:var(--t3);margin-top:8px;line-height:1.5}
+  .field{margin-top:12px;display:flex;align-items:center;gap:10px;background:var(--surface);border:1.5px solid var(--bd2);
+    border-radius:12px;padding:4px 4px 4px 16px}
+  .field .ico{color:var(--t3);display:flex;flex:none}
+  .field input{flex:1;border:none;background:transparent;color:var(--t1);font:600 16px 'Hanken Grotesk';outline:none;padding:12px 0}
+  .btn-primary{width:100%;margin-top:14px;background:var(--accent);border:none;border-radius:12px;padding:15px;
+    font:700 15px 'Hanken Grotesk';color:#0B0E13;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+  .erro{color:var(--warn);font:500 13px 'Hanken Grotesk';margin-top:12px;min-height:1em}
   #app{display:none}
-  .topbar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
-  a.link{color:var(--accent);text-decoration:none;font-size:.84rem}
 </style>
 </head>
 <body>
 
 <div id="login">
-  <div class="box">
-    <h2>📝 Meu Bolão</h2>
-    <p>Entre com o login e a senha que o organizador te enviou.</p>
-    <input id="login_user" placeholder="login" autocomplete="username">
-    <input type="password" id="login_pw" placeholder="senha" autocomplete="current-password">
-    <button class="btn" id="btnEntrar">Entrar</button>
+  <div class="loginbox">
+    <div class="login-ic" id="loginIcon"></div>
+    <div class="login-h">Meus palpites</div>
+    <div class="login-p">Entre com o login e a senha que o organizador te enviou.</div>
+    <div class="field"><span class="ico" id="userIcon"></span><input id="login_user" placeholder="login" autocomplete="username"></div>
+    <div class="field"><span class="ico" id="pwIcon"></span><input type="password" id="login_pw" placeholder="senha" autocomplete="current-password"></div>
+    <button class="btn-primary" id="btnEntrar">Entrar <span id="entrarIcon"></span></button>
     <div class="erro" id="loginErro"></div>
-    <p style="margin-top:14px"><a class="link" href="/">← Ver o ranking e os jogos</a></p>
+    <p style="margin-top:16px"><a class="link" href="/">← Ver o ranking e os jogos</a></p>
   </div>
 </div>
 
 <div id="app">
-  <header>
-    <h1>📝 Meu Bolão</h1>
-    <div class="sub" id="ola"></div>
+  <div class="app">
+    <header class="app-h">
+      <div>
+        <div class="eyebrow">Copa 2026 · Bolão</div>
+        <div class="h-title">Meus palpites</div>
+      </div>
+      <button class="chip-btn" id="btnSair"><span id="sairIcon"></span>Sair</button>
+    </header>
+    <div id="ola"></div>
     <div id="status"></div>
-  </header>
-  <main>
-    <div class="card">
-      <p class="muted" style="margin:0;font-size:.82rem">Cada jogo trava no horário do apito inicial (Brasília).
-        Depois disso não dá mais pra mudar. Salva sozinho enquanto você digita.</p>
-    </div>
-    <div class="totais" id="totais"></div>
-    <div class="filtros" id="filtros"></div>
-    <div class="card" id="lista"></div>
-    <div class="center"><button class="btn sec" id="btnSair">Sair</button>
-      &nbsp; <a class="link" href="/">Ver ranking →</a></div>
-  </main>
+    <main class="scroll">
+      <div class="notice"><span class="ico" id="clockIcon"></span><span>Cada jogo trava no apito inicial (Brasília). Salva sozinho enquanto você digita.</span></div>
+      <div class="stats" id="totais"></div>
+      <div class="chips" id="filtros"></div>
+      <div id="lista"></div>
+      <div class="foot-links"><a class="link" href="/">Ver ranking e jogos →</a></div>
+    </main>
+  </div>
 </div>
 
 <script>
+/* ===================== ÍCONES (Lucide, inline) ===================== */
+const ICONS = {"lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\" /><path d=\"M7 11V7a5 5 0 0 1 10 0v4\" />","key-round":"<path d=\"M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z\" /><circle cx=\"16.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\" />","arrow-right":"<path d=\"M5 12h14\" /><path d=\"m12 5 7 7-7 7\" />","log-out":"<path d=\"m16 17 5-5-5-5\" /><path d=\"M21 12H9\" /><path d=\"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4\" />","clock":"<circle cx=\"12\" cy=\"12\" r=\"10\" /><path d=\"M12 6v6l4 2\" />"};
+function ic(name, size){ size=size||20; return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]||''}</svg>`; }
+
 let LOGIN = localStorage.getItem('bolao_meu_login') || '';
 let SENHA = localStorage.getItem('bolao_meu_pw') || '';
 let NOME = '', FIX = [], PALP = {}, dirty = {}, saveTimer = null;
@@ -202,14 +234,14 @@ function renderTotais(){
   let pts=0, exatos=0, enviados=Object.keys(PALP).length;
   FIX.forEach(f=>{ const p=PALP[String(f.n)], r=f.placar; if(p&&r&&r.casa!=null){ const base=points(r.casa,r.fora,p.casa,p.fora); if(base!=null){ pts+=base*multFase(f.fase); if(base===25) exatos++; } } });
   $('#totais').innerHTML = `
-    <div class="box"><b>${fmtPts(pts)}</b><span>pontos</span></div>
-    <div class="box"><b>${exatos}</b><span>placares exatos</span></div>
-    <div class="box"><b>${enviados}</b><span>palpites dados</span></div>`;
+    <div class="b"><b>${fmtPts(pts)}</b><span>pontos</span></div>
+    <div class="b"><b>${exatos}</b><span>exatos</span></div>
+    <div class="b"><b>${enviados}</b><span>palpites</span></div>`;
 }
 
 function renderFiltros(){
-  let h = `<button data-f="Todas" class="${faseFiltro==='Todas'?'active':''}">Todas</button>`;
-  fases().forEach(f => h += `<button data-f="${esc(f)}" class="${faseFiltro===f?'active':''}">${esc(f)}</button>`);
+  let h = `<span class="chip ${faseFiltro==='Todas'?'active':''}" data-f="Todas">Todas</span>`;
+  fases().forEach(f => h += `<span class="chip ${faseFiltro===f?'active':''}" data-f="${esc(f)}">${esc(f)}</span>`);
   $('#filtros').innerHTML = h;
 }
 
@@ -217,22 +249,24 @@ function renderLista(){
   let h = '';
   FIX.filter(f => faseFiltro==='Todas'||f.fase===faseFiltro).forEach(f => {
     const p = PALP[String(f.n)], r = f.placar, trava = comecou(f);
-    let extra;
+    const jogou = r && r.casa!=null;
+    const gp = f.grupo ? f.grupo : f.fase;
+    const when = trava ? (jogou ? 'Encerrado' : 'Começou') : `${esc(f.data)} · ${esc(f.hora)}`;
+    let foot = '';
     if (trava){
-      const jogou = r && r.casa!=null;
       let pt = '';
-      if (p && jogou){ const base=points(r.casa,r.fora,p.casa,p.fora); const v=base*multFase(f.fase); pt=` <span class="pill" style="background:${corPts(base)};color:${base===0?'#fff':'#0b132b'}">${fmtPts(v)}</span>`; }
-      extra = `<span class="extra">${jogou?`real ${r.casa}×${r.fora}`:'🔒 começou'}${pt}</span>`;
-    } else {
-      extra = `<span class="extra lock">${esc(f.data)} ${esc(f.hora)}</span>`;
+      if (p && jogou){ const base=points(r.casa,r.fora,p.casa,p.fora); const v=base*multFase(f.fase); pt=`<span class="pill" style="background:${corPts(base)};color:${base===0?'#EEF1F5':'#0B0E13'}">${fmtPts(v)}</span>`; }
+      foot = `<div class="pcard-foot">${jogou?`Resultado ${r.casa}×${r.fora}`:'🔒 jogo travado'} ${pt}</div>`;
     }
-    h += `<div class="grow"><span class="n">#${f.n}</span>
-      <span class="conf">${f.casa.flag} ${esc(f.casa.nome)} × ${esc(f.fora.nome)} ${f.fora.flag}</span>
-      <span class="inputs">
-        <input type="number" min="0" inputmode="numeric" data-pal="${f.n}" data-side="casa" value="${p?p.casa:''}" ${trava?'disabled':''}>
-        <span class="muted">×</span>
-        <input type="number" min="0" inputmode="numeric" data-pal="${f.n}" data-side="fora" value="${p?p.fora:''}" ${trava?'disabled':''}>
-      </span>${extra}</div>`;
+    h += `<div class="pcard ${trava?'locked':''}">
+      <div class="pcard-top"><span class="gp">${esc(gp)}</span><span class="when">${when}</span></div>
+      <div class="pcard-row">
+        <div class="nm h">${f.casa.flag} ${esc(f.casa.nome)}</div>
+        <input class="sbox" type="number" min="0" inputmode="numeric" data-pal="${f.n}" data-side="casa" value="${p?p.casa:''}" ${trava?'disabled':''}>
+        <span class="x">×</span>
+        <input class="sbox" type="number" min="0" inputmode="numeric" data-pal="${f.n}" data-side="fora" value="${p?p.fora:''}" ${trava?'disabled':''}>
+        <div class="nm a">${esc(f.fora.nome)} ${f.fora.flag}</div>
+      </div>${foot}</div>`;
   });
   $('#lista').innerHTML = h;
 }
@@ -250,12 +284,20 @@ function setPal(n, side, val){
   agendarSave();
 }
 
+/* ícones estáticos */
+$('#loginIcon').innerHTML = ic('lock',30);
+$('#userIcon').innerHTML = ic('key-round',18);
+$('#pwIcon').innerHTML = ic('lock',18);
+$('#entrarIcon').innerHTML = ic('arrow-right',18);
+$('#sairIcon').innerHTML = ic('log-out',15);
+$('#clockIcon').innerHTML = ic('clock',17);
+
 /* eventos */
 $('#btnEntrar').addEventListener('click', entrar);
 $('#login_pw').addEventListener('keydown', e => { if(e.key==='Enter') entrar(); });
 $('#btnSair').addEventListener('click', () => deslogar(''));
 document.addEventListener('input', e => { const t=e.target; if(t.dataset.pal) setPal(+t.dataset.pal, t.dataset.side, t.value); });
-document.addEventListener('click', e => { const b=e.target.closest('#filtros button'); if(b){ faseFiltro=b.dataset.f; renderFiltros(); renderLista(); } });
+document.addEventListener('click', e => { const b=e.target.closest('#filtros .chip'); if(b){ faseFiltro=b.dataset.f; renderFiltros(); renderLista(); } });
 
 /* init: auto-login se já tiver credencial salva */
 if (LOGIN && SENHA){ $('#login_user').value=LOGIN; $('#login_pw').value=SENHA; entrar(); }

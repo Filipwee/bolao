@@ -3,66 +3,93 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>⚙️ Admin — Bolão da Copa 2026</title>
+<title>Admin — Bolão da Copa 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0b132b; --card:#16204a; --card2:#1c2a5e; --line:#26356e; --txt:#eaf0ff;
-    --muted:#9fb0d8; --accent:#ffd166; --green:#06d6a0; --red:#ef476f;
-    --p25:#06d6a0; --p18:#3da5ff; --p15:#7c6cff; --p12:#b07cff; --p10:#ffb703; --p5:#9fb0d8; --p0:#5b6790;
+    --bg:#0B0E13; --panel:#0E1219; --surface:#151A22; --elev1:#1B212B; --elev2:#141922; --input:#0E1219;
+    --bd:#232A34; --bd2:#2A323E; --div:#1A202A; --div2:#1F2630; --bdin:#2E3742;
+    --t1:#EEF1F5; --t2:#9AA3B0; --t3:#828B98; --t4:#6B7482; --t5:#5E6775;
+    --accent:#E3B765; --ok:#38D69A; --warn:#E58A6B;
+    --green:#38D69A; --red:#E58A6B; /* aliases usados em alguns render() */
+    --p25:#38D69A; --p18:#5AA9E6; --p15:#9B8CFF; --p12:#C58AE5; --p10:#E3B765; --p5:#6B7482; --p0:#44505E;
   }
   *{box-sizing:border-box}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:linear-gradient(160deg,var(--bg),#070d1f 70%);color:var(--txt);min-height:100vh}
-  header{padding:14px 16px;text-align:center}
-  header h1{margin:0;font-size:1.25rem}
-  header .sub{color:var(--muted);font-size:.82rem;margin-top:4px}
-  #status{font-size:.8rem;margin-top:6px;min-height:1.1em}
-  #status .ok{color:var(--green)} #status .err{color:var(--red)} #status .saving{color:var(--accent)}
-  .tabs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:10px;position:sticky;top:0;
-    background:rgba(7,13,31,.92);backdrop-filter:blur(6px);z-index:10;border-bottom:1px solid var(--line)}
-  .tabs button{background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:999px;
-    padding:8px 14px;font-size:.9rem;cursor:pointer}
-  .tabs button.active{background:var(--accent);color:#10142a;border-color:var(--accent);font-weight:700}
-  main{max-width:820px;margin:0 auto;padding:14px 12px 60px}
+  html,body{margin:0}
+  body{background:radial-gradient(1200px 700px at 50% -10%,#16202C,#070A0E 60%);min-height:100vh;color:var(--t1);
+    font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-text-size-adjust:100%}
+  svg{display:block}
+  header{max-width:480px;margin:0 auto;padding:14px 22px 4px}
+  header .eyebrow{font:500 11px 'Space Grotesk';letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+  .head-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:4px}
+  .h-title{display:flex;align-items:center;gap:8px;font:700 22px 'Space Grotesk';letter-spacing:-.02em;color:var(--t1)}
+  .h-title .ico{color:var(--accent);display:flex}
+  .logout{display:flex;align-items:center;gap:6px;color:var(--t3);font:600 12px 'Hanken Grotesk';cursor:pointer;
+    background:var(--surface);border:none;border-radius:999px;padding:7px 12px}
+  .banner{display:flex;align-items:center;gap:8px;margin-top:10px;background:rgba(56,214,154,.1);
+    border:1px solid rgba(56,214,154,.25);border-radius:10px;padding:8px 12px}
+  .banner .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none}
+  .banner span{font:600 11px 'Hanken Grotesk';color:var(--ok)}
+  #status{font:600 12px 'Hanken Grotesk';margin-top:8px;min-height:1.1em}
+  #status .ok{color:var(--ok)} #status .err{color:var(--warn)} #status .saving{color:var(--accent)}
+  .tabs{max-width:480px;margin:8px auto 0;display:flex;gap:8px;overflow-x:auto;padding:4px 22px 8px;
+    position:sticky;top:0;background:var(--bg);z-index:10;scrollbar-width:none;-ms-overflow-style:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs button{white-space:nowrap;background:var(--surface);color:var(--t2);border:1px solid var(--bd);
+    border-radius:999px;padding:7px 13px;font:600 12px 'Hanken Grotesk';cursor:pointer}
+  .tabs button.active{background:var(--accent);color:#0B0E13;border-color:var(--accent)}
+  main{max-width:480px;margin:0 auto;padding:6px 22px 60px}
   .panel{display:none}.panel.active{display:block}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
-  .muted{color:var(--muted)}.center{text-align:center}
-  .flag{font-size:1.1rem}
-  button.btn{background:var(--accent);color:#10142a;border:none;border-radius:10px;padding:10px 14px;
-    font-size:.92rem;font-weight:700;cursor:pointer;margin:4px 4px 4px 0}
-  button.btn.sec{background:var(--card2);color:var(--txt);border:1px solid var(--line)}
-  button.btn.danger{background:var(--red);color:#fff}
-  input,select,textarea{background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:8px;
-    padding:7px 9px;font-size:.92rem;font-family:inherit}
-  input[type=number]{width:52px;text-align:center;-moz-appearance:textfield}
+  .card{background:var(--surface);border:1px solid var(--bd);border-radius:16px;padding:13px 14px;margin-bottom:10px}
+  .muted{color:var(--t3)}.center{text-align:center}
+  .flag{font-size:1.05rem}
+  code{background:var(--input);border:1px solid var(--bd);border-radius:5px;padding:1px 5px;font:500 12px 'Space Grotesk';color:var(--t2)}
+  button.btn{background:var(--accent);color:#0B0E13;border:none;border-radius:11px;padding:11px 14px;
+    font:700 13px 'Hanken Grotesk';cursor:pointer;margin:4px 6px 4px 0}
+  button.btn.sec{background:var(--surface);color:var(--t1);border:1px solid var(--bd2)}
+  button.btn.danger{background:var(--warn);color:#2A0E07}
+  input,select,textarea{background:var(--input);color:var(--t1);border:1.5px solid var(--bd2);border-radius:10px;
+    padding:9px 11px;font:600 14px 'Hanken Grotesk';font-family:'Hanken Grotesk',sans-serif}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
+  input[type=number]{width:40px;height:40px;text-align:center;font:700 16px 'Space Grotesk';padding:0;-moz-appearance:textfield}
   input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-  select{width:100%;padding:9px 12px;margin-bottom:8px}
-  textarea{width:100%;min-height:120px;resize:vertical}
-  .filtros{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-  .filtros button{background:var(--card);border:1px solid var(--line);color:var(--muted);border-radius:999px;
-    padding:5px 11px;font-size:.8rem;cursor:pointer}
-  .filtros button.active{background:var(--card2);color:var(--txt);border-color:var(--accent)}
-  .grow{display:flex;align-items:center;gap:8px;padding:8px 2px;border-top:1px solid var(--line);font-size:.86rem}
+  select{width:100%}
+  textarea{width:100%;min-height:120px;resize:vertical;font:500 13px 'Space Grotesk';line-height:1.6}
+  .filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .filtros button{background:var(--surface);border:1px solid var(--bd);color:var(--t2);border-radius:999px;
+    padding:6px 12px;font:600 12px 'Hanken Grotesk';cursor:pointer;white-space:nowrap}
+  .filtros button.active{background:var(--accent);color:#0B0E13;border-color:var(--accent)}
+  .grow{display:flex;align-items:center;gap:10px;padding:11px 2px;border-top:1px solid var(--div2);font:500 13px 'Hanken Grotesk'}
   .grow:first-child{border-top:none}
-  .grow .n{width:30px;color:var(--muted);font-size:.76rem;flex:none;text-align:center}
-  .grow .conf{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .grow .inputs{flex:none;display:flex;align-items:center;gap:4px}
-  .grow .extra{flex:none;width:120px;text-align:right;color:var(--muted);font-size:.78rem}
-  .grow .x{cursor:pointer;color:var(--muted);padding:4px 6px;flex:none}
-  .pill{display:inline-block;padding:2px 7px;border-radius:999px;font-size:.72rem;font-weight:700}
+  .grow .n{width:30px;color:var(--t5);font:600 11px 'Space Grotesk';flex:none;text-align:center}
+  .grow .conf{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--t1)}
+  .grow .inputs{flex:none;display:flex;align-items:center;gap:6px}
+  .grow .extra{flex:none;width:118px;text-align:right;color:var(--t4);font:500 11px 'Hanken Grotesk'}
+  .grow .x{cursor:pointer;color:var(--t5);padding:4px 6px;flex:none}
+  .pill{display:inline-block;padding:2px 8px;border-radius:999px;font:700 12px 'Space Grotesk';color:#0B0E13}
   .stat{display:flex;gap:10px;flex-wrap:wrap}
-  .stat .box{flex:1;min-width:110px;background:var(--card2);border-radius:12px;padding:12px;text-align:center}
-  .stat .box b{display:block;font-size:1.6rem;color:var(--accent)}
-  .stat .box span{font-size:.74rem;color:var(--muted)}
+  .stat .box{flex:1;min-width:96px;background:var(--surface);border:1px solid var(--bd);border-radius:14px;padding:14px;text-align:center}
+  .stat .box b{display:block;font:700 26px 'Space Grotesk';color:var(--accent)}
+  .stat .box span{font:500 12px 'Hanken Grotesk';color:var(--t3)}
   .row-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  b{color:var(--t1)}
   /* Login */
-  #login{position:fixed;inset:0;background:linear-gradient(160deg,var(--bg),#070d1f 70%);display:flex;
-    align-items:center;justify-content:center;z-index:100;padding:20px}
-  #login .box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;max-width:360px;width:100%;text-align:center}
-  #login h2{margin:0 0 6px}#login p{color:var(--muted);font-size:.85rem;margin:0 0 16px}
-  #login input{width:100%;text-align:center;font-size:1.1rem;padding:11px;margin-bottom:12px}
-  #login button{width:100%}
-  #login .erro{color:var(--red);font-size:.82rem;margin-top:10px;min-height:1em}
+  #login{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:100;padding:24px;
+    background:radial-gradient(1200px 700px at 50% -10%,#16202C,#070A0E 60%)}
+  #login .box{width:100%;max-width:360px;text-align:center}
+  .login-ic{width:64px;height:64px;border-radius:18px;background:var(--accent);display:flex;align-items:center;
+    justify-content:center;color:#0B0E13;margin:0 auto}
+  #login h2{font:700 25px 'Space Grotesk';letter-spacing:-.02em;margin:22px 0 0}
+  #login p{font:500 14px 'Hanken Grotesk';color:var(--t3);margin:8px 0 0;line-height:1.5}
+  .field{margin-top:16px;display:flex;align-items:center;gap:10px;background:var(--surface);border:1.5px solid var(--bd2);
+    border-radius:12px;padding:4px 4px 4px 16px}
+  .field .ico{color:var(--t3);display:flex;flex:none}
+  #login .field input{flex:1;border:none;background:transparent;color:var(--t1);font:600 16px 'Hanken Grotesk';
+    outline:none;padding:12px 0;letter-spacing:.18em}
+  #login .btn{width:100%;margin:14px 0 0;display:flex;align-items:center;justify-content:center;gap:8px;padding:15px;border-radius:12px;font-size:15px}
+  #login .erro{color:var(--warn);font:500 13px 'Hanken Grotesk';margin-top:12px;min-height:1em}
   #app{display:none}
 </style>
 </head>
@@ -70,28 +97,33 @@
 
 <div id="login">
   <div class="box">
-    <h2>⚙️ Admin do Bolão</h2>
+    <div class="login-ic" id="loginIcon"></div>
+    <h2>Admin do bolão</h2>
     <p>Digite a senha de administrador para lançar resultados e palpites.</p>
-    <input type="password" id="senha" placeholder="senha" autocomplete="current-password">
-    <button class="btn" id="btnEntrar">Entrar</button>
+    <div class="field"><span class="ico" id="keyIcon"></span><input type="password" id="senha" placeholder="senha" autocomplete="current-password"></div>
+    <button class="btn" id="btnEntrar">Entrar <span id="entrarIcon"></span></button>
     <div class="erro" id="loginErro"></div>
   </div>
 </div>
 
 <div id="app">
   <header>
-    <h1>⚙️ Admin — Bolão da Copa 2026</h1>
-    <div class="sub">As alterações vão ao ar na hora para todos.</div>
+    <div class="eyebrow">Copa 2026 · Bolão</div>
+    <div class="head-row">
+      <div class="h-title"><span class="ico" id="hIcon"></span>Admin</div>
+      <button class="logout" id="btnLogout"><span id="logoutIcon"></span>Sair</button>
+    </div>
+    <div class="banner"><span class="dot"></span><span>No ar — alterações publicam na hora</span></div>
     <div id="status"></div>
   </header>
 
   <nav class="tabs">
-    <button data-tab="resultados" class="active">⚽ Resultados</button>
-    <button data-tab="palpites">📝 Palpites</button>
-    <button data-tab="acessos">👥 Acessos</button>
-    <button data-tab="relatorio">📋 Relatório</button>
-    <button data-tab="colar">📥 Colar do grupo</button>
-    <button data-tab="ferramentas">🛠️ Ferramentas</button>
+    <button data-tab="resultados" class="active">Resultados</button>
+    <button data-tab="palpites">Palpites</button>
+    <button data-tab="acessos">Acessos</button>
+    <button data-tab="relatorio">Relatório</button>
+    <button data-tab="colar">Colar do grupo</button>
+    <button data-tab="ferramentas">Ferramentas</button>
   </nav>
 
   <main>
@@ -105,6 +137,10 @@
 </div>
 
 <script>
+/* ===================== ÍCONES (Lucide, inline) ===================== */
+const ICONS = {"lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\" /><path d=\"M7 11V7a5 5 0 0 1 10 0v4\" />","key-round":"<path d=\"M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z\" /><circle cx=\"16.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\" />","arrow-right":"<path d=\"M5 12h14\" /><path d=\"m12 5 7 7-7 7\" />","shield-check":"<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\" /><path d=\"m9 12 2 2 4-4\" />","log-out":"<path d=\"m16 17 5-5-5-5\" /><path d=\"M21 12H9\" /><path d=\"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4\" />"};
+function ic(name, size){ size=size||20; return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]||''}</svg>`; }
+
 /* ===================== AUTENTICAÇÃO / REDE ===================== */
 let SENHA = sessionStorage.getItem('bolao_admin_pw') || '';
 let state = null;
@@ -654,7 +690,7 @@ document.addEventListener('click', async e => {
     catch(err){ alert('Não foi possível carregar os dados originais: '+err.message); }
     return;
   }
-  if (t.id==='btnSair'){ deslogar(''); return; }
+  if (t.id==='btnSair' || t.closest('#btnLogout')){ deslogar(''); return; }
 
   /* ----- Aba Relatório ----- */
   const rf = t.closest('.filtros button');
@@ -710,6 +746,12 @@ document.addEventListener('change', e => {
 });
 
 /* ===================== INIT ===================== */
+$('#loginIcon').innerHTML = ic('lock',30);
+$('#keyIcon').innerHTML = ic('key-round',18);
+$('#entrarIcon').innerHTML = ic('arrow-right',18);
+$('#hIcon').innerHTML = ic('shield-check',18);
+$('#logoutIcon').innerHTML = ic('log-out',15);
+
 if (SENHA){ $('#senha').value = SENHA; entrar(); }  // auto-login se já houver senha na sessão
 </script>
 </body>
