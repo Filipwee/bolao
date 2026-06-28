@@ -113,6 +113,19 @@ function points(RC,RF,PC,PF){
   if((RC-RF)===(PC-PF)) p=Math.max(p,12);
   return p;
 }
+// Multiplicador de pontos por fase do mata-mata (16-avos 1,5× → final 5×).
+function multFase(fase){
+  switch (fase){
+    case '16-avos':   return 1.5;
+    case 'Oitavas':   return 2;
+    case 'Quartas':   return 3;
+    case 'Semifinal': return 4;
+    case 'Disputa 3º':return 4;
+    case 'Final':     return 5;
+    default:          return 1;
+  }
+}
+const fmtPts = v => (Math.round(v*10)/10).toString().replace('.', ',');
 const comecou = f => f.kickoff ? Date.now() >= Date.parse(f.kickoff) : (f.placar && f.placar.casa!=null);
 
 function setStatus(html){ $('#status').innerHTML = html; }
@@ -141,6 +154,7 @@ function deslogar(msg){
 async function entrar(){
   LOGIN = $('#login_user').value.trim().toLowerCase();
   SENHA = $('#login_pw').value;
+
   if(!LOGIN||!SENHA){ $('#loginErro').textContent='Preencha login e senha.'; return; }
   $('#loginErro').textContent='Entrando…';
   try{
@@ -186,9 +200,9 @@ function render(){ renderTotais(); renderFiltros(); renderLista(); }
 
 function renderTotais(){
   let pts=0, exatos=0, enviados=Object.keys(PALP).length;
-  FIX.forEach(f=>{ const p=PALP[String(f.n)], r=f.placar; if(p&&r&&r.casa!=null){ const v=points(r.casa,r.fora,p.casa,p.fora); if(v!=null){ pts+=v; if(v===25) exatos++; } } });
+  FIX.forEach(f=>{ const p=PALP[String(f.n)], r=f.placar; if(p&&r&&r.casa!=null){ const base=points(r.casa,r.fora,p.casa,p.fora); if(base!=null){ pts+=base*multFase(f.fase); if(base===25) exatos++; } } });
   $('#totais').innerHTML = `
-    <div class="box"><b>${pts}</b><span>pontos</span></div>
+    <div class="box"><b>${fmtPts(pts)}</b><span>pontos</span></div>
     <div class="box"><b>${exatos}</b><span>placares exatos</span></div>
     <div class="box"><b>${enviados}</b><span>palpites dados</span></div>`;
 }
@@ -207,7 +221,7 @@ function renderLista(){
     if (trava){
       const jogou = r && r.casa!=null;
       let pt = '';
-      if (p && jogou){ const v=points(r.casa,r.fora,p.casa,p.fora); pt=` <span class="pill" style="background:${corPts(v)};color:${v===0?'#fff':'#0b132b'}">${v}</span>`; }
+      if (p && jogou){ const base=points(r.casa,r.fora,p.casa,p.fora); const v=base*multFase(f.fase); pt=` <span class="pill" style="background:${corPts(base)};color:${base===0?'#fff':'#0b132b'}">${fmtPts(v)}</span>`; }
       extra = `<span class="extra">${jogou?`real ${r.casa}×${r.fora}`:'🔒 começou'}${pt}</span>`;
     } else {
       extra = `<span class="extra lock">${esc(f.data)} ${esc(f.hora)}</span>`;

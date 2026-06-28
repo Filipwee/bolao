@@ -242,9 +242,69 @@ function points(RC, RF, PC, PF){
   return p;
 }
 const corPts = v => v===25?'var(--p25)':v===18?'var(--p18)':v===15?'var(--p15)':v===12?'var(--p12)':v===10?'var(--p10)':v===5?'var(--p5)':'var(--p0)';
+// Multiplicador de pontos por fase do mata-mata (16-avos 1,5× → final 5×).
+function multFase(fase){
+  switch (fase){
+    case '16-avos':   return 1.5;
+    case 'Oitavas':   return 2;
+    case 'Quartas':   return 3;
+    case 'Semifinal': return 4;
+    case 'Disputa 3º':return 4;
+    case 'Final':     return 5;
+    default:          return 1;
+  }
+}
+const fmtPts = v => (Math.round(v*10)/10).toString().replace('.', ',');
 function contaResultados(){ return state.fixtures.filter(f => f.placar.casa != null && f.placar.fora != null).length; }
 function totalPalpites(){ return state.participants.reduce((a,p)=>a+Object.keys(p.palpites).length,0); }
 function fases(){ const s=[]; state.fixtures.forEach(f=>{ if(!s.includes(f.fase)) s.push(f.fase); }); return s; }
+
+/* ===================== RESOLUÇÃO DO CHAVEAMENTO (só exibição) =============
+ * Espelha lib/store.js resolverChaveamento(): troca os placeholders do
+ * mata-mata ("1º Grupo A", "Vencedor J74", "3º (...)") pelos times reais já
+ * decididos. NÃO mexe em `state` (que é salvo com os placeholders) — RES é uma
+ * cópia usada apenas para mostrar os nomes. Mantenha em sincronia com o servidor.
+ */
+const TERCEIRO_POR_JOGO = { 74:'D', 77:'F', 79:'E', 80:'K', 81:'B', 82:'I', 85:'J', 87:'L' };
+function classificacaoGrupo(st, grupoNome){
+  const grupo = (st.groups||[]).find(g => g.nome === grupoNome);
+  if (!grupo) return null;
+  const tab = {};
+  grupo.times.forEach(t => { tab[t.nome] = { time:t, J:0,V:0,E:0,D:0,gp:0,gc:0 }; });
+  for (const f of st.fixtures){
+    if (f.grupo !== grupoNome || !f.placar || f.placar.casa == null) continue;
+    const c = tab[f.casa.nome], v = tab[f.fora.nome];
+    if (!c || !v) continue;
+    const gc = f.placar.casa, gf = f.placar.fora;
+    c.J++; v.J++; c.gp+=gc; c.gc+=gf; v.gp+=gf; v.gc+=gc;
+    if (gc>gf){ c.V++; v.D++; } else if (gc<gf){ v.V++; c.D++; } else { c.E++; v.E++; }
+  }
+  const arr = Object.values(tab).map(r => ({ ...r, P:r.V*3+r.E, S:r.gp-r.gc }))
+    .sort((a,b) => b.P-a.P || b.S-a.S || b.gp-a.gp || a.time.nome.localeCompare(b.time.nome));
+  return { arr, completo: arr.every(r => r.J === 3) };
+}
+function vencedorDe(fx){ if(!fx||!fx.placar||fx.placar.casa==null||fx.placar.casa===fx.placar.fora) return null; return fx.placar.casa>fx.placar.fora?fx.casa:fx.fora; }
+function perdedorDe(fx){ if(!fx||!fx.placar||fx.placar.casa==null||fx.placar.casa===fx.placar.fora) return null; return fx.placar.casa>fx.placar.fora?fx.fora:fx.casa; }
+function resolverChaveamento(st){
+  const cls = {}, getCls = nome => (cls[nome] || (cls[nome] = classificacaoGrupo(st, nome)));
+  const byN = {}; st.fixtures.forEach(f => byN[f.n]=f);
+  const aplica = (slot,t) => { if(t){ slot.nome=t.nome; slot.flag=t.flag; } };
+  function res(f, side){
+    const slot = f[side]; if(!slot || typeof slot.nome!=='string') return; let m;
+    if((m=/^([12])º Grupo (.+)$/.exec(slot.nome))){ const c=getCls('Grupo '+m[2]); if(c&&c.completo) aplica(slot, c.arr[+m[1]-1].time); }
+    else if(/^3º/.test(slot.nome)){ const l=TERCEIRO_POR_JOGO[f.n]; if(!l) return; const c=getCls('Grupo '+l); if(c&&c.completo) aplica(slot, c.arr[2].time); }
+    else if((m=/^Vencedor J(\d+)$/.exec(slot.nome))){ aplica(slot, vencedorDe(byN[+m[1]])); }
+    else if((m=/^Perdedor J(\d+)$/.exec(slot.nome))){ aplica(slot, perdedorDe(byN[+m[1]])); }
+  }
+  st.fixtures.filter(f=>f.n>=73).sort((a,b)=>a.n-b.n).forEach(f => { res(f,'casa'); res(f,'fora'); });
+  return st;
+}
+// Vista resolvida de `state` (cópia), indexada por nº de jogo — só para exibir.
+function fixturesResolvidos(){
+  const copy = JSON.parse(JSON.stringify(state));
+  resolverChaveamento(copy);
+  const m = {}; copy.fixtures.forEach(f => m[f.n] = f); return m;
+}
 
 /* ===================== ABA RESULTADOS ===================== */
 let resFiltro = 'Todas';
@@ -254,10 +314,11 @@ function renderResultados(){
   h += `<div class="filtros"><button data-f="Todas" class="${resFiltro==='Todas'?'active':''}">Todas</button>`;
   fases().forEach(f => h += `<button data-f="${esc(f)}" class="${resFiltro===f?'active':''}">${esc(f)}</button>`);
   h += `</div><div class="card">`;
+  const RES = fixturesResolvidos();
   state.fixtures.filter(f => resFiltro==='Todas'||f.fase===resFiltro).forEach(f => {
-    const r = f.placar;
+    const r = f.placar, rf = RES[f.n];
     h += `<div class="grow"><span class="n">#${f.n}</span>
-      <span class="conf">${f.casa.flag} ${esc(f.casa.nome)} × ${esc(f.fora.nome)} ${f.fora.flag}</span>
+      <span class="conf">${rf.casa.flag} ${esc(rf.casa.nome)} × ${esc(rf.fora.nome)} ${rf.fora.flag}</span>
       <span class="inputs">
         <input type="number" min="0" data-res="${f.n}" data-side="casa" value="${r.casa!=null?r.casa:''}">
         <span class="muted">×</span>
@@ -293,13 +354,14 @@ function renderPalpites(){
       <textarea id="bulk" placeholder="1: 2x0&#10;2 1x1&#10;Jogo 3 0 x 2"></textarea>
       <button class="btn" id="btnAplicar" style="margin-top:8px">Aplicar</button></div>
     <div class="card">`;
+  const RES = fixturesResolvidos();
   state.fixtures.forEach(f => {
-    const p = part.palpites[String(f.n)], r = f.placar, jogou = r.casa != null;
+    const p = part.palpites[String(f.n)], r = f.placar, jogou = r.casa != null, rf = RES[f.n];
     let pt = '';
-    if (p && jogou){ const v = points(r.casa,r.fora,p.casa,p.fora); pt = `<span class="pill" style="background:${corPts(v)};color:${v===0?'#fff':'#0b132b'}">${v} pts</span>`; }
+    if (p && jogou){ const base = points(r.casa,r.fora,p.casa,p.fora); const v = base * multFase(f.fase); pt = `<span class="pill" style="background:${corPts(base)};color:${base===0?'#fff':'#0b132b'}">${fmtPts(v)} pts</span>`; }
     const rl = jogou ? `real ${r.casa}×${r.fora}` : '<span class="muted">—</span>';
     h += `<div class="grow"><span class="n">#${f.n}</span>
-      <span class="conf">${f.casa.flag} ${esc(f.casa.nome)} × ${esc(f.fora.nome)} ${f.fora.flag}</span>
+      <span class="conf">${rf.casa.flag} ${esc(rf.casa.nome)} × ${esc(rf.fora.nome)} ${rf.fora.flag}</span>
       <span class="inputs">
         <input type="number" min="0" data-pal="${f.n}" data-side="casa" value="${p?p.casa:''}">
         <span class="muted">×</span>
@@ -355,9 +417,10 @@ function matchParticipant(raw){
 
 function parseGroupMessage(text){
   const tnorm = norm(text);
+  const RES = fixturesResolvidos();
   // Jogo candidato: os dois times (normalizados) aparecem na mensagem.
   const candidates = state.fixtures.filter(f => {
-    const a = norm(f.casa.nome), b = norm(f.fora.nome);
+    const rf = RES[f.n], a = norm(rf.casa.nome), b = norm(rf.fora.nome);
     return a && b && tnorm.includes(a) && tnorm.includes(b);
   }).map(f => f.n);
   // Linhas de palpite: <nome> <golsCasa> <x|:|-> <golsFora> [resto ignorado]
@@ -387,7 +450,8 @@ function renderPrevia(){
   const p = colarParsed;
   let h = `<div class="card"><b>Jogo</b>
     <select id="selJogo">`;
-  state.fixtures.forEach(f => h += `<option value="${f.n}" ${f.n===colarJogo?'selected':''}>#${f.n} — ${esc(f.casa.nome)} × ${esc(f.fora.nome)} (${esc(f.fase)})</option>`);
+  const RES = fixturesResolvidos();
+  state.fixtures.forEach(f => { const rf = RES[f.n]; h += `<option value="${f.n}" ${f.n===colarJogo?'selected':''}>#${f.n} — ${esc(rf.casa.nome)} × ${esc(rf.fora.nome)} (${esc(f.fase)})</option>`; });
   h += `</select>`;
   h += p.candidates.length
     ? `<p class="muted" style="font-size:.82rem">Detectado na mensagem: ${p.candidates.map(n=>'#'+n).join(', ')}.</p>`
@@ -518,6 +582,7 @@ function renderAcessos(){
 let relFase = 'Todas';
 function textoRelatorio(){
   let out = `🏆 BOLÃO DA COPA 2026 — PALPITES\n`;
+  const RES = fixturesResolvidos();
   const lista = state.fixtures.filter(f => relFase==='Todas' || f.fase===relFase);
   lista.forEach(f => {
     const linhas = [];
@@ -525,12 +590,12 @@ function textoRelatorio(){
       const pal = p.palpites[String(f.n)];
       if(!pal) return;
       const r = f.placar, jogou = r.casa!=null;
-      const pt = jogou ? ` (${points(r.casa,r.fora,pal.casa,pal.fora)} pts)` : '';
+      const pt = jogou ? ` (${fmtPts(points(r.casa,r.fora,pal.casa,pal.fora) * multFase(f.fase))} pts)` : '';
       linhas.push(`• ${p.nome}: ${pal.casa}×${pal.fora}${pt}`);
     });
     if(!linhas.length) return;
-    const r = f.placar, real = r.casa!=null ? `  [resultado ${r.casa}×${r.fora}]` : '';
-    out += `\n#${f.n} ${f.casa.nome} × ${f.fora.nome} (${f.data} ${f.hora})${real}\n` + linhas.join('\n') + '\n';
+    const r = f.placar, real = r.casa!=null ? `  [resultado ${r.casa}×${r.fora}]` : '', rf = RES[f.n];
+    out += `\n#${f.n} ${rf.casa.nome} × ${rf.fora.nome} (${f.data} ${f.hora})${real}\n` + linhas.join('\n') + '\n';
   });
   return out;
 }

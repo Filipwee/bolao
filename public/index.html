@@ -139,6 +139,27 @@ function points(RC, RF, PC, PF){
   return p;
 }
 
+// Multiplicador de pontos por fase do mata-mata (16-avos 1,5× → final 5×).
+function multFase(fase){
+  switch (fase){
+    case '16-avos':   return 1.5;
+    case 'Oitavas':   return 2;
+    case 'Quartas':   return 3;
+    case 'Semifinal': return 4;
+    case 'Disputa 3º':return 4;
+    case 'Final':     return 5;
+    default:          return 1;   // fase de grupos
+  }
+}
+// Pontos efetivos de um jogo (base × multiplicador da fase).
+function pontosJogo(f, p){
+  if (!p || f.placar.casa == null) return null;
+  const base = points(f.placar.casa, f.placar.fora, p.casa, p.fora);
+  return base == null ? null : base * multFase(f.fase);
+}
+// Formata pontuação removendo o ".0" desnecessário (ex.: 27 e 22,5).
+const fmtPts = v => (Math.round(v*10)/10).toString().replace('.', ',');
+
 function contaResultados(){
   return BOLAO.fixtures.filter(f => f.placar.casa != null && f.placar.fora != null).length;
 }
@@ -154,9 +175,9 @@ function pontuacao(part){
   for (const f of BOLAO.fixtures){
     const r = f.placar, p = part.palpites[String(f.n)];
     if (!p || r.casa == null) continue;
-    const v = points(r.casa, r.fora, p.casa, p.fora);
-    if (v == null) continue;
-    jogos++; pts += v; if (v === 25) exatos++;
+    const base = points(r.casa, r.fora, p.casa, p.fora);
+    if (base == null) continue;
+    jogos++; pts += base * multFase(f.fase); if (base === 25) exatos++;
   }
   return { pts, exatos, jogos };
 }
@@ -195,7 +216,7 @@ function renderRanking(){
     h += `<div class="card rk ${i<3?'r'+(i+1):''}">
       <div class="pos">${medal(i)}</div>
       <div class="nm">${esc(r.nome)}<div class="det">${r.exatos} placares exatos · ${r.jogos} jogos pontuados</div></div>
-      <div class="pts">${r.pts}<span class="det" style="display:block;text-align:right">pts</span></div>
+      <div class="pts">${fmtPts(r.pts)}<span class="det" style="display:block;text-align:right">pts</span></div>
     </div>`;
   });
   $('#ranking').innerHTML = h;
@@ -239,8 +260,9 @@ function renderPalpitesDoJogo(n){
   BOLAO.participants.forEach(part => {
     const p = part.palpites[String(n)];
     if (!p){ h += `<div class="row"><span class="nm">${esc(part.nome)}</span><span class="muted">—</span></div>`; return; }
-    const v = jogou ? points(r.casa,r.fora,p.casa,p.fora) : null;
-    const tag = v!=null ? `<span class="pill" style="background:${corPts(v)};color:${v===0?'#fff':'#0b132b'}">${v}</span>` : '<span class="muted">aguardando</span>';
+    const base = jogou ? points(r.casa,r.fora,p.casa,p.fora) : null;
+    const v = base!=null ? base * multFase(f.fase) : null;
+    const tag = v!=null ? `<span class="pill" style="background:${corPts(base)};color:${base===0?'#fff':'#0b132b'}">${fmtPts(v)}</span>` : '<span class="muted">aguardando</span>';
     h += `<div class="row"><span class="nm">${esc(part.nome)}: <b>${p.casa}×${p.fora}</b></span>${tag}</div>`;
   });
   return h || '<div class="row muted">Ninguém palpitou neste jogo.</div>';
@@ -273,7 +295,7 @@ function renderPalpitesTab(){
   const tot = pontuacao(part);
   const enviados = Object.keys(part.palpites).length;
   h += `<div class="totais">
-    <div class="box"><b>${tot.pts}</b><span>pontos</span></div>
+    <div class="box"><b>${fmtPts(tot.pts)}</b><span>pontos</span></div>
     <div class="box"><b>${tot.exatos}</b><span>placares exatos</span></div>
     <div class="box"><b>${enviados}</b><span>palpites enviados</span></div>
   </div><div class="card">`;
@@ -284,7 +306,7 @@ function renderPalpitesTab(){
     const pl = p ? `${p.casa}×${p.fora}` : (comecouJogo(f) ? '—' : '🔒');
     const rl = jogou ? `${r.casa}×${r.fora}` : f.hora;
     let pt = '';
-    if (p && jogou){ const v = points(r.casa,r.fora,p.casa,p.fora); pt = `<span class="pill" style="background:${corPts(v)};color:${v===0?'#fff':'#0b132b'}">${v}</span>`; }
+    if (p && jogou){ const base = points(r.casa,r.fora,p.casa,p.fora); const v = base * multFase(f.fase); pt = `<span class="pill" style="background:${corPts(base)};color:${base===0?'#fff':'#0b132b'}">${fmtPts(v)}</span>`; }
     h += `<div class="pg-row"><span class="n">#${f.n}</span><span class="conf">${conf}</span>
       <span class="pl">${pl}</span><span class="rl">${rl}</span><span class="pt">${pt}</span></div>`;
   });

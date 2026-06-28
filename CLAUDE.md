@@ -113,6 +113,30 @@ references line up. Placeholders translate to PT labels (`"1A"`→`"1º Grupo A"
 10 winner only · 5 correct draw · 0 wrong (or `null` if result/prediction missing). Ranking
 sorts by points desc → exact scores desc → name asc; tiebreak = most exact scores.
 
+**Knockout multiplier**: the base `points()` value is multiplied by `multFase(fase)` —
+16-avos ×1.5 · Oitavas ×2 · Quartas ×3 · Semifinal ×4 · Disputa 3º ×4 · Final ×5 · grupos ×1.
+`multFase` is also **duplicated** (same four places) — keep in sync. The **exact-score count**
+(`exatos`, used for tiebreak) is based on the *base* 25, not the multiplied value, and pill colors
+key off the base tier (`corPts(base)`); only the displayed number is multiplied (`fmtPts`, with a
+comma decimal). Points can now be fractional (e.g. 18×1.5 = 27, 15×1.5 = 22,5).
+
+### Knockout bracket resolution (display-only) — `lib/store.js`
+
+The knockout fixtures store placeholders (`"1º Grupo A"`, `"2º Grupo B"`, `"3º (A/B/C/D/F)"`,
+`"Vencedor J74"`, `"Perdedor J101"`). `resolverChaveamento(state)` fills the real team names+flags
+from results when possible: group positions from `classificacaoGrupo` (only once the group's 6
+games are played), winners/losers of prior knockout games, and the 8 third-place slots via the
+fixed `TERCEIRO_POR_JOGO` map (this Cup's qualified thirds: groups **B, D, E, F, I, J, K, L**).
+It runs **inside `stripState`**, so it only affects the public/participant GET copy — the stored
+state keeps the placeholders. It's purely cosmetic: scoring keys off the game **number**, never
+the team name. Standings use the same simplified tiebreak as the Grupos tab (points → goal-diff →
+goals-for → name), not FIFA's full criteria.
+
+`admin.html` **mirrors** `resolverChaveamento` client-side (`fixturesResolvidos()` → a resolved
+deep copy of `state`) **only for display** — results/palpites/relatório/colar show real team names,
+but `state` is still saved with the placeholders (so the merge-save never persists resolved names).
+Keep the admin copy in sync with `lib/store.js` (incl. `TERCEIRO_POR_JOGO`).
+
 ## Commands
 
 ```bash
