@@ -131,6 +131,19 @@ sorts by points desc → exact scores desc → name asc; tiebreak = most exact s
 key off the base tier (`corPts(base)`); only the displayed number is multiplied (`fmtPts`, with a
 comma decimal). Points can now be fractional (e.g. 18×1.5 = 27, 15×1.5 = 22,5).
 
+**Penalty-winner bonus** (`bonusPen`, also **duplicated** in the same four places): for a
+**knockout** game that ends in a regulation **draw** (real `placar.casa===placar.fora`), a
+participant who **also predicted a draw** picks who wins on penalties. `bonusPen(RC,RF,PC,PF,
+realPen,palpPen)` returns a **flat +15** (NOT multiplied by `multFase`) when both the real result
+and the prediction are draws and `palpPen===realPen`; else 0. Total per game = `base × multFase +
+bonusPen`. The winner side is stored as `pen: 'casa'|'fora'` — on the prediction (`palpites[n].pen`)
+and on the real result (`placar.pen`); the field exists **only** for knockout draws (knockout =
+`multFase(f.fase) > 1`). `bonusPen` does **not** affect `exatos` or pill color (both still key off
+`base`). The `pen` UI (toggle of the two teams) appears in `admin.html` (real result) and
+`meu.html`/`index.html` (predictions) only when the score is a draw. `api/palpite.js` (`limpaPalpite`)
+only keeps `pen` when `casa===fora`; `stripState` needs no change (`pen` rides inside the hidden
+palpite). `placar.pen` survives the admin merge-save because results are POSTed from local `state`.
+
 ### Knockout bracket resolution (display-only) — `lib/store.js`
 
 The knockout fixtures store placeholders (`"1º Grupo A"`, `"2º Grupo B"`, `"3º (A/B/C/D/F)"`,

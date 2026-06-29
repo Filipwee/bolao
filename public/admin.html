@@ -68,6 +68,11 @@
   .grow .inputs{flex:none;display:flex;align-items:center;gap:6px}
   .grow .extra{flex:none;width:118px;text-align:right;color:var(--t4);font:500 11px 'Hanken Grotesk'}
   .grow .x{cursor:pointer;color:var(--t5);padding:4px 6px;flex:none}
+  .penrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:0 2px 11px 32px;
+    font:600 11px 'Hanken Grotesk';color:var(--t3)}
+  .penrow .pbtn{cursor:pointer;border:1px solid var(--bd2);border-radius:8px;padding:5px 10px;
+    font:600 12px 'Hanken Grotesk';background:var(--input);color:var(--t2)}
+  .penrow .pbtn.on{background:var(--accent);color:#0B0E13;border-color:var(--accent)}
   .pill{display:inline-block;padding:2px 8px;border-radius:999px;font:700 12px 'Space Grotesk';color:#0B0E13}
   .stat{display:flex;gap:10px;flex-wrap:wrap}
   .stat .box{flex:1;min-width:96px;background:var(--surface);border:1px solid var(--bd);border-radius:14px;padding:14px;text-align:center}
@@ -290,7 +295,17 @@ function multFase(fase){
     default:          return 1;
   }
 }
+// Bônus FIXO de +15 pelo acerto do vencedor nos pênaltis (não multiplica pela fase).
+// Só vale quando o resultado real E o palpite foram empate (foi pra pênaltis).
+function bonusPen(RC, RF, PC, PF, realPen, palpPen){
+  if (RC==null || RF==null || PC==null || PF==null) return 0;
+  if (RC!==RF || PC!==PF) return 0;
+  if (!realPen || !palpPen) return 0;
+  return palpPen===realPen ? 15 : 0;
+}
 const fmtPts = v => (Math.round(v*10)/10).toString().replace('.', ',');
+// Mata-mata: jogos cuja fase tem multiplicador (>1). Grupos = 1.
+const mataMata = f => multFase(f.fase) > 1;
 function contaResultados(){ return state.fixtures.filter(f => f.placar.casa != null && f.placar.fora != null).length; }
 function totalPalpites(){ return state.participants.reduce((a,p)=>a+Object.keys(p.palpites).length,0); }
 function fases(){ const s=[]; state.fixtures.forEach(f=>{ if(!s.includes(f.fase)) s.push(f.fase); }); return s; }
@@ -361,14 +376,33 @@ function renderResultados(){
         <input type="number" min="0" data-res="${f.n}" data-side="fora" value="${r.fora!=null?r.fora:''}">
       </span>
       <span class="x" data-clear="${f.n}" title="limpar">✕</span></div>`;
+    // Empate no mata-mata: escolher quem venceu nos pênaltis (resultado real).
+    if (mataMata(f) && r.casa!=null && r.casa===r.fora){
+      h += `<div class="penrow">Vencedor nos pênaltis:
+        <button class="pbtn ${r.pen==='casa'?'on':''}" data-respen="${f.n}" data-side="casa">${rf.casa.flag} ${esc(rf.casa.nome)}</button>
+        <button class="pbtn ${r.pen==='fora'?'on':''}" data-respen="${f.n}" data-side="fora">${rf.fora.flag} ${esc(rf.fora.nome)}</button></div>`;
+    }
   });
   h += `</div>`;
   $('#resultados').innerHTML = h;
 }
+function ehEmpateMata(f){ return mataMata(f) && f.placar.casa!=null && f.placar.casa===f.placar.fora; }
 function setResultado(n, side, val){
   const f = state.fixtures.find(x => x.n===n);
+  const antes = ehEmpateMata(f);
   f.placar[side] = (val===''||val==null) ? null : Math.max(0, parseInt(val,10)||0);
+  // Pênalti só existe em empate de mata-mata; se deixou de ser empate, remove.
+  if (!ehEmpateMata(f)) delete f.placar.pen;
   agendarSave();
+  if (antes !== ehEmpateMata(f)) renderResultados(); // mostra/esconde a linha de pênaltis
+}
+function setResultadoPen(n, side){
+  const f = state.fixtures.find(x => x.n===n);
+  if (!ehEmpateMata(f)) return;
+  f.placar.pen = (f.placar.pen===side) ? undefined : side; // clica de novo => desmarca
+  if (f.placar.pen===undefined) delete f.placar.pen;
+  agendarSave();
+  renderResultados();
 }
 
 /* ===================== ABA PALPITES ===================== */
@@ -394,7 +428,7 @@ function renderPalpites(){
   state.fixtures.forEach(f => {
     const p = part.palpites[String(f.n)], r = f.placar, jogou = r.casa != null, rf = RES[f.n];
     let pt = '';
-    if (p && jogou){ const base = points(r.casa,r.fora,p.casa,p.fora); const v = base * multFase(f.fase); pt = `<span class="pill" style="background:${corPts(base)};color:${base===0?'#fff':'#0b132b'}">${fmtPts(v)} pts</span>`; }
+    if (p && jogou){ const base = points(r.casa,r.fora,p.casa,p.fora); const v = base * multFase(f.fase) + bonusPen(r.casa,r.fora,p.casa,p.fora,r.pen,p.pen); pt = `<span class="pill" style="background:${corPts(base)};color:${base===0?'#fff':'#0b132b'}">${fmtPts(v)} pts</span>`; }
     const rl = jogou ? `real ${r.casa}×${r.fora}` : '<span class="muted">—</span>';
     h += `<div class="grow"><span class="n">#${f.n}</span>
       <span class="conf">${rf.casa.flag} ${esc(rf.casa.nome)} × ${esc(rf.fora.nome)} ${rf.fora.flag}</span>
@@ -410,10 +444,15 @@ function renderPalpites(){
 }
 function setPalpite(n, side, val){
   const part = state.participants[palSel], key = String(n);
+  const f = state.fixtures.find(x => x.n===n);
   const p = part.palpites[key] || {};
   if (val===''||val==null) delete p[side]; else p[side] = Math.max(0, parseInt(val,10)||0);
   if (p.casa==null && p.fora==null) delete part.palpites[key];
-  else part.palpites[key] = { casa: p.casa!=null?p.casa:0, fora: p.fora!=null?p.fora:0 };
+  else {
+    part.palpites[key] = { casa: p.casa!=null?p.casa:0, fora: p.fora!=null?p.fora:0 };
+    // preserva o vencedor de pênaltis que o participante escolheu, se ainda é empate de mata-mata
+    if (f && mataMata(f) && part.palpites[key].casa===part.palpites[key].fora && p.pen) part.palpites[key].pen = p.pen;
+  }
   recordPalp(part.id, key, part.palpites[key] || null);
   agendarSave();
 }
@@ -621,16 +660,20 @@ function textoRelatorio(){
   const RES = fixturesResolvidos();
   const lista = state.fixtures.filter(f => relFase==='Todas' || f.fase===relFase);
   lista.forEach(f => {
+    const rf = RES[f.n];
     const linhas = [];
     state.participants.forEach(p => {
       const pal = p.palpites[String(f.n)];
       if(!pal) return;
       const r = f.placar, jogou = r.casa!=null;
-      const pt = jogou ? ` (${fmtPts(points(r.casa,r.fora,pal.casa,pal.fora) * multFase(f.fase))} pts)` : '';
-      linhas.push(`• ${p.nome}: ${pal.casa}×${pal.fora}${pt}`);
+      const pt = jogou ? ` (${fmtPts(points(r.casa,r.fora,pal.casa,pal.fora) * multFase(f.fase) + bonusPen(r.casa,r.fora,pal.casa,pal.fora,r.pen,pal.pen))} pts)` : '';
+      const penTxt = (pal.casa===pal.fora && pal.pen) ? ` [pên: ${(pal.pen==='casa'?rf.casa:rf.fora).nome}]` : '';
+      linhas.push(`• ${p.nome}: ${pal.casa}×${pal.fora}${penTxt}${pt}`);
     });
     if(!linhas.length) return;
-    const r = f.placar, real = r.casa!=null ? `  [resultado ${r.casa}×${r.fora}]` : '', rf = RES[f.n];
+    const r = f.placar;
+    const penReal = (r.casa!=null && r.casa===r.fora && r.pen) ? ` (pên: ${(r.pen==='casa'?rf.casa:rf.fora).nome})` : '';
+    const real = r.casa!=null ? `  [resultado ${r.casa}×${r.fora}${penReal}]` : '';
     out += `\n#${f.n} ${rf.casa.nome} × ${rf.fora.nome} (${f.data} ${f.hora})${real}\n` + linhas.join('\n') + '\n';
   });
   return out;
@@ -668,6 +711,8 @@ document.addEventListener('input', e => {
 document.addEventListener('click', async e => {
   const t = e.target;
   if (t.dataset.clear){ const n=+t.dataset.clear, f=state.fixtures.find(x=>x.n===n); f.placar={casa:null,fora:null}; agendarSave(); renderResultados(); return; }
+  const rp = t.closest('[data-respen]');
+  if (rp){ setResultadoPen(+rp.dataset.respen, rp.dataset.side); return; }
   const ff = t.closest('.filtros button');
   if (ff && t.closest('#resultados')){ resFiltro=ff.dataset.f; renderResultados(); return; }
   if (t.id==='btnRenomear'){ const v=$('#renomear').value.trim(); if(v){ state.participants[palSel].nome=v; agendarSave(); renderPalpites(); } return; }

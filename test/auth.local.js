@@ -69,6 +69,19 @@ const ADM = { 'x-admin-password': 'segredo' };
   ok(r.body.travados.includes(passado.n), `jogo passado #${passado.n} veio em travados`);
   ok(r.body.palpites[String(futuro.n)] && r.body.palpites[String(futuro.n)].casa === 2, 'palpite do jogo futuro persistiu');
 
+  // 4b) Pênaltis: empate de mata-mata guarda o 'pen'; não-empate descarta.
+  const futMata = SEED.fixtures.find(f => f.n >= 73 && kickoffOf(f.n) > now);
+  if (futMata) {
+    r = await call(palpiteH, { method: 'POST', body: { login: 'ryan', senha: 'abc123',
+      palpites: { [futMata.n]: { casa: 1, fora: 1, pen: 'casa' } } } });
+    ok(r.body.palpites[String(futMata.n)] && r.body.palpites[String(futMata.n)].pen === 'casa',
+      'empate de mata-mata guarda o vencedor de pênaltis');
+    r = await call(palpiteH, { method: 'POST', body: { login: 'ryan', senha: 'abc123',
+      palpites: { [futMata.n]: { casa: 2, fora: 1, pen: 'casa' } } } });
+    ok(r.body.palpites[String(futMata.n)] && r.body.palpites[String(futMata.n)].pen === undefined,
+      'não-empate descarta o vencedor de pênaltis');
+  } else { ok(true, '(sem jogo de mata-mata futuro para testar pênaltis)'); }
+
   // 5) Sigilo: GET público esconde o palpite do jogo futuro
   r = await call(stateH, { method: 'GET' });
   const ryanPub = r.body.participants.find(p => p.id === ryanId);

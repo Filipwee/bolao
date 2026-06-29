@@ -172,11 +172,20 @@ function multFase(fase){
     default:          return 1;   // fase de grupos
   }
 }
-// Pontos efetivos de um jogo (base × multiplicador da fase).
+// Bônus FIXO de +15 pelo acerto do vencedor nos pênaltis (não multiplica pela fase).
+// Só vale quando o resultado real E o palpite foram empate (foi pra pênaltis).
+function bonusPen(RC, RF, PC, PF, realPen, palpPen){
+  if (RC==null || RF==null || PC==null || PF==null) return 0;
+  if (RC!==RF || PC!==PF) return 0;
+  if (!realPen || !palpPen) return 0;
+  return palpPen===realPen ? 15 : 0;
+}
+// Pontos efetivos de um jogo (base × multiplicador da fase + bônus dos pênaltis).
 function pontosJogo(f, p){
   if (!p || f.placar.casa == null) return null;
-  const base = points(f.placar.casa, f.placar.fora, p.casa, p.fora);
-  return base == null ? null : base * multFase(f.fase);
+  const r = f.placar;
+  const base = points(r.casa, r.fora, p.casa, p.fora);
+  return base == null ? null : base * multFase(f.fase) + bonusPen(r.casa, r.fora, p.casa, p.fora, r.pen, p.pen);
 }
 // Formata pontuação removendo o ".0" desnecessário (ex.: 27 e 22,5).
 const fmtPts = v => (Math.round(v*10)/10).toString().replace('.', ',');
@@ -198,7 +207,7 @@ function pontuacao(part){
     if (!p || r.casa == null) continue;
     const base = points(r.casa, r.fora, p.casa, p.fora);
     if (base == null) continue;
-    jogos++; pts += base * multFase(f.fase); if (base === 25) exatos++;
+    jogos++; pts += base * multFase(f.fase) + bonusPen(r.casa, r.fora, p.casa, p.fora, r.pen, p.pen); if (base === 25) exatos++;
   }
   return { pts, exatos, jogos };
 }
@@ -276,13 +285,15 @@ function renderJogos(){
     const centro = jogou
       ? `${f.placar.casa} <span style="color:var(--t4)">–</span> ${f.placar.fora}`
       : `<span class="hr">${esc(f.hora)}</span>`;
+    const penT = (jogou && f.placar.casa===f.placar.fora && f.placar.pen) ? (f.placar.pen==='casa'?f.casa:f.fora) : null;
+    const penLinha = penT ? `<div style="text-align:center;font:600 11px 'Hanken Grotesk';color:var(--accent);margin-top:6px">Pênaltis: ${penT.flag} ${esc(penT.nome)}</div>` : '';
     h += `<div class="card match" data-exp="${f.n}">
       <div class="match-top"><span class="gp">${esc(gp)}</span><span class="st">${st}</span></div>
       <div class="match-row">
         <div class="team"><span class="fl">${f.casa.flag}</span><span class="nm">${esc(f.casa.nome)}</span></div>
         <div class="score">${centro}</div>
         <div class="team away"><span class="nm">${esc(f.fora.nome)}</span><span class="fl">${f.fora.flag}</span></div>
-      </div>
+      </div>${penLinha}
       <div class="exp-row" data-exp="${f.n}">${ic('chevron-down',18)}</div>
       <div class="palpbox" id="palp-${f.n}" style="display:none"></div>
     </div>`;
@@ -299,9 +310,10 @@ function renderPalpitesDoJogo(n){
     const p = part.palpites[String(n)];
     if (!p){ h += `<div class="pr"><span>${esc(part.nome)}</span><span class="muted">—</span></div>`; return; }
     const base = jogou ? points(r.casa,r.fora,p.casa,p.fora) : null;
-    const v = base!=null ? base * multFase(f.fase) : null;
+    const v = base!=null ? base * multFase(f.fase) + bonusPen(r.casa,r.fora,p.casa,p.fora,r.pen,p.pen) : null;
     const tag = v!=null ? `<span class="pill" style="background:${corPts(base)};color:${base===0?'#EEF1F5':'#0B0E13'}">${fmtPts(v)}</span>` : '<span class="muted">aguardando</span>';
-    h += `<div class="pr"><span>${esc(part.nome)}: <b style="color:var(--t1)">${p.casa}×${p.fora}</b></span>${tag}</div>`;
+    const penTxt = (p.casa===p.fora && p.pen) ? ` <span class="muted">(pên: ${(p.pen==='casa'?f.casa:f.fora).flag} ${esc((p.pen==='casa'?f.casa:f.fora).nome)})</span>` : '';
+    h += `<div class="pr"><span>${esc(part.nome)}: <b style="color:var(--t1)">${p.casa}×${p.fora}</b>${penTxt}</span>${tag}</div>`;
   });
   return h || `<div class="pr"><span>Ninguém palpitou neste jogo.</span></div>`;
 }
@@ -345,7 +357,7 @@ function renderPalpitesTab(){
     const pl = p ? `${p.casa}×${p.fora}` : (comecouJogo(f) ? '—' : '🔒');
     const rl = jogou ? `${r.casa}×${r.fora}` : f.hora;
     let pt = '';
-    if (p && jogou){ const base = points(r.casa,r.fora,p.casa,p.fora); const v = base * multFase(f.fase); pt = `<span class="pill" style="background:${corPts(base)};color:${base===0?'#EEF1F5':'#0B0E13'}">${fmtPts(v)}</span>`; }
+    if (p && jogou){ const base = points(r.casa,r.fora,p.casa,p.fora); const v = base * multFase(f.fase) + bonusPen(r.casa,r.fora,p.casa,p.fora,r.pen,p.pen); pt = `<span class="pill" style="background:${corPts(base)};color:${base===0?'#EEF1F5':'#0B0E13'}">${fmtPts(v)}</span>`; }
     h += `<div class="pgrow"><span class="n">#${f.n}</span><span class="conf">${conf}</span>
       <span class="pl">${pl}</span><span class="rl">${rl}</span><span class="pt">${pt}</span></div>`;
   });

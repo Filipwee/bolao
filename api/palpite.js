@@ -19,14 +19,17 @@ const { readState, writeState, authParticipant, jaComecou, parseBody, SEED } = r
 const NJOGOS = SEED.fixtures.length;
 
 function limpaPalpite(v) {
-  // Aceita {casa, fora}. null/'' em qualquer lado => apagar o palpite.
+  // Aceita {casa, fora, pen?}. null/'' em qualquer lado => apagar o palpite.
   if (!v || typeof v !== 'object') return undefined;
   const c = v.casa, f = v.fora;
   if (c == null || c === '' || f == null || f === '') return null; // sinaliza "apagar"
   const casa = Math.max(0, parseInt(c, 10));
   const fora = Math.max(0, parseInt(f, 10));
   if (!Number.isFinite(casa) || !Number.isFinite(fora)) return undefined;
-  return { casa, fora };
+  const out = { casa, fora };
+  // Vencedor nos pênaltis: só faz sentido quando o palpite é empate.
+  if (casa === fora && (v.pen === 'casa' || v.pen === 'fora')) out.pen = v.pen;
+  return out;
 }
 
 module.exports = async (req, res) => {

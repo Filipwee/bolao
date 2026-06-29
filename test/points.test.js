@@ -31,6 +31,15 @@ function multFase(fase){
   }
 }
 
+// Bônus FIXO de +15 pelo acerto do vencedor nos pênaltis (igual ao site/admin/meu).
+// Só vale quando o resultado real E o palpite foram empate (foi pra pênaltis).
+function bonusPen(RC, RF, PC, PF, realPen, palpPen){
+  if (RC==null || RF==null || PC==null || PF==null) return 0;
+  if (RC!==RF || PC!==PF) return 0;        // só quando ambos empataram
+  if (!realPen || !palpPen) return 0;
+  return palpPen===realPen ? 15 : 0;
+}
+
 // [RC,RF, PC,PF, esperado]
 const casos = [
   [2,0, 2,0, 25],
@@ -70,6 +79,23 @@ for (const [fase, base, exp] of casosMult){
   const pass = got === exp;
   if (pass) ok++; else fail++;
   console.log(`${pass?'✓':'✗'} ${base} × mult(${fase}) == ${got}  (esperado ${exp})`);
+}
+
+// [RC,RF, PC,PF, realPen, palpPen, esperado] — bônus dos pênaltis
+const casosPen = [
+  [1,1, 0,0, 'casa','casa', 15], // empate dos dois, acertou o vencedor
+  [1,1, 0,0, 'casa','fora',  0], // empate dos dois, errou o vencedor
+  [0,0, 1,1, 'fora','fora', 15], // outro empate, acertou
+  [2,1, 1,1, 'casa','casa',  0], // jogo real não foi empate -> sem pênaltis
+  [1,1, 2,0, 'casa','casa',  0], // palpite não foi empate -> sem bônus
+  [1,1, 0,0, 'casa', null,   0], // não escolheu vencedor no palpite
+  [1,1, 0,0,  null,'casa',   0], // resultado sem vencedor de pênaltis lançado
+];
+for (const [RC,RF,PC,PF,rp,pp,exp] of casosPen){
+  const got = bonusPen(RC,RF,PC,PF,rp,pp);
+  const pass = got === exp;
+  if (pass) ok++; else fail++;
+  console.log(`${pass?'✓':'✗'} bonusPen(${RC},${RF}, ${PC},${PF}, ${rp},${pp}) == ${got}  (esperado ${exp})`);
 }
 console.log(`\nTotal: ${ok} ok, ${fail} falhas.`);
 process.exit(fail === 0 ? 0 : 1);

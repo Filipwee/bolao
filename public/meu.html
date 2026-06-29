@@ -61,6 +61,13 @@
   .sbox:focus{border-color:var(--accent)}
   .sbox:disabled{opacity:.45}
   .pcard-row .x{color:var(--t5);font:600 14px 'Hanken Grotesk';flex:none}
+  .penrow{margin-top:10px;padding-top:10px;border-top:1px solid var(--div2)}
+  .penlbl{display:block;font:600 11px 'Hanken Grotesk';color:var(--t3);margin-bottom:7px}
+  .penbtns{display:flex;gap:8px}
+  .penbtn{flex:1;cursor:pointer;border:1.5px solid var(--bdin);border-radius:10px;padding:9px 8px;min-width:0;
+    font:600 12px 'Hanken Grotesk';background:var(--input);color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .penbtn.on{background:var(--accent);color:#0B0E13;border-color:var(--accent)}
+  .penbtn:disabled{cursor:default;opacity:.6}
   .pcard-foot{margin-top:10px;padding-top:10px;border-top:1px solid var(--div2);display:flex;justify-content:flex-end;
     align-items:center;gap:8px;font:600 12px 'Hanken Grotesk';color:var(--t4)}
   .pill{display:inline-block;padding:2px 8px;border-radius:999px;font:700 12px 'Space Grotesk';color:#0B0E13}
@@ -157,7 +164,17 @@ function multFase(fase){
     default:          return 1;
   }
 }
+// Bônus FIXO de +15 pelo acerto do vencedor nos pênaltis (não multiplica pela fase).
+// Só vale quando o resultado real E o palpite foram empate (foi pra pênaltis).
+function bonusPen(RC, RF, PC, PF, realPen, palpPen){
+  if (RC==null || RF==null || PC==null || PF==null) return 0;
+  if (RC!==RF || PC!==PF) return 0;
+  if (!realPen || !palpPen) return 0;
+  return palpPen===realPen ? 15 : 0;
+}
 const fmtPts = v => (Math.round(v*10)/10).toString().replace('.', ',');
+// Mata-mata: jogos cuja fase tem multiplicador (>1). Grupos = 1.
+const mataMata = f => multFase(f.fase) > 1;
 const comecou = f => f.kickoff ? Date.now() >= Date.parse(f.kickoff) : (f.placar && f.placar.casa!=null);
 
 function setStatus(html){ $('#status').innerHTML = html; }
@@ -232,7 +249,7 @@ function render(){ renderTotais(); renderFiltros(); renderLista(); }
 
 function renderTotais(){
   let pts=0, exatos=0, enviados=Object.keys(PALP).length;
-  FIX.forEach(f=>{ const p=PALP[String(f.n)], r=f.placar; if(p&&r&&r.casa!=null){ const base=points(r.casa,r.fora,p.casa,p.fora); if(base!=null){ pts+=base*multFase(f.fase); if(base===25) exatos++; } } });
+  FIX.forEach(f=>{ const p=PALP[String(f.n)], r=f.placar; if(p&&r&&r.casa!=null){ const base=points(r.casa,r.fora,p.casa,p.fora); if(base!=null){ pts+=base*multFase(f.fase)+bonusPen(r.casa,r.fora,p.casa,p.fora,r.pen,p.pen); if(base===25) exatos++; } } });
   $('#totais').innerHTML = `
     <div class="b"><b>${fmtPts(pts)}</b><span>pontos</span></div>
     <div class="b"><b>${exatos}</b><span>exatos</span></div>
@@ -255,7 +272,7 @@ function renderLista(){
     let foot = '';
     if (trava){
       let pt = '';
-      if (p && jogou){ const base=points(r.casa,r.fora,p.casa,p.fora); const v=base*multFase(f.fase); pt=`<span class="pill" style="background:${corPts(base)};color:${base===0?'#EEF1F5':'#0B0E13'}">${fmtPts(v)}</span>`; }
+      if (p && jogou){ const base=points(r.casa,r.fora,p.casa,p.fora); const v=base*multFase(f.fase)+bonusPen(r.casa,r.fora,p.casa,p.fora,r.pen,p.pen); pt=`<span class="pill" style="background:${corPts(base)};color:${base===0?'#EEF1F5':'#0B0E13'}">${fmtPts(v)}</span>`; }
       foot = `<div class="pcard-foot">${jogou?`Resultado ${r.casa}×${r.fora}`:'🔒 jogo travado'} ${pt}</div>`;
     }
     h += `<div class="pcard ${trava?'locked':''}">
@@ -266,22 +283,48 @@ function renderLista(){
         <span class="x">×</span>
         <input class="sbox" type="number" min="0" inputmode="numeric" data-pal="${f.n}" data-side="fora" value="${p?p.fora:''}" ${trava?'disabled':''}>
         <div class="nm a">${esc(f.fora.nome)} ${f.fora.flag}</div>
-      </div>${foot}</div>`;
+      </div>
+      <div id="pen-${f.n}">${penRow(f, p)}</div>${foot}</div>`;
   });
   $('#lista').innerHTML = h;
 }
 
+// Linha "Quem ganha nos pênaltis?" — só em empate de mata-mata (ambos preenchidos).
+function penRow(f, p){
+  if (!(f && mataMata(f) && p && p.casa!=null && p.fora!=null && p.casa===p.fora)) return '';
+  const trava = comecou(f), sel = p.pen;
+  const btn = (side, time) => `<button class="penbtn ${sel===side?'on':''}" ${trava?'disabled':''} data-pen="${f.n}" data-side="${side}">${time.flag} ${esc(time.nome)}</button>`;
+  return `<div class="penrow"><span class="penlbl">Quem ganha nos pênaltis?</span>
+    <div class="penbtns">${btn('casa', f.casa)}${btn('fora', f.fora)}</div></div>`;
+}
+function atualizaPen(n){
+  const el = document.getElementById('pen-'+n);
+  if (el){ const f = FIX.find(x => x.n===n); el.innerHTML = penRow(f, PALP[String(n)]); }
+}
+
 function setPal(n, side, val){
-  const key = String(n);
+  const key = String(n), f = FIX.find(x => x.n===n);
   const p = PALP[key] ? {...PALP[key]} : {};
   if (val===''||val==null) delete p[side]; else p[side] = Math.max(0, parseInt(val,10)||0);
   if (p.casa==null && p.fora==null){ delete PALP[key]; dirty[key] = { casa:null, fora:null }; }
   else {
     PALP[key] = { casa: p.casa!=null?p.casa:0, fora: p.fora!=null?p.fora:0 };
+    // preserva o vencedor de pênaltis se ainda é empate de mata-mata; senão descarta
+    if (f && mataMata(f) && PALP[key].casa===PALP[key].fora && p.pen) PALP[key].pen = p.pen;
     // só envia quando os dois lados estão preenchidos (evita salvar pela metade)
     if (p.casa!=null && p.fora!=null) dirty[key] = PALP[key];
   }
   agendarSave();
+  atualizaPen(n); // mostra/esconde a linha de pênaltis sem re-renderizar a lista
+}
+function setPen(n, side){
+  const key = String(n), f = FIX.find(x => x.n===n), p = PALP[key];
+  if (!(f && mataMata(f) && p && p.casa!=null && p.fora!=null && p.casa===p.fora)) return;
+  if (comecou(f)) return; // travado no apito
+  if (p.pen===side) delete p.pen; else p.pen = side; // clica de novo => desmarca
+  dirty[key] = p;
+  agendarSave();
+  atualizaPen(n);
 }
 
 /* ícones estáticos */
@@ -297,7 +340,10 @@ $('#btnEntrar').addEventListener('click', entrar);
 $('#login_pw').addEventListener('keydown', e => { if(e.key==='Enter') entrar(); });
 $('#btnSair').addEventListener('click', () => deslogar(''));
 document.addEventListener('input', e => { const t=e.target; if(t.dataset.pal) setPal(+t.dataset.pal, t.dataset.side, t.value); });
-document.addEventListener('click', e => { const b=e.target.closest('#filtros .chip'); if(b){ faseFiltro=b.dataset.f; renderFiltros(); renderLista(); } });
+document.addEventListener('click', e => {
+  const pb=e.target.closest('[data-pen]'); if(pb){ setPen(+pb.dataset.pen, pb.dataset.side); return; }
+  const b=e.target.closest('#filtros .chip'); if(b){ faseFiltro=b.dataset.f; renderFiltros(); renderLista(); }
+});
 
 /* init: auto-login se já tiver credencial salva */
 if (LOGIN && SENHA){ $('#login_user').value=LOGIN; $('#login_pw').value=SENHA; entrar(); }
