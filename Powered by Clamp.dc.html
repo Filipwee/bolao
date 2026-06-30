@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    button { font: inherit; border: none; background: none; }
+    a { color: inherit; }
+  </style>
+</helmet>
+
+<div style="background:#F4F1EA; font-family:'Schibsted Grotesk',system-ui,sans-serif; color:#14161B; -webkit-font-smoothing:antialiased;">
+
+  <!-- ===== HEADER ===== -->
+  <section style="background:#14161B; color:#F4F1EA; padding:72px 72px 64px; position:relative; overflow:hidden;">
+    <div style="position:absolute; inset:0; background-image:linear-gradient(rgba(244,241,234,0.022) 1px, transparent 1px), linear-gradient(90deg, rgba(244,241,234,0.022) 1px, transparent 1px); background-size:56px 56px; pointer-events:none;"></div>
+    <div style="position:relative; z-index:1; max-width:1120px; margin:0 auto;">
+      <div style="display:flex; justify-content:space-between; align-items:center; font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:11px; letter-spacing:0.26em; text-transform:uppercase; color:#71757E; margin-bottom:56px;">
+        <span>Clamp Digital Studio — clamp.digital</span>
+        <span>Endosso · Biblioteca de selos</span>
+      </div>
+      <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:48px; flex-wrap:wrap;">
+        <div style="max-width:60ch;">
+          <h1 style="font-size:58px; font-weight:800; letter-spacing:-0.045em; line-height:0.98; margin:0 0 22px;">Powered by Clamp.</h1>
+          <p style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:14px; line-height:1.7; color:#B9BCC4; margin:0;">Cada produto vive a própria cara, mas todos carregam o endosso do estúdio. Doze selos prontos para colar em qualquer site ou app — fundos claros, escuros e Clamp Blue. Passe o mouse, clique em copiar.</p>
+        </div>
+        <!-- canonical lockup -->
+        <div style="background:#1C1F26; border:1px solid #2E3340; border-radius:8px; padding:30px 38px; display:flex; flex-direction:column; align-items:center; gap:13px;">
+          <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:#71757E;">A assinatura</span>
+          <div style="display:flex; align-items:center; gap:9px;">
+            <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:13px; letter-spacing:0.18em; text-transform:uppercase; color:#9A9EA8;">powered by</span>
+            <svg width="19" height="19" viewBox="0 0 100 100" fill="none" style="display:block"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#F4F1EA" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#2B54F4"/></svg>
+            <span style="font-size:19px; font-weight:700; letter-spacing:-0.03em;">Clamp</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GALLERY ===== -->
+  <section style="padding:80px 72px 110px;">
+    <div style="max-width:1120px; margin:0 auto; display:grid; grid-template-columns:repeat(3, 1fr); gap:28px;">
+
+      <!-- group: inline -->
+      <div style="grid-column:1/-1; display:flex; align-items:baseline; gap:16px; margin-top:4px;">
+        <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; letter-spacing:0.26em; text-transform:uppercase; color:#2B54F4;">A — Crédito inline</span>
+        <span style="flex:1; height:1px; background:#E2DED4;"></span>
+        <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:11px; color:#A7AAB1;">rodapé · email · fim de página</span>
+      </div>
+
+      <!-- b1 inline ink -->
+      <div style="background:#fff; border:1px solid #E2DED4; border-radius:8px; overflow:hidden;">
+        <div style="background:#14161B; height:170px; display:flex; align-items:center; justify-content:center; padding:24px;">
+          <a href="{{ link }}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; transition:opacity .2s ease;" style-hover="opacity:0.72;">
+            <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; letter-spacing:0.22em; text-transform:uppercase; color:#9A9EA8;">powered by</span>
+            <svg width="15" height="15" viewBox="0 0 100 100" fill="none" style="display:block"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#F4F1EA" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#2B54F4"/></svg>
+            <span style="font-size:15px; font-weight:700; letter-spacing:-0.02em; color:#F4F1EA;">Clamp</span>
+          </a>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border-top:1px solid #EDEAE1;">
+          <div style="display:flex; align-items:center; gap:10px;"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; color:#2B54F4;">01</span><span style="font-size:14px; font-weight:600;">Inline · Ink</span></div>
+          <sc-if value="{{ showCode }}" hint-placeholder-val="{{ true }}"><button onClick="{{ copy.b1 }}" style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#6E727B; border:1px solid #D8D3C8; border-radius:5px; padding:7px 11px; cursor:pointer; transition:all .15s ease;" style-hover="border-color:#14161B; color:#14161B;">{{ label.b1 }}</button></sc-if>
+        </div>
+      </div>
+
+      <!-- b2 inline paper -->
+      <div style="background:#fff; border:1px solid #E2DED4; border-radius:8px; overflow:hidden;">
+        <div style="background:#FBFAF6; height:170px; display:flex; align-items:center; justify-content:center; padding:24px; border-bottom:1px solid #EDEAE1;">
+          <a href="{{ link }}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; transition:opacity .2s ease;" style-hover="opacity:0.7;">
+            <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; letter-spacing:0.22em; text-transform:uppercase; color:#6E727B;">powered by</span>
+            <svg width="15" height="15" viewBox="0 0 100 100" fill="none" style="display:block"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#14161B" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#2B54F4"/></svg>
+            <span style="font-size:15px; font-weight:700; letter-spacing:-0.02em; color:#14161B;">Clamp</span>
+          </a>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px;">
+          <div style="display:flex; align-items:center; gap:10px;"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; color:#2B54F4;">02</span><span style="font-size:14px; font-weight:600;">Inline · Paper</span></div>
+          <sc-if value="{{ showCode }}" hint-placeholder-val="{{ true }}"><button onClick="{{ copy.b2 }}" style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#6E727B; border:1px solid #D8D3C8; border-radius:5px; padding:7px 11px; cursor:pointer; transition:all .15s ease;" style-hover="border-color:#14161B; color:#14161B;">{{ label.b2 }}</button></sc-if>
+        </div>
+      </div>
+
+      <!-- b3 inline blue -->
+      <div style="background:#fff; border:1px solid #E2DED4; border-radius:8px; overflow:hidden;">
+        <div style="background:#2B54F4; height:170px; display:flex; align-items:center; justify-content:center; padding:24px;">
+          <a href="{{ link }}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; transition:opacity .2s ease;" style-hover="opacity:0.82;">
+            <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; letter-spacing:0.22em; text-transform:uppercase; color:#C3CDFB;">powered by</span>
+            <svg width="15" height="15" viewBox="0 0 100 100" fill="none" style="display:block"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#ffffff" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#14161B"/></svg>
+            <span style="font-size:15px; font-weight:700; letter-spacing:-0.02em; color:#ffffff;">Clamp</span>
+          </a>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border-top:1px solid #EDEAE1;">
+          <div style="display:flex; align-items:center; gap:10px;"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; color:#2B54F4;">03</span><span style="font-size:14px; font-weight:600;">Inline · Clamp Blue</span></div>
+          <sc-if value="{{ showCode }}" hint-placeholder-val="{{ true }}"><button onClick="{{ copy.b3 }}" style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#6E727B; border:1px solid #D8D3C8; border-radius:5px; padding:7px 11px; cursor:pointer; transition:all .15s ease;" style-hover="border-color:#14161B; color:#14161B;">{{ label.b3 }}</button></sc-if>
+        </div>
+      </div>
+
+      <!-- b4 text only -->
+      <div style="background:#fff; border:1px solid #E2DED4; border-radius:8px; overflow:hidden;">
+        <div style="background:#FBFAF6; height:170px; display:flex; align-items:center; justify-content:center; padding:24px; border-bottom:1px solid #EDEAE1;">
+          <a href="{{ link }}" target="_blank" rel="noopener" style="text-decoration:none; font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:11px; letter-spacing:0.26em; text-transform:uppercase; color:#6E727B; transition:color .2s ease;" style-hover="color:#2B54F4;">powered by <span style="color:#14161B; font-weight:600;">Clamp</span></a>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px;">
+          <div style="display:flex; align-items:center; gap:10px;"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; color:#2B54F4;">04</span><span style="font-size:14px; font-weight:600;">Texto puro · mono</span></div>
+          <sc-if value="{{ showCode }}" hint-placeholder-val="{{ true }}"><button onClick="{{ copy.b4 }}" style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#6E727B; border:1px solid #D8D3C8; border-radius:5px; padding:7px 11px; cursor:pointer; transition:all .15s ease;" style-hover="border-color:#14161B; color:#14161B;">{{ label.b4 }}</button></sc-if>
+        </div>
+      </div>
+
+      <!-- group: chips -->
+      <div style="grid-column:1/-1; display:flex; align-items:baseline; gap:16px; margin-top:24px;">
+        <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; letter-spacing:0.26em; text-transform:uppercase; color:#2B54F4;">B — Chips & pílulas</span>
+        <span style="flex:1; height:1px; background:#E2DED4;"></span>
+        <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:11px; color:#A7AAB1;">cabeçalho · barra · botão</span>
+      </div>
+
+      <!-- b5 chip ink -->
+      <div style="background:#fff; border:1px solid #E2DED4; border-radius:8px; overflow:hidden;">
+        <div style="background:#14161B; height:170px; display:flex; align-items:center; justify-content:center; padding:24px;">
+          <a href="{{ link }}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:9px; text-decoration:none; background:#1C1F26; border:1px solid #2E3340; border-radius:100px; padding:8px 15px 8px 13px; transition:all .2s ease;" style-hover="transform:translateY(-2px); border-color:#3C4250;">
+            <svg width="15" height="15" viewBox="0 0 100 100" fill="none" style="display:block"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#F4F1EA" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#2B54F4"/></svg>
+            <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:#71757E;">powered by</span>
+            <span style="font-size:14px; font-weight:700; letter-spacing:-0.02em; color:#F4F1EA;">Clamp</span>
+          </a>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border-top:1px solid #EDEAE1;">
+          <div style="display:flex; align-items:center; gap:10px;"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; color:#2B54F4;">05</span><span style="font-size:14px; font-weight:600;">Chip contornado · Ink</span></div>
+          <sc-if value="{{ showCode }}" hint-placeholder-val="{{ true }}"><button onClick="{{ copy.b5 }}" style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#6E727B; border:1px solid #D8D3C8; border-radius:5px; padding:7px 11px; cursor:pointer; transition:all .15s ease;" style-hover="border-color:#14161B; color:#14161B;">{{ label.b5 }}</button></sc-if>
+        </div>
+      </div>
+
+      <!-- b6 chip paper -->
+      <div style="background:#fff; border:1px solid #E2DED4; border-radius:8px; overflow:hidden;">
+        <div style="background:#FBFAF6; height:170px; display:flex; align-items:center; justify-content:center; padding:24px; border-bottom:1px solid #EDEAE1;">
+          <a href="{{ link }}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:9px; text-decoration:none; background:#fff; border:1px solid #E2DED4; border-radius:100px; padding:8px 15px 8px 13px; transition:all .2s ease;" style-hover="transform:translateY(-2px); border-color:#14161B;">
+            <svg width="15" height="15" viewBox="0 0 100 100" fill="none" style="display:block"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#14161B" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#2B54F4"/></svg>
+            <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:#A7AAB1;">powered by</span>
+            <span style="font-size:14px; font-weight:700; letter-spacing:-0.02em; color:#14161B;">Clamp</span>
+          </a>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px;">
+          <div style="display:flex; align-items:center; gap:10px;"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; color:#2B54F4;">06</span><span style="font-size:14px; font-weight:600;">Chip contornado · Paper</span></div>
+          <sc-if value="{{ showCode }}" hint-placeholder-val="{{ true }}"><button onClick="{{ copy.b6 }}" style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#6E727B; border:1px solid #D8D3C8; border-radius:5px; padding:7px 11px; cursor:pointer; transition:all .15s ease;" style-hover="border-color:#14161B; color:#14161B;">{{ label.b6 }}</button></sc-if>
+        </div>
+      </div>
+
+      <!-- b7 chip solid blue -->
+      <div style="background:#fff; border:1px solid #E2DED4; border-radius:8px; overflow:hidden;">
+        <div style="background:#FBFAF6; height:170px; display:flex; align-items:center; justify-content:center; padding:24px; border-bottom:1px solid #EDEAE1;">
+          <a href="{{ link }}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:9px; text-decoration:none; background:#2B54F4; border-radius:100px; padding:9px 16px 9px 14px; transition:all .2s ease;" style-hover="transform:translateY(-2px); box-shadow:0 8px 22px rgba(43,84,244,0.32);">
+            <svg width="15" height="15" viewBox="0 0 100 100" fill="none" style="display:block"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#ffffff" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#14161B"/></svg>
+            <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:#C3CDFB;">powered by</span>
+            <span style="font-size:14px; font-weight:700; letter-spacing:-0.02em; color:#ffffff;">Clamp</span>
+          </a>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px;">
+          <div style="display:flex; align-items:center; gap:10px;"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; color:#2B54F4;">07</span><span style="font-size:14px; font-weight:600;">Chip sólido · Blue</span></div>
+          <sc-if value="{{ showCode }}" hint-placeholder-val="{{ true }}"><button onClick="{{ copy.b7 }}" style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#6E727B; border:1px solid #D8D3C8; border-radius:5px; padding:7px 11px; cursor:pointer; transition:all .15s ease;" style-hover="border-color:#14161B; color:#14161B;">{{ label.b7 }}</button></sc-if>
+        </div>
+      </div>
+
+      <!-- group: floating -->
+      <div style="grid-column:1/-1; display:flex; align-items:baseline; gap:16px; margin-top:24px;">
+        <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; letter-spacing:0.26em; text-transform:uppercase; color:#2B54F4;">C — Flutuantes (canto fixo)</span>
+        <span style="flex:1; height:1px; background:#E2DED4;"></span>
+        <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:11px; color:#A7AAB1;">overlay · position:fixed</span>
+      </div>
+
+      <!-- b8 floating expandable -->
+      <div style="background:#fff; border:1px solid #E2DED4; border-radius:8px; overflow:hidden;">
+        <div style="background:#F4F1EA; height:170px; position:relative; padding:18px; overflow:hidden;">
+          <div style="height:9px; width:42%; background:#E4DFD3; border-radius:3px; margin-bottom:11px;"></div>
+          <div style="height:9px; width:64%; background:#EAE6DC; border-radius:3px; margin-bottom:11px;"></div>
+          <div style="height:9px; width:30%; background:#EAE6DC; border-radius:3px;"></div>
+          <a href="{{ link }}" target="_blank" rel="noopener" onMouseEnter="{{ floatOn }}" onMouseLeave="{{ floatOff }}" style="position:absolute; bottom:16px; right:16px; display:inline-flex; align-items:center; text-decoration:none; background:#14161B; border-radius:100px; padding:9px 13px; box-shadow:0 6px 18px rgba(20,22,27,0.22);">
+            <svg width="16" height="16" viewBox="0 0 100 100" fill="none" style="display:block; flex-shrink:0;"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#F4F1EA" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#2B54F4"/></svg>
+            <span style="{{ floatTextStyle }}">powered by Clamp</span>
+          </a>
+          <span style="position:absolute; top:16px; right:16px; font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:#B7B1A4;">hover ↘</span>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border-top:1px solid #EDEAE1;">
+          <div style="display:flex; align-items:center; gap:10px;"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; color:#2B54F4;">08</span><span style="font-size:14px; font-weight:600;">Flutuante expansível</span></div>
+          <sc-if value="{{ showCode }}" hint-placeholder-val="{{ true }}"><button onClick="{{ copy.b8 }}" style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#6E727B; border:1px solid #D8D3C8; border-radius:5px; padding:7px 11px; cursor:pointer; transition:all .15s ease;" style-hover="border-color:#14161B; color:#14161B;">{{ label.b8 }}</button></sc-if>
+        </div>
+      </div>
+
+      <!-- b9 corner tag -->
+      <div style="background:#fff; border:1px solid #E2DED4; border-radius:8px; overflow:hidden;">
+        <div style="background:#14161B; height:170px; position:relative; padding:18px; overflow:hidden;">
+          <div style="height:9px; width:38%; background:#262A33; border-radius:3px; margin-bottom:11px;"></div>
+          <div style="height:9px; width:58%; background:#21242C; border-radius:3px; margin-bottom:11px;"></div>
+          <div style="height:9px; width:26%; background:#21242C; border-radius:3px;"></div>
+          <a href="{{ link }}" target="_blank" rel="noopener" style="position:absolute; bottom:16px; right:16px; display:inline-flex; align-items:center; gap:7px; text-decoration:none; background:rgba(244,241,234,0.06); border:1px solid #2E3340; backdrop-filter:blur(4px); border-radius:7px; padding:7px 11px; transition:all .2s ease;" style-hover="background:rgba(244,241,234,0.11);">
+            <svg width="13" height="13" viewBox="0 0 100 100" fill="none" style="display:block"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#F4F1EA" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#2B54F4"/></svg>
+            <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:10px; letter-spacing:0.12em; color:#B9BCC4;">by <span style="color:#F4F1EA; font-weight:600;">Clamp</span></span>
+          </a>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px;">
+          <div style="display:flex; align-items:center; gap:10px;"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; color:#2B54F4;">09</span><span style="font-size:14px; font-weight:600;">Tag de canto · glass</span></div>
+          <sc-if value="{{ showCode }}" hint-placeholder-val="{{ true }}"><button onClick="{{ copy.b9 }}" style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#6E727B; border:1px solid #D8D3C8; border-radius:5px; padding:7px 11px; cursor:pointer; transition:all .15s ease;" style-hover="border-color:#14161B; color:#14161B;">{{ label.b9 }}</button></sc-if>
+        </div>
+      </div>
+
+      <!-- spacer to keep grid balanced -->
+      <div style="display:none;"></div>
+
+      <!-- group: stacked -->
+      <div style="grid-column:1/-1; display:flex; align-items:baseline; gap:16px; margin-top:24px;">
+        <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; letter-spacing:0.26em; text-transform:uppercase; color:#2B54F4;">D — Empilhados & splash</span>
+        <span style="flex:1; height:1px; background:#E2DED4;"></span>
+        <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:11px; color:#A7AAB1;">loading · login · onboarding</span>
+      </div>
+
+      <!-- b10 stacked splash -->
+      <div style="background:#fff; border:1px solid #E2DED4; border-radius:8px; overflow:hidden;">
+        <div style="background:#14161B; height:200px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:24px;">
+          <svg width="40" height="40" viewBox="0 0 100 100" fill="none" style="display:block"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#F4F1EA" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#2B54F4"/></svg>
+          <a href="{{ link }}" target="_blank" rel="noopener" style="display:flex; flex-direction:column; align-items:center; gap:5px; text-decoration:none;">
+            <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:10px; letter-spacing:0.24em; text-transform:uppercase; color:#71757E;">powered by</span>
+            <span style="font-size:18px; font-weight:700; letter-spacing:-0.03em; color:#F4F1EA;">Clamp</span>
+          </a>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border-top:1px solid #EDEAE1;">
+          <div style="display:flex; align-items:center; gap:10px;"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; color:#2B54F4;">10</span><span style="font-size:14px; font-weight:600;">Empilhado · splash</span></div>
+          <sc-if value="{{ showCode }}" hint-placeholder-val="{{ true }}"><button onClick="{{ copy.b10 }}" style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#6E727B; border:1px solid #D8D3C8; border-radius:5px; padding:7px 11px; cursor:pointer; transition:all .15s ease;" style-hover="border-color:#14161B; color:#14161B;">{{ label.b10 }}</button></sc-if>
+        </div>
+      </div>
+
+      <!-- b11 card badge -->
+      <div style="background:#fff; border:1px solid #E2DED4; border-radius:8px; overflow:hidden;">
+        <div style="background:#FBFAF6; height:200px; display:flex; align-items:center; justify-content:center; padding:24px; border-bottom:1px solid #EDEAE1;">
+          <a href="{{ link }}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:14px; text-decoration:none; background:#fff; border:1px solid #E2DED4; border-radius:10px; padding:14px 18px; transition:all .2s ease;" style-hover="transform:translateY(-2px); box-shadow:0 10px 26px rgba(20,22,27,0.08);">
+            <div style="width:38px; height:38px; border-radius:9px; background:#14161B; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <svg width="20" height="20" viewBox="0 0 100 100" fill="none" style="display:block"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#F4F1EA" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#2B54F4"/></svg>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:2px;">
+              <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:#A7AAB1;">powered by</span>
+              <span style="font-size:18px; font-weight:700; letter-spacing:-0.03em; color:#14161B; line-height:1;">Clamp</span>
+            </div>
+          </a>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px;">
+          <div style="display:flex; align-items:center; gap:10px;"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; color:#2B54F4;">11</span><span style="font-size:14px; font-weight:600;">Cartão de selo</span></div>
+          <sc-if value="{{ showCode }}" hint-placeholder-val="{{ true }}"><button onClick="{{ copy.b11 }}" style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#6E727B; border:1px solid #D8D3C8; border-radius:5px; padding:7px 11px; cursor:pointer; transition:all .15s ease;" style-hover="border-color:#14161B; color:#14161B;">{{ label.b11 }}</button></sc-if>
+        </div>
+      </div>
+
+      <!-- b12 big endorsement -->
+      <div style="background:#fff; border:1px solid #E2DED4; border-radius:8px; overflow:hidden;">
+        <div style="background:#2B54F4; height:200px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:24px;">
+          <svg width="44" height="44" viewBox="0 0 100 100" fill="none" style="display:block"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#ffffff" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#14161B"/></svg>
+          <a href="{{ link }}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:9px; text-decoration:none;">
+            <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:#C3CDFB;">powered by</span>
+            <span style="font-size:20px; font-weight:700; letter-spacing:-0.03em; color:#ffffff;">Clamp</span>
+          </a>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px;">
+          <div style="display:flex; align-items:center; gap:10px;"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; color:#2B54F4;">12</span><span style="font-size:14px; font-weight:600;">Endosso grande · Blue</span></div>
+          <sc-if value="{{ showCode }}" hint-placeholder-val="{{ true }}"><button onClick="{{ copy.b12 }}" style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#6E727B; border:1px solid #D8D3C8; border-radius:5px; padding:7px 11px; cursor:pointer; transition:all .15s ease;" style-hover="border-color:#14161B; color:#14161B;">{{ label.b12 }}</button></sc-if>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- note -->
+    <div style="max-width:1120px; margin:40px auto 0; padding:22px 26px; background:#fff; border:1px solid #E2DED4; border-radius:8px; display:flex; gap:14px; align-items:flex-start;">
+      <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#2B54F4; padding-top:2px; flex-shrink:0;">Nota</span>
+      <p style="font-size:14px; line-height:1.65; color:#3A3E45; margin:0;">O código copiado é autossuficiente (estilos inline + símbolo SVG embutido) e cai no padrão do sistema caso as fontes <strong>Schibsted Grotesk</strong> e <strong>IBM Plex Mono</strong> não estejam carregadas no projeto. O nó do símbolo é sempre Clamp Blue <span style="font-family:'IBM Plex Mono',ui-monospace,monospace; color:#2B54F4;">#2B54F4</span> — exceto sobre o próprio azul, onde vira Ink.</p>
+    </div>
+  </section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:1100},&quot;linkUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://clamp.digital&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showCode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { copied: null, float: false };
+
+  get snippets() {
+    return {
+      b1: `<a href="https://clamp.digital" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
+  <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#9A9EA8;">powered by</span>
+  <svg width="15" height="15" viewBox="0 0 100 100" fill="none"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#F4F1EA" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#2B54F4"/></svg>
+  <span style="font-family:'Schibsted Grotesk',system-ui,sans-serif;font-size:15px;font-weight:700;letter-spacing:-.02em;color:#F4F1EA;">Clamp</span>
+</a>`,
+      b2: `<a href="https://clamp.digital" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
+  <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#6E727B;">powered by</span>
+  <svg width="15" height="15" viewBox="0 0 100 100" fill="none"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#14161B" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#2B54F4"/></svg>
+  <span style="font-family:'Schibsted Grotesk',system-ui,sans-serif;font-size:15px;font-weight:700;letter-spacing:-.02em;color:#14161B;">Clamp</span>
+</a>`,
+      b3: `<a href="https://clamp.digital" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
+  <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#C3CDFB;">powered by</span>
+  <svg width="15" height="15" viewBox="0 0 100 100" fill="none"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#ffffff" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#14161B"/></svg>
+  <span style="font-family:'Schibsted Grotesk',system-ui,sans-serif;font-size:15px;font-weight:700;letter-spacing:-.02em;color:#ffffff;">Clamp</span>
+</a>`,
+      b4: `<a href="https://clamp.digital" target="_blank" rel="noopener" style="text-decoration:none;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#6E727B;">powered by <span style="color:#14161B;font-weight:600;">Clamp</span></a>`,
+      b5: `<a href="https://clamp.digital" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:9px;text-decoration:none;background:#1C1F26;border:1px solid #2E3340;border-radius:100px;padding:8px 15px 8px 13px;">
+  <svg width="15" height="15" viewBox="0 0 100 100" fill="none"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#F4F1EA" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#2B54F4"/></svg>
+  <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#71757E;">powered by</span>
+  <span style="font-family:'Schibsted Grotesk',system-ui,sans-serif;font-size:14px;font-weight:700;letter-spacing:-.02em;color:#F4F1EA;">Clamp</span>
+</a>`,
+      b6: `<a href="https://clamp.digital" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:9px;text-decoration:none;background:#fff;border:1px solid #E2DED4;border-radius:100px;padding:8px 15px 8px 13px;">
+  <svg width="15" height="15" viewBox="0 0 100 100" fill="none"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#14161B" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#2B54F4"/></svg>
+  <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#A7AAB1;">powered by</span>
+  <span style="font-family:'Schibsted Grotesk',system-ui,sans-serif;font-size:14px;font-weight:700;letter-spacing:-.02em;color:#14161B;">Clamp</span>
+</a>`,
+      b7: `<a href="https://clamp.digital" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:9px;text-decoration:none;background:#2B54F4;border-radius:100px;padding:9px 16px 9px 14px;">
+  <svg width="15" height="15" viewBox="0 0 100 100" fill="none"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#ffffff" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#14161B"/></svg>
+  <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#C3CDFB;">powered by</span>
+  <span style="font-family:'Schibsted Grotesk',system-ui,sans-serif;font-size:14px;font-weight:700;letter-spacing:-.02em;color:#ffffff;">Clamp</span>
+</a>`,
+      b8: `<a href="https://clamp.digital" target="_blank" rel="noopener" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:inline-flex;align-items:center;gap:9px;text-decoration:none;background:#14161B;border-radius:100px;padding:9px 15px 9px 13px;box-shadow:0 6px 18px rgba(20,22,27,.22);">
+  <svg width="16" height="16" viewBox="0 0 100 100" fill="none"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#F4F1EA" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#2B54F4"/></svg>
+  <span style="font-family:'Schibsted Grotesk',system-ui,sans-serif;font-size:14px;font-weight:700;letter-spacing:-.02em;color:#F4F1EA;">powered by Clamp</span>
+</a>`,
+      b9: `<a href="https://clamp.digital" target="_blank" rel="noopener" style="position:fixed;bottom:16px;right:16px;z-index:9999;display:inline-flex;align-items:center;gap:7px;text-decoration:none;background:rgba(20,22,27,.7);border:1px solid rgba(244,241,234,.14);backdrop-filter:blur(6px);border-radius:7px;padding:7px 11px;">
+  <svg width="13" height="13" viewBox="0 0 100 100" fill="none"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#F4F1EA" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#2B54F4"/></svg>
+  <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;color:#B9BCC4;">by <span style="color:#F4F1EA;font-weight:600;">Clamp</span></span>
+</a>`,
+      b10: `<a href="https://clamp.digital" target="_blank" rel="noopener" style="display:inline-flex;flex-direction:column;align-items:center;gap:14px;text-decoration:none;">
+  <svg width="40" height="40" viewBox="0 0 100 100" fill="none"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#F4F1EA" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#2B54F4"/></svg>
+  <span style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+    <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#71757E;">powered by</span>
+    <span style="font-family:'Schibsted Grotesk',system-ui,sans-serif;font-size:18px;font-weight:700;letter-spacing:-.03em;color:#F4F1EA;">Clamp</span>
+  </span>
+</a>`,
+      b11: `<a href="https://clamp.digital" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:14px;text-decoration:none;background:#fff;border:1px solid #E2DED4;border-radius:10px;padding:14px 18px;">
+  <span style="width:38px;height:38px;border-radius:9px;background:#14161B;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+    <svg width="20" height="20" viewBox="0 0 100 100" fill="none"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#F4F1EA" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#2B54F4"/></svg>
+  </span>
+  <span style="display:flex;flex-direction:column;gap:2px;">
+    <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#A7AAB1;">powered by</span>
+    <span style="font-family:'Schibsted Grotesk',system-ui,sans-serif;font-size:18px;font-weight:700;letter-spacing:-.03em;color:#14161B;line-height:1;">Clamp</span>
+  </span>
+</a>`,
+      b12: `<a href="https://clamp.digital" target="_blank" rel="noopener" style="display:inline-flex;flex-direction:column;align-items:center;gap:18px;text-decoration:none;">
+  <svg width="44" height="44" viewBox="0 0 100 100" fill="none"><path d="M71 20 A37 37 0 1 0 71 80" stroke="#ffffff" stroke-width="15" stroke-linecap="round"/><rect x="60" y="41" width="18" height="18" rx="3" fill="#14161B"/></svg>
+  <span style="display:inline-flex;align-items:center;gap:9px;">
+    <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#C3CDFB;">powered by</span>
+    <span style="font-family:'Schibsted Grotesk',system-ui,sans-serif;font-size:20px;font-weight:700;letter-spacing:-.03em;color:#ffffff;">Clamp</span>
+  </span>
+</a>`
+    };
+  }
+
+  doCopy(id) {
+    const text = (this.snippets[id] || '').trim();
+    try {
+      navigator.clipboard.writeText(text);
+    } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch (_) {}
+      ta.remove();
+    }
+    this.setState({ copied: id });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ copied: null }), 1600);
+  }
+
+  renderVals() {
+    const ids = ['b1','b2','b3','b4','b5','b6','b7','b8','b9','b10','b11','b12'];
+    const copy = {}, label = {};
+    ids.forEach(id => {
+      copy[id] = () => this.doCopy(id);
+      label[id] = this.state.copied === id ? '✓ Copiado' : 'Copiar código';
+    });
+    const open = this.state.float;
+    const floatTextStyle = "overflow:hidden; white-space:nowrap; transition:max-width .3s ease, opacity .25s ease, margin .3s ease;"
+      + " font-family:'Schibsted Grotesk',system-ui,sans-serif; font-weight:700; font-size:14px; letter-spacing:-0.02em; color:#F4F1EA;"
+      + (open ? " max-width:130px; opacity:1; margin-left:9px;" : " max-width:0; opacity:0; margin-left:0;");
+    return {
+      link: this.props.linkUrl ?? 'https://clamp.digital',
+      showCode: this.props.showCode ?? true,
+      copy, label, floatTextStyle,
+      floatOn: () => this.setState({ float: true }),
+      floatOff: () => this.setState({ float: false })
+    };
+  }
+}
+</script>
+</body>
+</html>
