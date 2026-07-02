@@ -127,7 +127,6 @@
     <button data-tab="palpites">Palpites</button>
     <button data-tab="acessos">Acessos</button>
     <button data-tab="relatorio">Relatório</button>
-    <button data-tab="colar">Colar do grupo</button>
     <button data-tab="ferramentas">Ferramentas</button>
   </nav>
 
@@ -136,7 +135,6 @@
     <section id="palpites" class="panel"></section>
     <section id="acessos" class="panel"></section>
     <section id="relatorio" class="panel"></section>
-    <section id="colar" class="panel"></section>
     <section id="ferramentas" class="panel"></section>
   </main>
   <!-- Endosso do estúdio — "Powered by Clamp" (clamp.digital) -->
@@ -416,6 +414,7 @@ function setResultadoPen(n, side){
 
 /* ===================== ABA PALPITES ===================== */
 let palSel = 0;
+let palFiltro = 'Todas';
 function renderPalpites(){
   const part = state.participants[palSel];
   let h = `<div class="row-actions"><select id="selPart">`;
@@ -427,14 +426,11 @@ function renderPalpites(){
       <button class="btn sec" id="btnAddPart">+ participante</button>
       <button class="btn danger" id="btnLimparPalp">Limpar palpites</button>
     </div>
-    <div class="card"><b>📋 Colar em massa</b>
-      <p class="muted" style="margin:4px 0 8px;font-size:.82rem">Cole as linhas do participante. Aceita
-        <code>1: 2x0</code>, <code>Jogo 1 2 x 0</code>, <code>1 - 2x0</code>, <code>1 2:0</code>.</p>
-      <textarea id="bulk" placeholder="1: 2x0&#10;2 1x1&#10;Jogo 3 0 x 2"></textarea>
-      <button class="btn" id="btnAplicar" style="margin-top:8px">Aplicar</button></div>
-    <div class="card">`;
+    <div class="filtros"><button data-f="Todas" class="${palFiltro==='Todas'?'active':''}">Todas</button>`;
+  fases().forEach(f => h += `<button data-f="${esc(f)}" class="${palFiltro===f?'active':''}">${esc(f)}</button>`);
+  h += `</div><div class="card">`;
   const RES = fixturesResolvidos();
-  state.fixtures.forEach(f => {
+  state.fixtures.filter(f => palFiltro==='Todas'||f.fase===palFiltro).forEach(f => {
     const p = part.palpites[String(f.n)], r = f.placar, jogou = r.casa != null, rf = RES[f.n];
     let pt = '';
     if (p && jogou){ const base = points(r.casa,r.fora,p.casa,p.fora); const v = base * multFase(f.fase) + bonusPen(r.casa,r.fora,p.casa,p.fora,r.pen,p.pen); pt = `<span class="pill" style="background:${corPts(base)};color:${base===0?'#fff':'#0b132b'}">${fmtPts(v)} pts</span>`; }
@@ -465,124 +461,7 @@ function setPalpite(n, side, val){
   recordPalp(part.id, key, part.palpites[key] || null);
   agendarSave();
 }
-function aplicarBulk(texto){
-  const part = state.participants[palSel];
-  let aplicados = 0;
-  texto.split(/\n+/).forEach(linha => {
-    const m = linha.match(/(?:jogo\s*)?(\d{1,3})\D+(\d{1,2})\s*[x:\-]\s*(\d{1,2})/i);
-    if (!m) return;
-    const n = parseInt(m[1],10);
-    if (n<1 || n>state.fixtures.length) return;
-    part.palpites[String(n)] = { casa: parseInt(m[2],10), fora: parseInt(m[3],10) };
-    recordPalp(part.id, String(n), part.palpites[String(n)]);
-    aplicados++;
-  });
-  agendarSave();
-  return aplicados;
-}
-
-/* ===================== ABA COLAR DO GRUPO ===================== */
-// Cola a mensagem do grupo (palpites por NOME de um jogo) e aplica todos de uma vez.
-let colarParsed = null, colarJogo = null;
-
 const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,'');
-
-function matchParticipant(raw){
-  const n = norm(raw);
-  if(!n) return { idx:-1 };
-  let i = state.participants.findIndex(x => norm(x.nome)===n);
-  if(i>=0) return { idx:i, how:'exato' };
-  i = state.participants.findIndex(x => { const xn=norm(x.nome); return xn.startsWith(n) || n.startsWith(xn); });
-  if(i>=0) return { idx:i, how:'prefixo' };
-  i = state.participants.findIndex(x => n.length>=3 && norm(x.nome).slice(0,4)===n.slice(0,4));
-  if(i>=0) return { idx:i, how:'aprox' };
-  return { idx:-1 };
-}
-
-function parseGroupMessage(text){
-  const tnorm = norm(text);
-  const RES = fixturesResolvidos();
-  // Jogo candidato: os dois times (normalizados) aparecem na mensagem.
-  const candidates = state.fixtures.filter(f => {
-    const rf = RES[f.n], a = norm(rf.casa.nome), b = norm(rf.fora.nome);
-    return a && b && tnorm.includes(a) && tnorm.includes(b);
-  }).map(f => f.n);
-  // Linhas de palpite: <nome> <golsCasa> <x|:|-> <golsFora> [resto ignorado]
-  const lines = [];
-  text.split(/\n+/).forEach(linha => {
-    const m = linha.match(/^\s*([A-Za-zÀ-ÿ0-9.\-'’ ]+?)\s+(\d{1,2})\s*[x×:\-]\s*(\d{1,2})\b/i);
-    if(!m) return;
-    const raw = m[1].trim();
-    const mt = matchParticipant(raw);
-    lines.push({ raw, casa: parseInt(m[2],10), fora: parseInt(m[3],10), matchIdx: mt.idx, how: mt.how });
-  });
-  return { candidates, lines };
-}
-
-function renderColar(){
-  $('#colar').innerHTML = `
-    <div class="card"><b>📥 Colar a mensagem do grupo</b>
-      <p class="muted" style="font-size:.84rem;margin:4px 0 8px">Cole a mensagem com os palpites por nome de
-        <b>um jogo</b>. Eu detecto o jogo pelos times e caso os nomes com os participantes — você confere antes de aplicar.</p>
-      <textarea id="msg" placeholder="BOLÃO&#10;&#10;CATAR X SUÍÇA&#10;&#10;Isaac 2 x 0 Suíça&#10;Rapha 2 x 2&#10;Filipe 4x0 Suíça"></textarea>
-      <button class="btn" id="btnLer" style="margin-top:8px">Ler mensagem</button>
-    </div>
-    <div id="previa"></div>`;
-}
-
-function renderPrevia(){
-  const p = colarParsed;
-  let h = `<div class="card"><b>Jogo</b>
-    <select id="selJogo">`;
-  const RES = fixturesResolvidos();
-  state.fixtures.forEach(f => { const rf = RES[f.n]; h += `<option value="${f.n}" ${f.n===colarJogo?'selected':''}>#${f.n} — ${esc(rf.casa.nome)} × ${esc(rf.fora.nome)} (${esc(f.fase)})</option>`; });
-  h += `</select>`;
-  h += p.candidates.length
-    ? `<p class="muted" style="font-size:.82rem">Detectado na mensagem: ${p.candidates.map(n=>'#'+n).join(', ')}.</p>`
-    : `<p class="muted" style="font-size:.82rem">Não consegui detectar o jogo pela mensagem — escolha acima.</p>`;
-  h += `</div>`;
-
-  if(!p.lines.length){
-    h += `<div class="card muted">Nenhuma linha de palpite reconhecida. Confira o formato (ex.: <code>Isaac 2 x 0</code>).</div>`;
-    $('#previa').innerHTML = h; return;
-  }
-
-  h += `<div class="card"><b>${p.lines.length} linha(s) reconhecida(s)</b>
-    <p class="muted" style="font-size:.8rem;margin:4px 0 8px">Confira o participante de cada linha. Sugestões aproximadas vêm marcadas.</p>`;
-  p.lines.forEach((ln,i) => {
-    h += `<div class="grow">
-      <span class="conf">${esc(ln.raw)} <span class="muted">→ ${ln.casa}×${ln.fora}</span></span>
-      <select data-row="${i}" style="flex:none;width:150px;margin:0">
-        <option value="">— ignorar —</option>`;
-    state.participants.forEach((pt,idx) => h += `<option value="${idx}" ${idx===ln.matchIdx?'selected':''}>${esc(pt.nome)}</option>`);
-    h += `<option value="new">+ criar "${esc(ln.raw)}"</option></select>`;
-    h += ln.matchIdx<0
-      ? ` <span class="pill" style="background:var(--red);color:#fff">novo?</span>`
-      : (ln.how!=='exato' ? ` <span class="pill" style="background:var(--p10)">${ln.how}</span>` : '');
-    h += `</div>`;
-  });
-  h += `<button class="btn" id="btnAplicarMsg" style="margin-top:12px">Aplicar ao jogo selecionado</button></div>`;
-  $('#previa').innerHTML = h;
-}
-
-function aplicarMsg(){
-  const n = colarJogo;
-  let aplicados = 0, criados = 0;
-  colarParsed.lines.forEach((ln,i) => {
-    const sel = document.querySelector(`select[data-row="${i}"]`).value;
-    if(sel==='') return;
-    let idx;
-    if(sel==='new'){ state.participants.push({ id: uuid(), nome: ln.raw, palpites:{} }); idx = state.participants.length-1; criados++; }
-    else idx = +sel;
-    state.participants[idx].palpites[String(n)] = { casa: ln.casa, fora: ln.fora };
-    recordPalp(state.participants[idx].id, String(n), { casa: ln.casa, fora: ln.fora });
-    aplicados++;
-  });
-  agendarSave();
-  renderColar();
-  renderPalpites();
-  alert(`${aplicados} palpite(s) aplicado(s) ao jogo #${n}` + (criados ? ` (${criados} participante(s) novo(s)).` : '.'));
-}
 
 /* ===================== ABA FERRAMENTAS ===================== */
 function renderFerramentas(){
@@ -591,6 +470,10 @@ function renderFerramentas(){
       <div class="box"><b>${contaResultados()}</b><span>jogos com resultado</span></div>
       <div class="box"><b>${state.participants.length}</b><span>participantes</span></div>
       <div class="box"><b>${totalPalpites()}</b><span>palpites no total</span></div>
+    </div>
+    <div class="card"><b>Ranking em imagem</b>
+      <p class="muted" style="font-size:.84rem">Baixa o ranking atualizado (top 10) como imagem <code>.png</code>, no mesmo layout do site — pronto pra mandar no grupo.</p>
+      <button class="btn" id="btnBaixarRanking">🏆 Baixar ranking (.png)</button>
     </div>
     <div class="card"><b>Backup</b>
       <p class="muted" style="font-size:.84rem">Baixe ou restaure tudo (resultados + palpites) num arquivo <code>.json</code>.</p>
@@ -609,6 +492,112 @@ function baixar(nome, conteudo, tipo){
   const a = document.createElement('a'); a.href=url; a.download=nome;
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+/* ----- Ranking em imagem (top 10, mesmo layout do site público) ----- */
+function rankingTop10(){
+  return state.participants.map(p => {
+    let pts = 0, exatos = 0;
+    for (const f of state.fixtures){
+      const r = f.placar, pal = p.palpites[String(f.n)];
+      if (!pal || r.casa == null) continue;
+      const base = points(r.casa, r.fora, pal.casa, pal.fora);
+      if (base == null) continue;
+      pts += base * multFase(f.fase) + bonusPen(r.casa, r.fora, pal.casa, pal.fora, r.pen, pal.pen);
+      if (base === 25) exatos++;
+    }
+    return { nome: p.nome, pts, exatos };
+  }).sort((a,b) => b.pts - a.pts || b.exatos - a.exatos || a.nome.localeCompare(b.nome)).slice(0, 10);
+}
+const iniciais = n => { const p=String(n).trim().split(/\s+/); return (((p[0]||'')[0]||'')+((p[1]||'')[0]||'')).toUpperCase(); };
+async function baixarRanking(){
+  const rk = rankingTop10();
+  if(!rk.length){ alert('Ainda não há participantes.'); return; }
+  // Garante que as fontes do tema estão prontas para o canvas.
+  try{
+    await Promise.all(['500 11px "Space Grotesk"','700 22px "Space Grotesk"','700 18px "Space Grotesk"',
+      '700 24px "Space Grotesk"','700 17px "Space Grotesk"','700 14px "Space Grotesk"','700 13px "Space Grotesk"',
+      '500 12px "Hanken Grotesk"','600 15px "Hanken Grotesk"'].map(f => document.fonts.load(f)));
+  }catch{}
+  const S = 2, W = 480;
+  const rows = rk.length - 1;                       // demais posições além do líder
+  const H = 118 + 96 + 14 + rows*61 + 34;           // header + card líder + linhas + respiro
+  const cv = document.createElement('canvas'); cv.width = W*S; cv.height = H*S;
+  const x2 = W - 22;                                // margem direita (padding 22, como no site)
+  const ctx = cv.getContext('2d'); ctx.scale(S,S); ctx.textBaseline = 'alphabetic';
+  const rr = (x,y,w,h,r) => { ctx.beginPath(); ctx.roundRect(x,y,w,h,r); };
+  const elide = (txt,max,font) => { ctx.font = font; let t = String(txt);
+    while (t.length > 1 && ctx.measureText(t).width > max) t = t.slice(0,-1);
+    return t.length < String(txt).length ? t.replace(/\s*$/,'')+'…' : t; };
+  // fundo (mesmo radial do body)
+  const bg = ctx.createRadialGradient(W/2,-70,0, W/2,-70,700);
+  bg.addColorStop(0,'#16202C'); bg.addColorStop(.6,'#070A0E'); bg.addColorStop(1,'#070A0E');
+  ctx.fillStyle = '#0B0E13'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+  // header
+  ctx.fillStyle = '#E3B765'; ctx.font = '500 11px "Space Grotesk"';
+  try{ ctx.letterSpacing = '2px'; }catch{}
+  ctx.fillText('COPA 2026 · BOLÃO', 22, 36);
+  try{ ctx.letterSpacing = '0px'; }catch{}
+  ctx.fillStyle = '#EEF1F5'; ctx.font = '700 22px "Space Grotesk"';
+  ctx.fillText('Ranking', 22, 64);
+  ctx.fillStyle = '#9AA3B0'; ctx.font = '500 12px "Hanken Grotesk"'; ctx.textAlign = 'center';
+  const agora = new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+  ctx.fillText(`${contaResultados()} de ${state.fixtures.length} jogos com resultado · ${agora}`, W/2, 88);
+  ctx.textAlign = 'left';
+  // card do líder
+  const L = rk[0]; let y = 104;
+  const lg = ctx.createLinearGradient(22,y,x2,y+82);
+  lg.addColorStop(0,'#1B212B'); lg.addColorStop(1,'#141922');
+  rr(22,y,W-44,82,20); ctx.fillStyle = lg; ctx.fill();
+  ctx.strokeStyle = '#2A323E'; ctx.lineWidth = 1; ctx.stroke();
+  ctx.beginPath(); ctx.arc(22+18+23, y+41, 23, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(227,183,101,.14)'; ctx.fill();
+  // coroa (Lucide crown, stroke 2, viewBox 24) centrada no círculo
+  ctx.save(); ctx.translate(22+18+23-12, y+41-12);
+  ctx.strokeStyle = '#E3B765'; ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  ctx.stroke(new Path2D('M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z'));
+  ctx.stroke(new Path2D('M5 21h14')); ctx.restore();
+  const ptsLiderW = (ctx.font = '700 24px "Space Grotesk"', ctx.measureText(fmtPts(L.pts)).width);
+  const nomeMax = x2 - 20 - Math.max(ptsLiderW, 46) - (22+18+46+14) - 10;
+  ctx.fillStyle = '#9AA3B0'; ctx.font = '500 12px "Hanken Grotesk"';
+  ctx.fillText('Líder do bolão', 22+18+46+14, y+36);
+  ctx.fillStyle = '#EEF1F5'; ctx.font = '700 18px "Space Grotesk"';
+  ctx.fillText(elide(L.nome, nomeMax, ctx.font), 22+18+46+14, y+58);
+  ctx.textAlign = 'right';
+  ctx.fillStyle = '#E3B765'; ctx.font = '700 24px "Space Grotesk"';
+  ctx.fillText(fmtPts(L.pts), x2-20, y+44);
+  ctx.fillStyle = '#9AA3B0'; ctx.font = '500 11px "Hanken Grotesk"';
+  ctx.fillText('pontos', x2-20, y+60);
+  ctx.textAlign = 'left';
+  // demais posições
+  y += 82 + 14;
+  rk.slice(1).forEach((r,i) => {
+    ctx.fillStyle = '#5E6775'; ctx.font = '700 14px "Space Grotesk"'; ctx.textAlign = 'center';
+    ctx.fillText(String(i+2), 22+11, y+35);
+    ctx.beginPath(); ctx.arc(22+22+13+18, y+30, 18, 0, Math.PI*2); ctx.fillStyle = '#1B212B'; ctx.fill();
+    ctx.fillStyle = '#828B98'; ctx.font = '700 13px "Space Grotesk"';
+    ctx.fillText(iniciais(r.nome), 22+22+13+18, y+35);
+    ctx.textAlign = 'left';
+    const tx = 22+22+13+36+13;
+    const ptsW = (ctx.font = '700 17px "Space Grotesk"', ctx.measureText(fmtPts(r.pts)).width);
+    ctx.fillStyle = '#EEF1F5'; ctx.font = '600 15px "Hanken Grotesk"';
+    ctx.fillText(elide(r.nome, x2 - ptsW - 12 - tx, ctx.font), tx, y+27);
+    ctx.fillStyle = '#6B7482'; ctx.font = '500 12px "Hanken Grotesk"';
+    ctx.fillText(`${r.exatos} placares exatos`, tx, y+44);
+    ctx.textAlign = 'right'; ctx.fillStyle = '#EEF1F5'; ctx.font = '700 17px "Space Grotesk"';
+    ctx.fillText(fmtPts(r.pts), x2, y+36);
+    ctx.textAlign = 'left';
+    ctx.strokeStyle = '#1A202A'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(22, y+60.5); ctx.lineTo(x2, y+60.5); ctx.stroke();
+    y += 61;
+  });
+  cv.toBlob(blob => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'ranking-bolao.png';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }, 'image/png');
 }
 
 /* ===================== ABA ACESSOS ===================== */
@@ -663,37 +652,38 @@ function renderAcessos(){
 }
 
 /* ===================== ABA RELATÓRIO ===================== */
-let relFase = 'Todas';
-function textoRelatorio(){
-  let out = `🏆 BOLÃO DA COPA 2026 — PALPITES\n`;
+let relJogo = null;
+function textoRelatorio(n){
   const RES = fixturesResolvidos();
-  const lista = state.fixtures.filter(f => relFase==='Todas' || f.fase===relFase);
-  lista.forEach(f => {
-    const rf = RES[f.n];
-    const linhas = [];
-    state.participants.forEach(p => {
-      const pal = p.palpites[String(f.n)];
-      if(!pal) return;
-      const r = f.placar, jogou = r.casa!=null;
-      const pt = jogou ? ` (${fmtPts(points(r.casa,r.fora,pal.casa,pal.fora) * multFase(f.fase) + bonusPen(r.casa,r.fora,pal.casa,pal.fora,r.pen,pal.pen))} pts)` : '';
-      const penTxt = (pal.casa===pal.fora && pal.pen) ? ` [pên: ${(pal.pen==='casa'?rf.casa:rf.fora).nome}]` : '';
-      linhas.push(`• ${p.nome}: ${pal.casa}×${pal.fora}${penTxt}${pt}`);
-    });
-    if(!linhas.length) return;
-    const r = f.placar;
-    const penReal = (r.casa!=null && r.casa===r.fora && r.pen) ? ` (pên: ${(r.pen==='casa'?rf.casa:rf.fora).nome})` : '';
-    const real = r.casa!=null ? `  [resultado ${r.casa}×${r.fora}${penReal}]` : '';
-    out += `\n#${f.n} ${rf.casa.nome} × ${rf.fora.nome} (${f.data} ${f.hora})${real}\n` + linhas.join('\n') + '\n';
+  const f = state.fixtures.find(x => x.n === n);
+  if(!f) return '';
+  const rf = RES[f.n];
+  const r = f.placar;
+  const penReal = (r.casa!=null && r.casa===r.fora && r.pen) ? ` (pên: ${(r.pen==='casa'?rf.casa:rf.fora).nome})` : '';
+  const real = r.casa!=null ? `  [resultado ${r.casa}×${r.fora}${penReal}]` : '';
+  let out = `🏆 BOLÃO DA COPA 2026 — PALPITES\n\n#${f.n} ${rf.casa.nome} × ${rf.fora.nome} (${f.data} ${f.hora})${real}\n`;
+  const linhas = [];
+  state.participants.forEach(p => {
+    const pal = p.palpites[String(f.n)];
+    if(!pal) return;
+    const jogou = r.casa!=null;
+    const pt = jogou ? ` (${fmtPts(points(r.casa,r.fora,pal.casa,pal.fora) * multFase(f.fase) + bonusPen(r.casa,r.fora,pal.casa,pal.fora,r.pen,pal.pen))} pts)` : '';
+    const penTxt = (pal.casa===pal.fora && pal.pen) ? ` [pên: ${(pal.pen==='casa'?rf.casa:rf.fora).nome}]` : '';
+    linhas.push(`• ${p.nome}: ${pal.casa}×${pal.fora}${penTxt}${pt}`);
   });
+  out += linhas.length ? linhas.join('\n') + '\n' : '(ninguém palpitou ainda)\n';
   return out;
 }
 function renderRelatorio(){
+  if(relJogo==null || !state.fixtures.some(f => f.n===relJogo)) relJogo = state.fixtures[0].n;
+  const RES = fixturesResolvidos();
   let h = `<div class="card"><b>📋 Relatório de palpites</b>
-    <p class="muted" style="font-size:.84rem;margin:4px 0">Mensagem com os palpites de todos, por jogo e por participante (pronta pra copiar e mandar no grupo).</p>
-    <div class="filtros"><button data-relf="Todas" class="${relFase==='Todas'?'active':''}">Todas</button>`;
-  fases().forEach(f => h += `<button data-relf="${esc(f)}" class="${relFase===f?'active':''}">${esc(f)}</button>`);
-  h += `</div><button class="btn" id="btnCopiarRel">📋 Copiar mensagem</button></div>
-    <div class="card"><textarea id="relTexto" style="min-height:340px">${esc(textoRelatorio())}</textarea></div>`;
+    <p class="muted" style="font-size:.84rem;margin:4px 0">Escolha o jogo — a mensagem com os palpites de todos fica pronta pra copiar e mandar no grupo.</p>
+    <select id="selRelJogo" style="margin:4px 0 8px">`;
+  state.fixtures.forEach(f => { const rf = RES[f.n]; h += `<option value="${f.n}" ${f.n===relJogo?'selected':''}>#${f.n} — ${esc(rf.casa.nome)} × ${esc(rf.fora.nome)} (${esc(f.fase)})</option>`; });
+  h += `</select>
+    <button class="btn" id="btnCopiarRel">📋 Copiar mensagem</button></div>
+    <div class="card"><textarea id="relTexto" style="min-height:340px">${esc(textoRelatorio(relJogo))}</textarea></div>`;
   $('#relatorio').innerHTML = h;
 }
 
@@ -708,7 +698,6 @@ document.querySelector('.tabs').addEventListener('click', e => {
   if (b.dataset.tab==='ferramentas') renderFerramentas();
   if (b.dataset.tab==='acessos') renderAcessos();
   if (b.dataset.tab==='relatorio') renderRelatorio();
-  if (b.dataset.tab==='colar' && !$('#colar').innerHTML.trim()) renderColar();
 });
 
 document.addEventListener('input', e => {
@@ -724,17 +713,11 @@ document.addEventListener('click', async e => {
   if (rp){ setResultadoPen(+rp.dataset.respen, rp.dataset.side); return; }
   const ff = t.closest('.filtros button');
   if (ff && t.closest('#resultados')){ resFiltro=ff.dataset.f; renderResultados(); return; }
+  if (ff && t.closest('#palpites')){ palFiltro=ff.dataset.f; renderPalpites(); return; }
   if (t.id==='btnRenomear'){ const v=$('#renomear').value.trim(); if(v){ state.participants[palSel].nome=v; agendarSave(); renderPalpites(); } return; }
   if (t.id==='btnAddPart'){ state.participants.push({id:uuid(),nome:'Novo '+(state.participants.length+1),palpites:{}}); palSel=state.participants.length-1; agendarSave(); renderPalpites(); return; }
   if (t.id==='btnLimparPalp'){ if(confirm('Apagar todos os palpites de '+state.participants[palSel].nome+'?')){ const part=state.participants[palSel]; Object.keys(part.palpites).forEach(k=>recordPalp(part.id,k,null)); part.palpites={}; agendarSave(); renderPalpites(); } return; }
-  if (t.id==='btnAplicar'){ const q=aplicarBulk($('#bulk').value); renderPalpites(); alert(q+' palpite(s) aplicado(s).'); return; }
-  if (t.id==='btnLer'){
-    colarParsed = parseGroupMessage($('#msg').value);
-    colarJogo = colarParsed.candidates[0] || (state.fixtures[0] && state.fixtures[0].n);
-    renderPrevia();
-    return;
-  }
-  if (t.id==='btnAplicarMsg'){ aplicarMsg(); return; }
+  if (t.id==='btnBaixarRanking'){ baixarRanking(); return; }
   if (t.id==='btnBackup'){ baixar('bolao-backup.json', JSON.stringify(state,null,2), 'application/json'); return; }
   if (t.id==='btnImport'){ $('#fileImport').click(); return; }
   if (t.id==='btnReset'){
@@ -747,8 +730,6 @@ document.addEventListener('click', async e => {
   if (t.id==='btnSair' || t.closest('#btnLogout')){ deslogar(''); return; }
 
   /* ----- Aba Relatório ----- */
-  const rf = t.closest('.filtros button');
-  if (rf && t.closest('#relatorio')){ relFase=rf.dataset.relf; renderRelatorio(); return; }
   if (t.id==='btnCopiarRel'){ copiar($('#relTexto').value, t); return; }
 
   /* ----- Aba Acessos ----- */
@@ -790,7 +771,7 @@ document.addEventListener('click', async e => {
 
 document.addEventListener('change', e => {
   if (e.target.id==='selPart'){ palSel=+e.target.value; renderPalpites(); }
-  if (e.target.id==='selJogo'){ colarJogo=+e.target.value; }
+  if (e.target.id==='selRelJogo'){ relJogo=+e.target.value; renderRelatorio(); }
   if (e.target.id==='fileImport'){
     const f=e.target.files[0]; if(!f) return;
     const rd=new FileReader();
